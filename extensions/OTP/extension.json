@@ -1,0 +1,26 @@
+{
+    "name": "OTP",
+    "author": [
+		"Minh Pham"
+    ],
+    "descriptionmsg": "otp-desc",
+    "license-name": "GPL-2.0-or-later",
+    "type": "specialpage",
+    "SpecialPages": {
+		"OTP": "SpecialOTP"
+	},
+    "AutoloadClasses": {
+		"SpecialOTP": "SpecialOTP.php"
+    },
+    "MessagesDirs": {
+		"MyExtension": [
+			"i18n"
+		]
+    },
+    "requires": {
+		"MediaWiki": ">= 1.33.0",
+		"platform": {
+			"php": ">= 5.6"
+		}
+	}
+}

@@ -1,0 +1,22 @@
+language: php
+
+sudo: false
+
+php:
+  - 7.0
+  - 7.1
+  - nightly
+
+env:
+  - PHPUNIT=6.0.*
+
+cache:
+  directories:
+    - $HOME/.composer
+
+before_script:
+  - phpenv config-rm xdebug.ini || true
+  - composer require phpunit/phpunit:${PHPUNIT}
+
+script:
+  - ./vendor/bin/phpunit

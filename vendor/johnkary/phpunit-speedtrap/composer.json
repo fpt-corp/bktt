@@ -1,0 +1,33 @@
+{
+    "name": "johnkary/phpunit-speedtrap",
+    "description": "Find slow tests in your PHPUnit test suite",
+    "keywords": ["PHPUnit", "slow", "profile"],
+    "homepage": "https://github.com/johnkary/phpunit-speedtrap",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "John Kary",
+            "email": "john@johnkary.net"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "phpunit/phpunit": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JohnKary\\PHPUnit\\Listener\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JohnKary\\PHPUnit\\Listener\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}
