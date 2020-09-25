@@ -72,8 +72,6 @@ class SpecialOTP extends FormSpecialPage {
         
         $otp = $_SESSION["otp"];
 
-       
-
         print_r($group);
              
         $curl = curl_init();

@@ -1101,7 +1101,7 @@
 	"gender-female": "Nữ",
 	"prefs-help-gender": "Tùy chỉnh này không được bắt buộc.\nPhần mềm sử dụng giá trị này để xưng hô bạn với giới tính đúng.\nThông tin này là công khai.",
 	"email": "Thư điện tử",
-	"prefs-help-realname": "",
+	"prefs-help-realname": "Số điện thoại là bắt buộc.",
 	"prefs-help-email": "Địa chỉ thư điện tử là tùy chọn, nhưng nó giúp chúng tôi gửi cho bạn mật khẩu mới qua thư điện tử nếu bạn quên mật khẩu của mình.",
 	"prefs-help-email-others": "Bạn cũng có thể lựa chọn cho phép người khác liên lạc với bạn thông qua trang cá nhân hoặc trang thảo luận cá nhân mà không cần để lộ danh tính.",
 	"prefs-help-email-required": "Bắt buộc phải có địa chỉ thư điện tử.",

@@ -63,7 +63,7 @@ CREATE TABLE /*_*/user (
   user_name varchar(255) binary NOT NULL default '',
 
   -- Optional 'real name' to be displayed in credit listings
-  user_real_name varchar(255) binary NOT NULL default '',
+  user_real_name varchar(255) binary UNIQUE NOT NULL default '',
 
   -- Password hashes, see User::crypt() and User::comparePasswords()
   -- in User.php for the algorithm

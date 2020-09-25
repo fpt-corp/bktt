@@ -856,8 +856,7 @@ abstract class LoginSignupSpecialPage extends AuthManagerSpecialPage {
 				],
 				'realname' => [
 					'type' => 'text',
-					// 'help-message' => $isLoggedIn ? 'createacct-another-realname-tip'
-					// 	: 'prefs-help-realname',
+					'help-message' => 'prefs-help-realname',
 					'label-message' => 'createacct-realname',
 					'cssclass' => 'loginText',
 					'size' => 20,
