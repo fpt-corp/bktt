@@ -213,6 +213,22 @@ class TemporaryPasswordPrimaryAuthenticationProvider
 		);
 	}
 
+	public function testPhoneNumberExists( $phone, $flags = User::READ_NORMAL ) {
+		$username = User::getCanonicalName( $phone, 'usable' );
+		if ( $username === false ) {
+			return false;
+		}
+
+		list( $db, $options ) = \DBAccessObjectUtils::getDBOptions( $flags );
+		return (bool)wfGetDB( $db )->selectField(
+			[ 'user' ],
+			'user_id',
+			[ 'user_real_name' => $username ],
+			__METHOD__,
+			$options
+		);
+	}
+
 	public function providerAllowsAuthenticationDataChange(
 		AuthenticationRequest $req, $checkData = true
 	) {

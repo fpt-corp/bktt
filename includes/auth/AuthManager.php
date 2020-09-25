@@ -2186,6 +2186,15 @@ class AuthManager implements LoggerAwareInterface {
 		return false;
 	}
 
+	public function phoneNumberExists( $phone, $flag = User::READ_NORMAL ) {
+		foreach( $this->getPrimaryAuthenticationProviders() as $provider ) {
+			if ( $provider->testPhoneNumberExists( $phone, $flag)) {
+				return true;
+			}
+		}
+		return false;
+	} 
+
 	/**
 	 * Determine whether a user property should be allowed to be changed.
 	 *

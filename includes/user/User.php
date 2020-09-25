@@ -948,6 +948,33 @@ class User implements IDBAccessObject, UserIdentity {
 		return IP::isValidRange( $this->mName );
 	}
 
+	public static function isValidPhoneNumber( $phone ) {
+		if ( $phone == ''
+			|| self::isIP( $phone )
+			|| strpos( $phone, '/' ) !== false
+			|| strlen( $phone ) != 10
+			|| strlen( $phone ) != 11
+		) {
+			return false;
+		}
+
+		// Check an additional blacklist of troublemaker characters.
+		// Should these be merged into the title char list?
+		$unicodeBlacklist = '/[' .
+			'\x{0080}-\x{009f}' . # iso-8859-1 control chars
+			'\x{00a0}' . # non-breaking space
+			'\x{2000}-\x{200f}' . # various whitespace
+			'\x{2028}-\x{202f}' . # breaks and control chars
+			'\x{3000}' . # ideographic space
+			'\x{e000}-\x{f8ff}' . # private use
+			']/u';
+		if ( preg_match( $unicodeBlacklist, $phone ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Is the input a valid username?
 	 *
@@ -1033,6 +1060,26 @@ class User implements IDBAccessObject, UserIdentity {
 	}
 
 	/**
+	 * Usernames which fail to pass this function will be blocked
+	 * from user login and new account registrations, but may be used
+	 * internally by batch processes.
+	 *
+	 * If an account already exists in this form, login will be blocked
+	 * by a failure to pass this function.
+	 *
+	 * @param string $name Name to match
+	 * @return bool
+	 */
+	public static function isUsablePhone( $phone ) {
+		// Must be a valid username, obviously ;)
+		if ( !self::isValidPhoneNumber( $phone ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Return the users who are members of the given group(s). In case of multiple groups,
 	 * users who are members of at least one of them are returned.
 	 *
@@ -1104,6 +1151,42 @@ class User implements IDBAccessObject, UserIdentity {
 		}
 
 		return self::isUsableName( $name );
+	}
+
+	/**
+	 * Usernames which fail to pass this function will be blocked
+	 * from new account registrations, but may be used internally
+	 * either by batch processes or by user accounts which have
+	 * already been created.
+	 *
+	 * Additional blacklisting may be added here rather than in
+	 * isValidUserName() to avoid disrupting existing accounts.
+	 *
+	 * @param string $name String to match
+	 * @return bool
+	 */
+	public static function isCreatablePhone( $phone ) {
+		global $wgInvalidUsernameCharacters;
+
+		// Ensure that the username isn't longer than 235 bytes, so that
+		// (at least for the builtin skins) user javascript and css files
+		// will work. (T25080)
+		if ( strlen( $phone ) > 235 ) {
+			wfDebugLog( 'username', __METHOD__ .
+				": '$phone' invalid due to length" );
+			return false;
+		}
+
+		// Preg yells if you try to give it an empty string
+		if ( $wgInvalidUsernameCharacters !== '' &&
+			preg_match( '/[' . preg_quote( $wgInvalidUsernameCharacters, '/' ) . ']/', $phone )
+		) {
+			wfDebugLog( 'username', __METHOD__ .
+				": '$phone' invalid due to wgInvalidUsernameCharacters" );
+			return false;
+		}
+
+		return self::isUsableName( $phone );
 	}
 
 	/**
@@ -1225,6 +1308,50 @@ class User implements IDBAccessObject, UserIdentity {
 					'Invalid parameter value for $validate in ' . __METHOD__ );
 		}
 		return $name;
+	}
+
+	/**
+	 * Given unvalidated user input, return a canonical username, or false if
+	 * the username is invalid.
+	 * @param string $name User input
+	 * @param string|bool $validate Type of validation to use:
+	 *   - false        No validation
+	 *   - 'valid'      Valid for batch processes
+	 *   - 'usable'     Valid for batch processes and login
+	 *   - 'creatable'  Valid for batch processes, login and account creation
+	 *
+	 * @throws InvalidArgumentException
+	 * @return bool|string
+	 */
+	public static function getCanonicalPhoneNumber( $phone, $validate = 'valid' ) {
+		// Force usernames to capital
+		if (!is_numeric($phone)) {
+			return false;
+		}
+
+		switch ( $validate ) {
+			case false:
+				break;
+			case 'valid':
+				if ( !self::isValidPhoneNumber( $phone ) ) {
+					$phone = false;
+				}
+				break;
+			case 'usable':
+					if ( !self::isUsableName( $phone ) ) {
+						$phone = false;
+					}
+					break;
+			case 'creatable':
+					if ( !self::isCreatableName( $phone ) ) {
+						$phone = false;
+					}
+					break;
+			default:
+				throw new InvalidArgumentException(
+					'Invalid parameter value for $validate in ' . __METHOD__ );
+		}
+		return $phone;
 	}
 
 	/**
@@ -4173,6 +4300,11 @@ class User implements IDBAccessObject, UserIdentity {
 			throw new RuntimeException( "User name field is not set." );
 		}
 
+		if ( !is_string( $this->mRealName ) ) {
+			throw new RuntimeException( "Phone number field is not set." );
+		}
+		
+
 		$this->mTouched = $this->newTouchedTimestamp();
 
 		$dbw = wfGetDB( DB_MASTER );
@@ -4206,6 +4338,7 @@ class User implements IDBAccessObject, UserIdentity {
 				if ( $this->mId && $this->loadFromDatabase( self::READ_LOCKING ) ) {
 					$loaded = true;
 				}
+
 				if ( !$loaded ) {
 					throw new MWException( $fname . ": hit a key conflict attempting " .
 						"to insert user '{$this->mName}' row, but it was not present in select!" );

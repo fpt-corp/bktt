@@ -71,8 +71,6 @@ class SpecialOTP extends FormSpecialPage {
         } 
         
         $otp = $_SESSION["otp"];
-
-        print_r($group);
              
         $curl = curl_init();
         $headers = array(
@@ -97,6 +95,14 @@ class SpecialOTP extends FormSpecialPage {
         $response = curl_exec($curl);
 
         curl_close($curl);
+        
+        echo 
+            "<div display='none'>
+                <script type='text/javascript'>
+                    console.log($otp);
+                    console.log('pain.');
+                </script>
+            </div>";
 
 
 		$form = $this->getForm();

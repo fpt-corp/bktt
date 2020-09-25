@@ -141,6 +141,17 @@ interface PrimaryAuthenticationProvider extends AuthenticationProvider {
 	public function testUserExists( $username, $flags = User::READ_NORMAL );
 
 	/**
+	 * Test whether the named user exists
+	 *
+	 * Single-sign-on providers can use this to reserve a username for autocreation.
+	 *
+	 * @param string $username MediaWiki username
+	 * @param int $flags Bitfield of User:READ_* constants
+	 * @return bool
+	 */
+	public function testPhoneNumberExists( $phone, $flags = User::READ_NORMAL );
+
+	/**
 	 * Test whether the named user can authenticate with this provider
 	 *
 	 * Should return true if the provider has any data for this user which can be used to

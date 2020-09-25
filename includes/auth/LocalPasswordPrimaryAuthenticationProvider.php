@@ -186,6 +186,22 @@ class LocalPasswordPrimaryAuthenticationProvider
 		return !$this->getPassword( $row->user_password ) instanceof \InvalidPassword;
 	}
 
+	public function testPhoneNumberExists( $phone, $flags = User::READ_NORMAL ) {
+		$phone = User::getCanonicalPhoneNumber( $phone, 'usable' );
+		if ( $phone === false ) {
+			return false;
+		}
+
+		list( $db, $options ) = \DBAccessObjectUtils::getDBOptions( $flags );
+		return (bool)wfGetDB( $db )->selectField(
+			[ 'user' ],
+			'user_id',
+			[ 'user_real_name' => $phone ],
+			__METHOD__,
+			$options
+		);
+	}
+
 	public function testUserExists( $username, $flags = User::READ_NORMAL ) {
 		$username = User::getCanonicalName( $username, 'usable' );
 		if ( $username === false ) {
