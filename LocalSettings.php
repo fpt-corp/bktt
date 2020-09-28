@@ -16,7 +16,6 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
-$_SESSION["otp"] = "";
 
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
@@ -55,6 +54,10 @@ $wgEmailAuthentication = true;
 
 ## Database settings
 $wgDBtype = "mysql";
+$wgDBserver = "localhost";
+$wgDBname = "my_wiki";
+$wgDBuser = "root";
+$wgDBpassword = "";
 
 # MySQL specific settings
 $wgDBprefix = "";
@@ -93,14 +96,14 @@ $wgShellLocale = "C.UTF-8";
 # Site language code, should be one of the list in ./languages/data/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "b52664355b43d8fe31a97416332fb9f62f6aae090ae10e6abe38f81351c74b45";
+$wgSecretKey = "7d04eb911ba1856c0e67afd61bda677606b6def47af715232e9082e5dabe2fd0";
 
 # Changing this will log out all existing sessions.
 $wgAuthenticationTokenVersion = "1";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "5241ca32452b7239";
+$wgUpgradeKey = "65b51ab8b7f30743";
 
 ## For attaching licensing metadata to pages, and displaying an
 ## appropriate copyright notice / icon. GNU Free Documentation

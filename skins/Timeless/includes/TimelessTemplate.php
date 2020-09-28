@@ -17,6 +17,8 @@ class TimelessTemplate extends BaseTemplate {
 
 	/** @var array|null */
 	protected $collectionPortlet;
+	
+	protected $wgLogo;
 
 	/**
 	 * Outputs the entire contents of the page
@@ -44,12 +46,8 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= Html::openElement( 'div', [ 'id' => 'mw-wrapper', 'class' => $userLinks['class'] ] );
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container' ],
-			Html::rawElement( 'div', [ 'id' => 'mw-header', 'class' => 'ts-inner' ],
-				$userLinks['html'] .
-				$this->getLogo( 'p-logo-text', 'text' ) .
-				$this->getSearch()
-			) .
-			$this->getClear()
+			$this->getHeaderUpper() .
+			$this->getHeaderLower()
 		);
 		$html .= $this->getHeaderHack();
 
@@ -83,12 +81,17 @@ class TimelessTemplate extends BaseTemplate {
 				$this->getClear()
 			)
 		);
+		$validFooterLinks = $this->getFooterLinks('flat');
+		$footer = '';
+		foreach ( $validFooterLinks as $aLink ) {
+			$footer .= Html::rawElement(
+				'div',
+				[ 'id' => Sanitizer::escapeIdForAttribute( $aLink ) ],
+				$this->get( $aLink )
+			);
+		}
 
-		$html .= Html::rawElement( 'div', [ 'id' => 'mw-footer-container', 'class' => 'ts-container' ],
-			Html::rawElement( 'div', [ 'id' => 'mw-footer', 'class' => 'ts-inner' ],
-				$this->getFooter()
-			)
-		);
+		$html .= Html::rawElement( 'div', [ 'id' => 'mw-footer' ], $footer);
 
 		$html .= Html::closeElement( 'div' );
 
@@ -103,6 +106,39 @@ class TimelessTemplate extends BaseTemplate {
 
 		// The unholy echo
 		echo $html;
+	}
+
+	public function getHeaderUpper() {
+		$user = $this->getSkin()->getUser();
+		$personalTools = $this->getPersonalTools();
+		// Preserve standard username label to allow customisation (T215822)
+		$userName = $personalTools['userpage']['links'][0]['text'] ?? $user->getName();
+		
+		$contentText = '';
+		foreach ( $personalTools as $key => $item ) {
+			$contentText .= Html::rawElement('a', ['href' => $item['links'][0]['href']], $item['links'][0]['text']);
+		}
+
+		// $contentText .= print_r($personalTools, 1);
+		
+		return Html::rawElement('div', ['class' => 'mw-header-upper'], 
+			Html::rawElement('div', ['class' => 'spacer']) .
+			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
+		);
+	}
+
+	public function getHeaderLower() {
+		$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
+		$alphabetSearch = '';
+		foreach ( $alphabet as $key => $item ) {
+			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], $item);
+		}
+
+		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
+			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href']], 'LOGO ADD HERE') .
+			$this->getSearch() .
+			$alphabetSearch
+		);
 	}
 
 	/**
@@ -407,7 +443,7 @@ class TimelessTemplate extends BaseTemplate {
 	protected function getSearch() {
 		$html = '';
 
-		$html .= Html::openElement( 'div', [ 'class' => 'mw-portlet', 'id' => 'p-search' ] );
+		$html .= Html::openElement( 'div', [  'id' => 'p-search' ] );
 
 		$html .= Html::rawElement(
 			'h3',
@@ -417,11 +453,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => 'searchform' ],
 			Html::rawElement( 'div', [ 'id' => 'simpleSearch' ],
-				Html::rawElement( 'div', [ 'id' => 'searchInput-container' ],
-					$this->makeSearchInput( [
-						'id' => 'searchInput'
-					] )
-				) .
+				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Enter the keyword...'] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
 				$this->makeSearchButton(
 					'fulltext',
