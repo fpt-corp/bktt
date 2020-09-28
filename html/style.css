@@ -1,0 +1,137 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body * {
+    box-sizing: border-box;
+}
+
+.main-page {
+    padding: 22px;
+}
+
+.main-page * {
+    color: #262626;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+.main-page-summary {
+    height: 125px;
+    box-shadow: 0px 3px 6px #0000001A;
+    border: 1px solid #E0E0E0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.main-page-summary ul {
+    display: flex;
+    flex: 0 0 750px;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+}
+
+.main-page-summary ul li {
+    flex: 0 0 250px;
+    font-size: 14px;
+    padding: 5px 0;
+}
+
+.main-page-summary ul li:before {
+    content: "\2022";
+    color: red;
+    font-weight: bold;
+    font-size: 1em;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.main-page .section-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 0;
+}
+
+.main-page .featured-article-container {
+    display: flex;
+}
+
+.main-page .featured-article-container .big-focus {
+    flex: 0 0 32%;
+    height: 612px;
+    padding-bottom: 20px;
+}
+
+.main-page .featured-article-container .small-focus {
+    flex: 0 0 68%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-page .article {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    background-size: cover;
+}
+
+.main-page .article .article-name {
+    font-weight: bold;
+    font-size: 24px;
+    color: #fff;
+    padding-bottom: 12px;
+}
+
+.main-page .article .article-text {
+    color: #fff;
+    padding-bottom: 12px;
+}
+
+.main-page .article .article-link {
+    display: flex;
+    align-items: center;
+}
+
+.main-page .article .article-link a {
+    color: #FF5A28;
+    text-decoration: none;
+}
+
+.main-page .article .article-link img {
+    margin-right: 8px;
+}
+
+.main-page .big-focus .article {
+    height: 100%;
+}
+
+.main-page .small-focus .article {
+    flex: 0 0 calc(25% - 20px);
+    margin: 0 0 20px 20px;
+}
+
+.main-page .group-layout {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.main-page .group-layout .group-item {
+    flex: 0 0 calc(50% - 10px);
+}
+
+.main-page .group-layout .group-box {
+    box-shadow: 0px 3px 6px #0000001A;
+    border: 1px solid #E0E0E0;
+    border-radius: 3px;
+    padding: 20px;
+}
+
+.main-page .group-layout .group-item:nth-child(odd) {
+    margin-right: 20px;
+}
