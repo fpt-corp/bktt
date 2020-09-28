@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'phpseclib\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'XdgBaseDir\\' => array($vendorDir . '/dnoegel/php-xdg-base-dir/src'),
     'Wikimedia\\XMPReader\\' => array($vendorDir . '/wikimedia/xmp-reader/src'),
@@ -54,6 +55,7 @@ return array(
     'Composer\\XdebugHandler\\' => array($vendorDir . '/composer/xdebug-handler/src'),
     'Composer\\Spdx\\' => array($vendorDir . '/composer/spdx-licenses/src'),
     'Composer\\Semver\\' => array($vendorDir . '/composer/semver/src'),
+    'Composer\\Installers\\' => array($vendorDir . '/composer/installers/src/Composer/Installers'),
     'Cache\\TagInterop\\' => array($vendorDir . '/cache/tag-interop'),
     'Cache\\IntegrationTests\\' => array($vendorDir . '/cache/integration-tests/src'),
     'CLDRPluralRuleParser\\' => array($vendorDir . '/wikimedia/cldr-plural-rule-parser/src'),

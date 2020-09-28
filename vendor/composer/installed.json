@@ -118,6 +118,145 @@
         ]
     },
     {
+        "name": "composer/installers",
+        "version": "v1.9.0",
+        "version_normalized": "1.9.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/installers.git",
+            "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/installers/zipball/b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
+            "reference": "b93bcf0fa1fccb0b7d176b0967d969691cd74cca",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0 || ^2.0"
+        },
+        "replace": {
+            "roundcube/plugin-installer": "*",
+            "shama/baton": "*"
+        },
+        "require-dev": {
+            "composer/composer": "1.6.* || 2.0.*@dev",
+            "composer/semver": "1.0.* || 2.0.*@dev",
+            "phpunit/phpunit": "^4.8.36",
+            "sebastian/comparator": "^1.2.4",
+            "symfony/process": "^2.3"
+        },
+        "time": "2020-04-07T06:57:05+00:00",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "Composer\\Installers\\Plugin",
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Composer\\Installers\\": "src/Composer/Installers"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Robinson Young",
+                "email": "kyle@dontkry.com",
+                "homepage": "https://github.com/shama"
+            }
+        ],
+        "description": "A multi-framework Composer library installer",
+        "homepage": "https://composer.github.io/installers/",
+        "keywords": [
+            "Craft",
+            "Dolibarr",
+            "Eliasis",
+            "Hurad",
+            "ImageCMS",
+            "Kanboard",
+            "Lan Management System",
+            "MODX Evo",
+            "MantisBT",
+            "Mautic",
+            "Maya",
+            "OXID",
+            "Plentymarkets",
+            "Porto",
+            "RadPHP",
+            "SMF",
+            "Thelia",
+            "Whmcs",
+            "WolfCMS",
+            "agl",
+            "aimeos",
+            "annotatecms",
+            "attogram",
+            "bitrix",
+            "cakephp",
+            "chef",
+            "cockpit",
+            "codeigniter",
+            "concrete5",
+            "croogo",
+            "dokuwiki",
+            "drupal",
+            "eZ Platform",
+            "elgg",
+            "expressionengine",
+            "fuelphp",
+            "grav",
+            "installer",
+            "itop",
+            "joomla",
+            "known",
+            "kohana",
+            "laravel",
+            "lavalite",
+            "lithium",
+            "magento",
+            "majima",
+            "mako",
+            "mediawiki",
+            "modulework",
+            "modx",
+            "moodle",
+            "osclass",
+            "phpbb",
+            "piwik",
+            "ppi",
+            "puppet",
+            "pxcms",
+            "reindex",
+            "roundcube",
+            "shopware",
+            "silverstripe",
+            "sydes",
+            "sylius",
+            "symfony",
+            "typo3",
+            "wordpress",
+            "yawik",
+            "zend",
+            "zikula"
+        ],
+        "funding": [
+            {
+                "url": "https://packagist.com",
+                "type": "custom"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                "type": "tidelift"
+            }
+        ]
+    },
+    {
         "name": "composer/semver",
         "version": "1.5.0",
         "version_normalized": "1.5.0.0",
@@ -992,6 +1131,38 @@
             "profile",
             "slow"
         ]
+    },
+    {
+        "name": "jumbojett/openid-connect-php",
+        "version": "v0.5.0",
+        "version_normalized": "0.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jumbojett/OpenID-Connect-PHP.git",
+            "reference": "5ccd26d02307002a1b599800eaa79dfddfb98145"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jumbojett/OpenID-Connect-PHP/zipball/5ccd26d02307002a1b599800eaa79dfddfb98145",
+            "reference": "5ccd26d02307002a1b599800eaa79dfddfb98145",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "php": ">=5.4",
+            "phpseclib/phpseclib": "2.0.1"
+        },
+        "time": "2018-04-09T13:30:22+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "description": "Bare-bones OpenID Connect client"
     },
     {
         "name": "justinrainbow/json-schema",
@@ -2312,6 +2483,97 @@
             }
         ],
         "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names"
+    },
+    {
+        "name": "phpseclib/phpseclib",
+        "version": "2.0.1",
+        "version_normalized": "2.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpseclib/phpseclib.git",
+            "reference": "ba6fb78f727cd09f2a649113b95468019e490585"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/ba6fb78f727cd09f2a649113b95468019e490585",
+            "reference": "ba6fb78f727cd09f2a649113b95468019e490585",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phing/phing": "~2.7",
+            "phpunit/phpunit": "~4.0",
+            "sami/sami": "~2.0",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "suggest": {
+            "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
+            "ext-libsodium": "SSH2/SFTP can make use of some algorithms provided by the libsodium-php extension.",
+            "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
+            "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
+        },
+        "time": "2016-01-18T17:07:21+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "phpseclib\\": "phpseclib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jim Wigginton",
+                "email": "terrafrost@php.net",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Patrick Monnerat",
+                "email": "pm@datasphere.ch",
+                "role": "Developer"
+            },
+            {
+                "name": "Andreas Fischer",
+                "email": "bantu@phpbb.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Hans-Jürgen Petrich",
+                "email": "petrich@tronic-media.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Graham Campbell",
+                "email": "graham@alt-three.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
+        "homepage": "http://phpseclib.sourceforge.net",
+        "keywords": [
+            "BigInteger",
+            "aes",
+            "asn.1",
+            "asn1",
+            "blowfish",
+            "crypto",
+            "cryptography",
+            "encryption",
+            "rsa",
+            "security",
+            "sftp",
+            "signature",
+            "signing",
+            "ssh",
+            "twofish",
+            "x.509",
+            "x509"
+        ]
     },
     {
         "name": "phpspec/prophecy",
@@ -3902,17 +4164,17 @@
     },
     {
         "name": "symfony/console",
-        "version": "v4.4.13",
-        "version_normalized": "4.4.13.0",
+        "version": "v4.4.14",
+        "version_normalized": "4.4.14.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/console.git",
-            "reference": "b39fd99b9297b67fb7633b7d8083957a97e1e727"
+            "reference": "90933b39c7b312fc3ceaa1ddeac7eb48cb953124"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/console/zipball/b39fd99b9297b67fb7633b7d8083957a97e1e727",
-            "reference": "b39fd99b9297b67fb7633b7d8083957a97e1e727",
+            "url": "https://api.github.com/repos/symfony/console/zipball/90933b39c7b312fc3ceaa1ddeac7eb48cb953124",
+            "reference": "90933b39c7b312fc3ceaa1ddeac7eb48cb953124",
             "shasum": ""
         },
         "require": {
@@ -3946,7 +4208,7 @@
             "symfony/lock": "",
             "symfony/process": ""
         },
-        "time": "2020-09-02T07:07:21+00:00",
+        "time": "2020-09-15T07:58:55+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -4308,17 +4570,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v4.4.13",
-        "version_normalized": "4.4.13.0",
+        "version": "v4.4.14",
+        "version_normalized": "4.4.14.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "1bef32329f3166486ab7cb88599cae4875632b99"
+            "reference": "0dc22bdf9d1197467bb04d505355180b6f20bcca"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/1bef32329f3166486ab7cb88599cae4875632b99",
-            "reference": "1bef32329f3166486ab7cb88599cae4875632b99",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0dc22bdf9d1197467bb04d505355180b6f20bcca",
+            "reference": "0dc22bdf9d1197467bb04d505355180b6f20bcca",
             "shasum": ""
         },
         "require": {
@@ -4342,7 +4604,7 @@
             "ext-intl": "To show region name in time zone dump",
             "symfony/console": "To use the ServerDumpCommand and/or the bin/var-dump-server script"
         },
-        "time": "2020-08-17T07:31:35+00:00",
+        "time": "2020-09-18T08:35:10+00:00",
         "bin": [
             "Resources/bin/var-dump-server"
         ],
