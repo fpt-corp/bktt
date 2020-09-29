@@ -131,7 +131,9 @@ class TimelessTemplate extends BaseTemplate {
 		$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
 		$alphabetSearch = '';
 		foreach ( $alphabet as $key => $item ) {
-			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], $item);
+			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
+				Html::rawElement('a', ['href' => 'https://bktt.vn/wiki/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
+			);
 		}
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
