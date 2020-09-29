@@ -122,6 +122,7 @@ class TimelessTemplate extends BaseTemplate {
 		// $contentText .= print_r($personalTools, 1);
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper'], 
+			Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' )) .
 			Html::rawElement('div', ['class' => 'spacer']) .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
 		);
