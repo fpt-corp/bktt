@@ -61,6 +61,7 @@
 	line-height: 1.125;
 	word-wrap: break-word;
 	font-size: 0.95em;
+	background: #fff;
 
 	ul,
 	li {
@@ -70,11 +71,11 @@
 	}
 
 	h3 {
-		font-weight: normal;
-		font-size: 1em;
+		font-weight: bold;
+		font-size: 18px;
 		margin: 0.25em 0 0.75em 0;
-		padding-bottom: 0.15em;
-		border-bottom: solid 2px @base70;
+		padding-bottom: 0.5em;
+		border-bottom: solid 2px @base-red;
 	}
 
 	.mw-portlet-body {
@@ -83,6 +84,22 @@
 
 	li {
 		padding: 0.25em 0;
+		display: flex;
+		align-items: center;
+
+		&:before {
+			content: '';
+			width: 10px;
+			height: 10px;
+			flex: 0 0 10px;
+			border-radius: 50%;
+			background: @base-red;
+			margin-right: 6px;
+		}
+	}
+
+	a {
+		color: @base-black;
 	}
 }
 
@@ -96,7 +113,7 @@
 }
 
 .column-left() {
-	padding-right: 1em;
+	padding: 0 20px;
 	box-sizing: border-box;
 
 	.sidebar-chunk {

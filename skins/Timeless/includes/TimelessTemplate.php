@@ -55,7 +55,7 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= Html::element( 'div', [ 'id' => 'menus-cover' ] );
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
-			Html::rawElement( 'div', [ 'id' => 'mw-content-block', 'class' => 'ts-inner' ],
+			Html::rawElement( 'div', [ 'id' => 'mw-content-block'],
 				Html::rawElement( 'div', [ 'id' => 'mw-content-wrapper' ],
 					$this->getContentBlock() .
 					$this->getAfterContent()
@@ -71,9 +71,7 @@ class TimelessTemplate extends BaseTemplate {
 							$this->pileOfTools['general'],
 							'timeless-sitetools'
 						)
-					)
-				) .
-				Html::rawElement( 'div', [ 'id' => 'mw-related-navigation' ],
+					) .
 					$this->getPageToolSidebar() .
 					$this->getInterwikiLinks() .
 					$this->getCategories()
