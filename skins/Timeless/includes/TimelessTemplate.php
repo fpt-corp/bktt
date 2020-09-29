@@ -138,7 +138,7 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
-			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href']], 'LOGO ADD HERE') .
+			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'LOGO ADD HERE') .
 			$this->getSearch() .
 			$alphabetSearch
 		);

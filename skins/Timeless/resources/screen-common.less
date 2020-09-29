@@ -34,7 +34,7 @@ body {
 
 #mw-footer-container {
 	border-top: solid 1px @base20;
-	box-shadow: inset 0 7px 2px -4px rgba( 0, 0, 0, 0.1 );
+	box-shadow: inset 0 7px 2px -4px rgba(0, 0, 0, 0.1);
 	color: @base100;
 
 	a {
@@ -86,7 +86,7 @@ body {
 /* Search */
 
 #simpleSearch {
-	box-shadow: inset 0 2px 4px 0 rgba( 0, 0, 0, 0.05 );
+	box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 	background: @background;
 	position: relative;
 	border: solid 1px @base70;
@@ -114,7 +114,7 @@ body {
 	width: 2.5em;
 	height: 2.5em;
 	.icon;
-	.background-image-svg( 'images/search-ltr.svg', 'images/search-ltr.png' );
+	.background-image-svg('images/search-ltr.svg', 'images/search-ltr.png');
 	/* @noflip */
 	background-position: center 40%;
 	box-shadow: none;
@@ -122,7 +122,7 @@ body {
 
 .suggestions {
 	background: @background;
-	box-shadow: 0 2px 2px 1px rgba( 0, 0, 0, 0.05 );
+	box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.05);
 
 	.suggestions-special {
 		background-color: @background;
@@ -200,6 +200,7 @@ body {
 
 .tools-inline,
 .tools-inline & {
+
 	div,
 	ul,
 	li {
@@ -227,7 +228,7 @@ body {
 	}
 
 	a {
-		.ca-icon( 'images/page-misc-grey' );
+		.ca-icon('images/page-misc-grey');
 	}
 }
 
@@ -249,37 +250,37 @@ body {
 }
 
 #ca-watch a {
-	.ca-icon( 'images/star' );
+	.ca-icon('images/star');
 	.ca-icon-only();
 }
 
 #ca-unwatch a {
-	.ca-icon( 'images/star-filled' );
+	.ca-icon('images/star-filled');
 	.ca-icon-only();
 }
 
 #ca-edit a {
-	.ca-icon( 'images/pencil-grey' );
+	.ca-icon('images/pencil-grey');
 }
 
 #ca-history a {
-	.ca-icon( 'images/clock-grey' );
+	.ca-icon('images/clock-grey');
 }
 
 #ca-talk a {
-	.ca-icon( 'images/talk-grey' );
+	.ca-icon('images/talk-grey');
 }
 
 #t-contributions a {
-	.ca-icon( 'images/puzzle-grey' );
+	.ca-icon('images/puzzle-grey');
 }
 
 #ca-addsection a {
-	.ca-icon( 'images/plus-grey' );
+	.ca-icon('images/plus-grey');
 }
 
 #ca-viewsource a {
-	.ca-icon( 'images/brackets-grey' );
+	.ca-icon('images/brackets-grey');
 }
 
 #ca-view {
@@ -287,12 +288,12 @@ body {
 
 	// Let's give anyone who forcibly brings it back a creepy eyeball
 	a {
-		.ca-icon( 'images/eyeball-grey' );
+		.ca-icon('images/eyeball-grey');
 	}
 }
 
-.tools-inline li[ id^='ca-nstab-' ] a {
-	.ca-icon( 'images/page-grey' );
+.tools-inline li[ id^='ca-nstab-'] a {
+	.ca-icon('images/page-grey');
 }
 
 #siteNotice {
@@ -341,7 +342,7 @@ a.mw-selflink {
 
 .mw-editsection {
 	font-family: @fonts;
-	.background-image-svg( 'images/pencil-grey.svg', 'images/pencil-grey.png' );
+	.background-image-svg('images/pencil-grey.svg', 'images/pencil-grey.png');
 	background-repeat: no-repeat;
 	background-position: left bottom;
 	padding-left: 20px;
@@ -385,7 +386,7 @@ div.magnify a {
 	width: 20px;
 	height: 20px;
 	margin: 0 0 0.5em 0.5em;
-	.background-image-svg( 'images/magnify-ltr.svg', 'images/magnify-ltr.png' );
+	.background-image-svg('images/magnify-ltr.svg', 'images/magnify-ltr.png');
 }
 
 /* Subtitle area
@@ -435,6 +436,7 @@ pre,
 }
 
 .mw-body {
+
 	h1,
 	h2,
 	h3,
@@ -516,6 +518,7 @@ pre,
 	// overflow on the border itself in output for proper thumb handling. Too weird to
 	// change this everywhere, so we'll just do it for parser output for now.
 	.mw-parser-output {
+
 		h1,
 		h2 {
 			border-bottom: 0;
@@ -668,8 +671,8 @@ ul#filetoc {
 
 // Remove brackets around the show/hide button of the TOC
 // The selectors have a higher specifity than in core
-body :not( :checked ) > .toctogglespan:before,
-body :not( :checked ) > .toctogglespan:after {
+body :not( :checked)>.toctogglespan:before,
+body :not( :checked)>.toctogglespan:after {
 	content: '';
 }
 
@@ -691,7 +694,8 @@ body :not( :checked ) > .toctogglespan:after {
 	margin: 0; // wat
 }
 
-.mw-body .mw-rcfilters-ui-changesListWrapperWidget .mw-changeslist-legend, // wat
+.mw-body .mw-rcfilters-ui-changesListWrapperWidget .mw-changeslist-legend,
+// wat
 .mw-changeslist-legend,
 .mw-body .mw-search-profile-tabs,
 .mw-body fieldset#mw-searchoptions,
@@ -709,21 +713,21 @@ body :not( :checked ) > .toctogglespan:after {
 .wikitable {
 	border-color: @base70;
 
-	> tr > th,
-	> tr > td,
-	> * > tr > th,
-	> * > tr > td {
+	>tr>th,
+	>tr>td,
+	>*>tr>th,
+	>*>tr>td {
 		border: 1px solid @base70;
 		padding: 0.4em 0.5em;
 	}
 
-	> tr > th,
-	> * > tr > th {
+	>tr>th,
+	>*>tr>th {
 		border-bottom-width: 2px;
 	}
 
-	> tr > td,
-	> * > tr > td {
+	>tr>td,
+	>*>tr>td {
 		background: @base90;
 	}
 }
@@ -787,4 +791,152 @@ body :not( :checked ) > .toctogglespan:after {
 #p-more h3,
 #p-search h3 {
 	.hidden;
+}
+
+.spacer {
+	flex: 1 1 1px;
+}
+
+.mw-header-upper {
+	height: 50px;
+	background: #262626;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 0 22px;
+}
+
+.mw-header-personal-tools {
+	display: flex;
+	height: 100%;
+
+	a {
+		color: #fff;
+		padding: 0 11px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+
+		&:hover {
+			background: #fff;
+			color: #000;
+			height: 100%;
+		}
+	}
+}
+
+.mw-header-lower {
+	height: 86px;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 0 22px;
+
+	#simpleSearch {
+		border: none;
+	}
+
+	#searchInput {
+		padding: 0 12px;
+		height: 46px;
+		background: #F2F2F2;
+		border-radius: 5px;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	#searchButton {
+		top: 6px;
+		right: 5px;
+	}
+
+	.search-alphabet {
+		font-size: 16px;
+		font-weight: bold;
+		color: #767676;
+	}
+
+	.alphabet-item {
+		margin-right: 10px;
+		font-size: 16px;
+		font-weight: bold;
+		color: #767676;
+		cursor: pointer;
+
+		a {
+			color: #767676;
+		}
+	}
+}
+
+#mw-content-container {
+	border-bottom: none;
+	background: #F8F8F8;
+}
+
+#mw-footer {
+	background: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 0 22px;
+	height: 50px;
+	background: #F8F8F8;
+
+	div {
+		margin-right: 15px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&:hover {
+			a {
+				color: blue;
+			}
+		}
+	}
+
+	div:first-child {
+		flex: 1 1 100px;
+		margin-left: 0;
+	}
+
+	a {
+		color: #262626;
+	}
+}
+
+.page-title {
+	color: #FF5A28;
+}
+
+.text-red {
+	color: #FF5A28;
+}
+
+@media only screen and (max-width: 1099px) {
+	.mw-header-lower {
+		height: 114px;
+		padding: 0;
+		justify-content: center;
+	}
+
+	.logo-text {
+		display: none;
+	}
+
+	.mw-header-lower #p-search {
+		flex: 0 0 100%;
+		margin: 10px 0;
+	}
+
+	#mw-footer div:first-child {
+		flex: 0 0 100%;
+		padding: 19px 0;
+	}
 }
