@@ -6,7 +6,7 @@
  */
 class TemplateStylesContentTest extends TextContentTest {
 
-	protected function setUp() : void {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->setMwGlobals( [
@@ -96,9 +96,11 @@ class TemplateStylesContentTest extends TextContentTest {
 		];
 	}
 
+	/**
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionMessage Invalid value for $extraWrapper: .foo>.bar
+	 */
 	public function testInvalidWrapper() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessage( 'Invalid value for $extraWrapper: .foo>.bar' );
 		$this->newContent( '.foo { margin-left: 10px }' )->sanitize( [
 			'extraWrapper' => '.foo>.bar',
 		] );

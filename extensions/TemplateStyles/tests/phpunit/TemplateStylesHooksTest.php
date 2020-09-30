@@ -1,9 +1,5 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
-use MediaWiki\Revision\MutableRevisionRecord;
-use MediaWiki\Revision\SlotRecord;
-
 /**
  * @group TemplateStyles
  * @group Database
@@ -33,9 +29,11 @@ class TemplateStylesHooksTest extends MediaWikiLangTestCase {
 		);
 	}
 
+	/**
+	 * @expectedException InvalidArgumentException
+	 * @expectedExceptionMessage Invalid value for $extraWrapper: .foo>.bar
+	 */
 	public function testGetSanitizerInvalidWrapper() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessage( 'Invalid value for $extraWrapper: .foo>.bar' );
 		TemplateStylesHooks::getSanitizer( 'foo', '.foo>.bar' );
 	}
 
@@ -72,6 +70,44 @@ class TemplateStylesHooksTest extends MediaWikiLangTestCase {
 				[ CONTENT_MODEL_WIKITEXT, CONTENT_MODEL_CSS ],
 				false,
 				[ CONTENT_MODEL_WIKITEXT, CONTENT_MODEL_CSS ],
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider provideOnParserAfterTidy
+	 */
+	public function testOnParserAfterTidy( $text, $expect ) {
+		$p = new Parser();
+		TemplateStylesHooks::onParserAfterTidy( $p, $text );
+		$this->assertSame( $expect, $text );
+	}
+
+	public static function provideOnParserAfterTidy() {
+		return [
+			[
+				"<style>\n.foo { color: red; }\n</style>",
+				"<style>\n.foo { color: red; }\n</style>",
+			],
+			[
+				"<style>\n<![CDATA[\n.foo { color: red; }\n]]>\n</style>",
+				"<style>\n/*<![CDATA[*/\n.foo { color: red; }\n/*]]>*/\n</style>",
+			],
+			[
+				"<StYlE type='text/css'>\n<![CDATA[\n.foo { color: red; }\n]]>\n</sTyLe>",
+				"<StYlE type='text/css'>\n/*<![CDATA[*/\n.foo { color: red; }\n/*]]>*/\n</sTyLe>",
+			],
+			[
+				"<style>\n/*<![CDATA[*/\n.foo { color: red; }\n/*]]>*/\n</style>",
+				"<style>\n/*<![CDATA[*/\n.foo { color: red; }\n/*]]>*/\n</style>",
+			],
+			[
+				"<style>x\n<![CDATA[\n.foo { color: red; }\n]]>\n</style>",
+				"<style>x\n<![CDATA[\n.foo { color: red; }\n/*]]>*/\n</style>",
+			],
+			[
+				"<script>\n<![CDATA[\n.foo { color: red; }\n]]>\n</script>",
+				"<script>\n<![CDATA[\n.foo { color: red; }\n]]>\n</script>",
 			],
 		];
 	}
@@ -158,31 +194,34 @@ class TemplateStylesHooksTest extends MediaWikiLangTestCase {
 	public function testTag(
 		ParserOptions $popt, $getTextOptions, $wikitext, $expect, $globals = []
 	) {
+		global $wgParserConf;
+
 		$this->setMwGlobals( $globals + [
 			'wgScriptPath' => '',
 			'wgScript' => '/index.php',
 			'wgArticlePath' => '/wiki/$1',
 		] );
 
-		$oldCurrentRevisionRecordCallback = $popt->setCurrentRevisionRecordCallback(
-			function ( Title $title, $parser = null ) use ( &$oldCurrentRevisionRecordCallback ) {
+		$oldCurrentRevisionCallback = $popt->setCurrentRevisionCallback(
+			function ( Title $title, $parser = false ) use ( &$oldCurrentRevisionCallback ) {
 				if ( $title->getPrefixedText() === 'Template:Test replacement' ) {
 					$user = RequestContext::getMain()->getUser();
-					$revRecord = new MutableRevisionRecord( $title );
-					$revRecord->setUser( $user );
-					$revRecord->setContent(
-						SlotRecord::MAIN,
-						new TemplateStylesContent( '.baz { color:orange; bogus:bogus; }' )
-					);
-					$revRecord->setParentId( $title->getLatestRevID() );
-					return $revRecord;
+					return new Revision( [
+						'page' => $title->getArticleID(),
+						'user_text' => $user->getName(),
+						'user' => $user->getId(),
+						'parent_id' => $title->getLatestRevID(),
+						'title' => $title,
+						'content' => new TemplateStylesContent( '.baz { color:orange; bogus:bogus; }' )
+					] );
 				}
-				return call_user_func( $oldCurrentRevisionRecordCallback, $title, $parser );
+				return call_user_func( $oldCurrentRevisionCallback, $title, $parser );
 			}
 		);
 
-		$services = MediaWikiServices::getInstance();
-		$parser = $services->getParserFactory()->create();
+		$class = $wgParserConf['class'];
+		$parser = new $class( $wgParserConf );
+		/** @var Parser $parser */
 		$parser->firstCallInit();
 		if ( !isset( $parser->mTagHooks['templatestyles'] ) ) {
 			throw new Exception( 'templatestyles tag hook is not in the parser' );

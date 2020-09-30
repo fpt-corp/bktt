@@ -1,10 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
+			"Vlad5250",
 			"Spiritia",
-			"StanProg",
 			"Ted Masters",
-			"Vlad5250"
+			"StanProg"
 		]
 	},
 	"templatestyles-missing-src": "Атрибутът <code>src</code> на TemplateStyles не трябва да е празен.",
