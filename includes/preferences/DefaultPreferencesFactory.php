@@ -406,29 +406,30 @@ class DefaultPreferencesFactory implements PreferencesFactory {
 				$authButton,			
 			]
 		]);
-		$defaultPreferences['realname'] = [
-			// (not really "private", but still shouldn't be edited without permission)
-			'type' => 'info',
-			'raw' => true,
-			'default' => (string)$control,
-			'section' => 'personal/info',
-			'label-message' => 'yourrealname',
-			// 'help-message' => (string)new \OOUI\ButtonWidget([
-			// 	'href' => SpecialPage::getTitleFor( 'OTP' )->getLinkURL([
-			// 		'returnto' => SpecialPage::getTitleFor( 'Preferences' )->getPrefixedText()
-			// 	]),
-			// 	'label' => $context->msg( 'prefs-resetpass' )->text(),
-			// ]),
-		];
-
 		// $defaultPreferences['realname'] = [
 		// 	// (not really "private", but still shouldn't be edited without permission)
-		// 	'type' => $canEditPrivateInfo && $this->authManager->allowsPropertyChange( 'realname' )
-		// 	? 'text' : 'info',
-		// 	'default' => $user->getRealName(),
+		// 	'type' => 'info',
+		// 	'raw' => true,
+		// 	'default' => (string)$control,
 		// 	'section' => 'personal/info',
 		// 	'label-message' => 'yourrealname',
+		// 	// 'help-message' => (string)new \OOUI\ButtonWidget([
+		// 	// 	'href' => SpecialPage::getTitleFor( 'OTP' )->getLinkURL([
+		// 	// 		'returnto' => SpecialPage::getTitleFor( 'Preferences' )->getPrefixedText()
+		// 	// 	]),
+		// 	// 	'label' => $context->msg( 'prefs-resetpass' )->text(),
+		// 	// ]),
 		// ];
+
+		$defaultPreferences['realname'] = [
+			// (not really "private", but still shouldn't be edited without permission)
+			// 'type' => $canEditPrivateInfo && $this->authManager->allowsPropertyChange( 'realname' )
+			// ? 'text' : 'info',
+			'type' => 'info',
+			'default' => $user->getRealName(),
+			'section' => 'personal/info',
+			'label-message' => 'yourrealname',
+		];
 
 		if ( $canEditPrivateInfo && $this->authManager->allowsAuthenticationDataChange(
 			new PasswordAuthenticationRequest(), false )->isGood()
