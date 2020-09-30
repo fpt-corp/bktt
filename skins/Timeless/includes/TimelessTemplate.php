@@ -131,12 +131,12 @@ class TimelessTemplate extends BaseTemplate {
 		$alphabetSearch = '';
 		foreach ( $alphabet as $key => $item ) {
 			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
-				Html::rawElement('a', ['href' => 'https://bktt.vn/wiki/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
+				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
 			);
 		}
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
-			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'LOGO ADD HERE') .
+			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
 			$this->getSearch() .
 			$alphabetSearch
 		);
