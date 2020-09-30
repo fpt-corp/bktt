@@ -131,7 +131,7 @@ class TimelessTemplate extends BaseTemplate {
 		$alphabetSearch = '';
 		foreach ( $alphabet as $key => $item ) {
 			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
-				Html::rawElement('a', ['href' => 'https://bktt.vn/wiki/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
+				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
 			);
 		}
 
