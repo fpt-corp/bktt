@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Giromin Cangiaxo"
+		]
+	},
+	"timedmedia-source-file": "Sorgente $1",
+	"timedmedia-source-audio-file-desc": "File originale $1 ($2)"
+}
