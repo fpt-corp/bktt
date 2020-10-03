@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cekli829",
+			"Dağlı95",
+			"Wertuose"
+		]
+	},
+	"timedmedia-status": "Status",
+	"timedmedia-seconds": "{{PLURAL:$1|1 saniyə|$1 saniyə}}",
+	"timedmedia-source-file": "$1 mənbəyi",
+	"timedmedia-source-audio-file-desc": "Orijinal $1-fayl ($2)"
+}

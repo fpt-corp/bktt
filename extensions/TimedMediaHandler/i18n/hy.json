@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Xelgen",
+			"Vahe Gharakhanyan"
+		]
+	},
+	"timedmedia-source-file": "$1 աղբյուր",
+	"timedmedia-source-audio-file-desc": "Սկզբնական $1 նիշք ($2)"
+}

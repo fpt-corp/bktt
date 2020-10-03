@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Albinus",
+			"Ramjit Tudu",
+			"Manik Soren"
+		]
+	},
+	"timedmedia-download": "ᱨᱮᱫ ᱟᱹᱛᱩᱨᱟᱬᱜᱚ",
+	"timedmedia-desc-link": "ᱱᱚᱶᱟ ᱨᱮᱫ ᱵᱟᱵᱚᱫᱽ ᱛᱮ",
+	"timedmedia-source-file": "$1 ᱯᱷᱮᱰᱟᱛ",
+	"timedmedia-source-audio-file-desc": "ᱨᱮᱦᱮᱫ $1 ᱨᱮᱫ($2)",
+	"timedmedia-file": "ᱨᱮᱫ"
+}

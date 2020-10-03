@@ -1087,7 +1087,7 @@
 	"prefs-memberingroups": "{{GENDER:$2}}Thành viên của {{PLURAL:$1|nhóm|các nhóm}}:",
 	"group-membership-link-with-expiry": "$1 (cho đến $2)",
 	"prefs-registration": "Lúc mở tài khoản:",
-	"yourrealname": "Số điện thoại:",
+	"yourrealname": "Tên thật:",
 	"yourlanguage": "Ngôn ngữ:",
 	"yourvariant": "Dạng chữ của nội dung:",
 	"prefs-help-variant": "Bộ chữ để hiển thị nội dung của các trang tại wiki này.",
