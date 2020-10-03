@@ -61,7 +61,6 @@ class TimelessTemplate extends BaseTemplate {
 					$this->getAfterContent()
 				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
-					$this->getLogo( 'p-logo', 'image' ) .
 					$this->getMainNavigation() .
 					$this->getSidebarChunk(
 						'site-tools',
@@ -147,13 +146,13 @@ class TimelessTemplate extends BaseTemplate {
 	}
 
 	public function getHeaderLower() {
-		//$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
-		//$alphabetSearch = '';
-		//foreach ( $alphabet as $key => $item ) {
-		//	$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
-		//		Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
-		//	);
-		//}
+		$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
+		$alphabetSearch = '';
+		foreach ( $alphabet as $key => $item ) {
+			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
+				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
+			);
+		}
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
 			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
