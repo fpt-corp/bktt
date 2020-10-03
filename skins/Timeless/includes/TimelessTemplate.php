@@ -117,10 +117,30 @@ class TimelessTemplate extends BaseTemplate {
 			$contentText .= Html::rawElement('a', ['href' => $item['links'][0]['href']], $item['links'][0]['text']);
 		}
 
-		// $contentText .= print_r($personalTools, 1);
+		$pageTools = '';
+		$list = ['namespaces', 'page-primary', 'variants'];
+		foreach ( $list as $key => $groupName ) {
+			if ($this->pileOfTools[$groupName]) {
+				foreach ( $this->pileOfTools[$groupName] as $key => $item ) {
+					$pageTools .= Html::rawElement('div', 
+					[
+						// 'id' => $item['id'], 
+						'class' => 'header-upper-item'
+					], 
+					Html::rawElement('a', ['href' => $item['href']], $item['text']));
+				}
+			}
+			
+		}
+
+		// foreach ( $this->pileOfTools['more'] as $key => $item ) {
+		// 	$pageTools .= Html::rawElement('div', ['id' => $item['id'], 'class' => 'header-upper-item'], 
+		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
+		// }
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper'], 
 			Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' )) .
+			$pageTools .
 			Html::rawElement('div', ['class' => 'spacer']) .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
 		);
@@ -154,38 +174,9 @@ class TimelessTemplate extends BaseTemplate {
 			[ 'id' => 'content', 'class' => 'mw-body',  'role' => 'main' ],
 			$this->getSiteNotices() .
 			$this->getIndicators() .
-			Html::rawElement(
-				'h1',
-				[
-					'id' => 'firstHeading',
-					'class' => 'firstHeading',
-					'lang' => $this->get( 'pageLanguage' )
-				],
-				$this->get( 'title' )
-			) .
 			Html::rawElement( 'div', [ 'id' => 'bodyContentOuter' ],
 				Html::rawElement( 'div', [ 'id' => 'siteSub' ], $this->getMsg( 'tagline' )->parse() ) .
-				Html::rawElement( 'div', [ 'id' => 'mw-page-header-links' ],
-					$this->getPortlet(
-						'namespaces',
-						$this->pileOfTools['namespaces'],
-						'timeless-namespaces',
-						[ 'extra-classes' => 'tools-inline' ]
-					) .
-					$this->getPortlet(
-						'more',
-						$this->pileOfTools['more'],
-						'timeless-more',
-						[ 'extra-classes' => 'tools-inline' ]
-					) .
-					$this->getVariants() .
-					$this->getPortlet(
-						'views',
-						$this->pileOfTools['page-primary'],
-						'timeless-pagetools',
-						[ 'extra-classes' => 'tools-inline' ]
-					)
-				) .
+				
 				$this->getClear() .
 				Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
 					$this->getContentSub() .
