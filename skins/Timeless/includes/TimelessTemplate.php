@@ -121,12 +121,14 @@ class TimelessTemplate extends BaseTemplate {
 		foreach ( $list as $key => $groupName ) {
 			if ($this->pileOfTools[$groupName]) {
 				foreach ( $this->pileOfTools[$groupName] as $key => $item ) {
-					$pageTools .= Html::rawElement('div', 
-					[
-						// 'id' => $item['id'], 
-						'class' => 'header-upper-item'
-					], 
-					Html::rawElement('a', ['href' => $item['href']], $item['text']));
+					if ($item['href'] != $_SERVER['REQUEST_URI']) {
+						$pageTools .= Html::rawElement('div', 
+						[
+							// 'id' => $item['id'], 
+							'class' => 'header-upper-item'
+						], 
+						Html::rawElement('a', ['href' => $item['href']], $item['text']));
+					}
 				}
 			}
 			
@@ -175,7 +177,6 @@ class TimelessTemplate extends BaseTemplate {
 			$this->getIndicators() .
 			Html::rawElement( 'div', [ 'id' => 'bodyContentOuter' ],
 				Html::rawElement( 'div', [ 'id' => 'siteSub' ], $this->getMsg( 'tagline' )->parse() ) .
-				
 				$this->getClear() .
 				Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
 					$this->getContentSub() .
@@ -184,8 +185,11 @@ class TimelessTemplate extends BaseTemplate {
 				)
 			)
 		);
-
-		return Html::rawElement( 'div', [ 'id' => 'mw-content' ], $html );
+		$isMainPage = $_SERVER['REQUEST_URI'] == '/mediawiki/index.php/Main_Page';
+		$isMainPage = $isMainPage || $_SERVER['REQUEST_URI'] == '/index.php/Trang_Chính';
+		$isMainPage = $isMainPage || $_SERVER['REQUEST_URI'] == '/index.php/Main_Page';
+		$contentClass = $isMainPage ? 'main-page' : '';
+		return Html::rawElement( 'div', [ 'id' => 'mw-content', 'class' => $contentClass ], $html );
 	}
 
 	/**
