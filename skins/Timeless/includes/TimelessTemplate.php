@@ -49,7 +49,6 @@ class TimelessTemplate extends BaseTemplate {
 			$this->getHeaderUpper() .
 			$this->getHeaderLower()
 		);
-		$html .= $this->getHeaderHack();
 
 		// For mobile
 		$html .= Html::element( 'div', [ 'id' => 'menus-cover' ] );
