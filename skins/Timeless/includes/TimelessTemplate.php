@@ -49,7 +49,6 @@ class TimelessTemplate extends BaseTemplate {
 			$this->getHeaderUpper() .
 			$this->getHeaderLower()
 		);
-		$html .= $this->getHeaderHack();
 
 		// For mobile
 		$html .= Html::element( 'div', [ 'id' => 'menus-cover' ] );
@@ -61,7 +60,6 @@ class TimelessTemplate extends BaseTemplate {
 					$this->getAfterContent()
 				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
-					$this->getLogo( 'p-logo', 'image' ) .
 					$this->getMainNavigation() .
 					$this->getSidebarChunk(
 						'site-tools',
@@ -117,23 +115,45 @@ class TimelessTemplate extends BaseTemplate {
 			$contentText .= Html::rawElement('a', ['href' => $item['links'][0]['href']], $item['links'][0]['text']);
 		}
 
-		// $contentText .= print_r($personalTools, 1);
+		$pageTools = '';
+		$list = ['namespaces', 'page-primary', 'variants'];
+		foreach ( $list as $key => $groupName ) {
+			if ($this->pileOfTools[$groupName]) {
+				foreach ( $this->pileOfTools[$groupName] as $key => $item ) {
+					if ($item['href'] != $_SERVER['REQUEST_URI']) {
+						$pageTools .= Html::rawElement('div', 
+						[
+							// 'id' => $item['id'], 
+							'class' => 'header-upper-item'
+						], 
+						Html::rawElement('a', ['href' => $item['href']], $item['text']));
+					}
+				}
+			}
+			
+		}
+
+		// foreach ( $this->pileOfTools['more'] as $key => $item ) {
+		// 	$pageTools .= Html::rawElement('div', ['id' => $item['id'], 'class' => 'header-upper-item'], 
+		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
+		// }
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper'], 
 			Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' )) .
+			$pageTools .
 			Html::rawElement('div', ['class' => 'spacer']) .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
 		);
 	}
 
 	public function getHeaderLower() {
-		//$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
-		//$alphabetSearch = '';
-		//foreach ( $alphabet as $key => $item ) {
-		//	$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
-		//		Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
-		//	);
-		//}
+		$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
+		$alphabetSearch = '';
+		foreach ( $alphabet as $key => $item ) {
+			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
+				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
+			);
+		}
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
 			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
@@ -154,38 +174,8 @@ class TimelessTemplate extends BaseTemplate {
 			[ 'id' => 'content', 'class' => 'mw-body',  'role' => 'main' ],
 			$this->getSiteNotices() .
 			$this->getIndicators() .
-			Html::rawElement(
-				'h1',
-				[
-					'id' => 'firstHeading',
-					'class' => 'firstHeading',
-					'lang' => $this->get( 'pageLanguage' )
-				],
-				$this->get( 'title' )
-			) .
 			Html::rawElement( 'div', [ 'id' => 'bodyContentOuter' ],
 				Html::rawElement( 'div', [ 'id' => 'siteSub' ], $this->getMsg( 'tagline' )->parse() ) .
-				Html::rawElement( 'div', [ 'id' => 'mw-page-header-links' ],
-					$this->getPortlet(
-						'namespaces',
-						$this->pileOfTools['namespaces'],
-						'timeless-namespaces',
-						[ 'extra-classes' => 'tools-inline' ]
-					) .
-					$this->getPortlet(
-						'more',
-						$this->pileOfTools['more'],
-						'timeless-more',
-						[ 'extra-classes' => 'tools-inline' ]
-					) .
-					$this->getVariants() .
-					$this->getPortlet(
-						'views',
-						$this->pileOfTools['page-primary'],
-						'timeless-pagetools',
-						[ 'extra-classes' => 'tools-inline' ]
-					)
-				) .
 				$this->getClear() .
 				Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
 					$this->getContentSub() .
@@ -194,8 +184,11 @@ class TimelessTemplate extends BaseTemplate {
 				)
 			)
 		);
-
-		return Html::rawElement( 'div', [ 'id' => 'mw-content' ], $html );
+		$isMainPage = $_SERVER['REQUEST_URI'] == '/mediawiki/index.php/Main_Page';
+		$isMainPage = $isMainPage || $_SERVER['REQUEST_URI'] == '/index.php/Trang_Chính';
+		$isMainPage = $isMainPage || $_SERVER['REQUEST_URI'] == '/index.php/Main_Page';
+		$contentClass = $isMainPage ? 'main-page' : '';
+		return Html::rawElement( 'div', [ 'id' => 'mw-content', 'class' => $contentClass ], $html );
 	}
 
 	/**
@@ -454,7 +447,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => 'searchform' ],
 			Html::rawElement( 'div', [ 'id' => 'simpleSearch' ],
-				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Enter the keyword...'] ) .
+				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Tìm kiếm ...'] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
 				$this->makeSearchButton(
 					'fulltext',

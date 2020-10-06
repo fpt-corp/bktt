@@ -20,6 +20,13 @@ body {
 	.box;
 	background: @background;
 	padding: 1em @content-padding 3em;
+
+	&.main-page {
+		padding: 0;
+		border: none;
+		box-shadow: none;
+		background: none;
+	}
 }
 
 #bodyContentOuter {
@@ -805,6 +812,26 @@ body :not( :checked)>.toctogglespan:after {
 	align-items: center;
 	flex-wrap: wrap;
 	padding: 0 22px;
+
+	.header-upper-item {
+		height: 100%;
+
+		a {
+			color: #fff;
+			padding: 0 11px !important;
+			cursor: pointer;
+			display: flex !important;
+			align-items: center;
+			height: 100%;
+			background-position: left center !important;
+
+			&:hover {
+				background: #fff;
+				color: #000;
+				height: 100%;
+			}
+		}
+	}
 }
 
 .mw-header-personal-tools {
@@ -920,7 +947,7 @@ body :not( :checked)>.toctogglespan:after {
 }
 
 #mw-content-wrapper {
-	padding-top: 20px;
+	padding-top: 14px;
 }
 
 @media only screen and (max-width: 1099px) {
