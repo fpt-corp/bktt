@@ -1,0 +1,17 @@
+@import 'mediawiki.mixins';
+
+.wikiEditor-ui .CodeMirror {
+	line-height: 1.5em;
+	padding: 0.1em;
+	clear: both;
+
+	pre,
+	.CodeMirror-lines {
+		padding: 0;
+	}
+}
+
+.wikiEditor-ui-toolbar {
+	// Increase z-index to be above codemirror scrollbar
+	z-index: 7;
+}

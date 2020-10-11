@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Okras",
+			"Kaganer",
+			"Facenapalm"
+		]
+	},
+	"codemirror-desc": "Обеспечивает подсветку синтаксиса в редакторе вики-текста.",
+	"codemirror-toggle-label": "Подсветка синтаксиса"
+}

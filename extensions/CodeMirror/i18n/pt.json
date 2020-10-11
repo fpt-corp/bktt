@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Vitorvicentevalente",
+			"Nemo bis",
+			"Hamilton Abreu",
+			"Fúlvio",
+			"Athena in Wonderland"
+		]
+	},
+	"codemirror-desc": "Fornece realce sintático no editor de texto wiki",
+	"codemirror-toggle-label": "Realce sintático"
+}
