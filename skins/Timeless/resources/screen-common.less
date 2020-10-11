@@ -840,15 +840,49 @@ body :not( :checked)>.toctogglespan:after {
 
 	a {
 		color: #fff;
-		padding: 0 11px;
+		padding: 0 11px 0 35px;
 		cursor: pointer;
 		display: flex;
 		align-items: center;
+		background-position: center left 10px;
+		background-repeat: no-repeat;
 
 		&:hover {
-			background: #fff;
+			background-color: #fff;
 			color: #000;
 			height: 100%;
+		}
+
+		&#pt-anoncontribs {
+			background-image: url(/mediawiki/resources/icon/personal-tools/anoncontribs.svg);
+		}
+
+		&#pt-createaccount {
+			background-image: url(/mediawiki/resources/icon/personal-tools/createaccount.svg);
+		}
+
+		&#pt-login {
+			background-image: url(/mediawiki/resources/icon/personal-tools/login.svg);
+		}
+
+		&#pt-userpage {
+			background-image: url(/mediawiki/resources/icon/personal-tools/login.svg);
+		}
+
+		&#pt-preferences {
+			background-image: url(/mediawiki/resources/icon/personal-tools/preferences.svg);
+		}
+
+		&#pt-watchlist {
+			background-image: url(/mediawiki/resources/icon/personal-tools/watchlist.svg);
+		}
+		
+		&#pt-logout {
+			background-image: url(/mediawiki/resources/icon/personal-tools/logout.svg);
+		}
+
+		&#pt-mycontris {
+			background-image: url(/mediawiki/resources/icon/personal-tools/anoncontribs.svg);
 		}
 	}
 }

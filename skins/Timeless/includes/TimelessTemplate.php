@@ -112,7 +112,11 @@ class TimelessTemplate extends BaseTemplate {
 		
 		$contentText = '';
 		foreach ( $personalTools as $key => $item ) {
-			$contentText .= Html::rawElement('a', ['href' => $item['links'][0]['href']], $item['links'][0]['text']);
+			$contentText .= Html::rawElement(
+				'a', 
+				['href' => $item['links'][0]['href'], 'id' => $item['links'][0]['single-id']],
+				 $item['links'][0]['text']
+			);
 		}
 
 		$pageTools = '';
@@ -184,11 +188,7 @@ class TimelessTemplate extends BaseTemplate {
 				)
 			)
 		);
-		$isMainPage = $_SERVER['REQUEST_URI'] == '/mediawiki/index.php/Main_Page';
-		$isMainPage = $isMainPage || $_SERVER['REQUEST_URI'] == '/index.php/Trang_Chính';
-		$isMainPage = $isMainPage || $_SERVER['REQUEST_URI'] == '/index.php/Main_Page';
-		$contentClass = $isMainPage ? 'main-page' : '';
-		return Html::rawElement( 'div', [ 'id' => 'mw-content', 'class' => $contentClass ], $html );
+		return Html::rawElement( 'div', [ 'id' => 'mw-content' ], $html );
 	}
 
 	/**
