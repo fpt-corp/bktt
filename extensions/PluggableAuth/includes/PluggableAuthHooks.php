@@ -55,7 +55,7 @@ class PluggableAuthHooks {
 	/**
 	 * Implements AuthChangeFormFields hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/AuthChangeFormFields
-	 * Moves login button to bottom of form.
+	 * Moves login button to top of form.
 	 *
 	 * @since 2.0
 	 * @param array $requests AuthenticationRequests the fields are created from
@@ -68,7 +68,7 @@ class PluggableAuthHooks {
 		array $requests, array $fieldInfo, array &$formDescriptor, $action
 	) {
 		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
-			$formDescriptor['pluggableauthlogin']['weight'] = 101;
+			$formDescriptor['pluggableauthlogin']['weight'] = 0;
 		}
 	}
 
