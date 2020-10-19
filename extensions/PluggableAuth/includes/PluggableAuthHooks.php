@@ -68,7 +68,7 @@ class PluggableAuthHooks {
 		array $requests, array $fieldInfo, array &$formDescriptor, $action
 	) {
 		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
-			$formDescriptor['pluggableauthlogin']['weight'] = 0;
+			$formDescriptor['pluggableauthlogin']['weight'] = -1000;
 		}
 	}
 
