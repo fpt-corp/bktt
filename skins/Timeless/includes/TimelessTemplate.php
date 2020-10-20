@@ -142,8 +142,7 @@ class TimelessTemplate extends BaseTemplate {
 		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
 		// }
 		
-		return Html::rawElement('div', ['class' => 'mw-header-upper'], 
-			Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' )) .
+		return Html::rawElement('div', ['class' => 'mw-header-upper'],
 			$pageTools .
 			Html::rawElement('div', ['class' => 'spacer']) .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
@@ -173,6 +172,10 @@ class TimelessTemplate extends BaseTemplate {
 	 * @return string html
 	 */
 	protected function getContentBlock() {
+		$title = Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' ));
+		if ($this->getSkin()->getTitle()->isMainPage()) {
+			$title = Html::rawElement('div');
+		}
 		$html = Html::rawElement(
 			'div',
 			[ 'id' => 'content', 'class' => 'mw-body',  'role' => 'main' ],
@@ -182,6 +185,7 @@ class TimelessTemplate extends BaseTemplate {
 				Html::rawElement( 'div', [ 'id' => 'siteSub' ], $this->getMsg( 'tagline' )->parse() ) .
 				$this->getClear() .
 				Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
+					$title .
 					$this->getContentSub() .
 					$this->get( 'bodytext' ) .
 					$this->getClear()
