@@ -124,7 +124,7 @@ class TimelessTemplate extends BaseTemplate {
 		foreach ( $list as $key => $groupName ) {
 			if ($this->pileOfTools[$groupName]) {
 				foreach ( $this->pileOfTools[$groupName] as $key => $item ) {
-					if ($item['href'] != $_SERVER['REQUEST_URI']) {
+					if ($item['href'] != $_SERVER['REQUEST_URI'] && $item['id'] != 'ca-nstab-main') {
 						$pageTools .= Html::rawElement('div', 
 						[
 							// 'id' => $item['id'], 
