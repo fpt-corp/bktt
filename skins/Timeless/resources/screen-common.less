@@ -325,9 +325,12 @@ a {
 	text-decoration: none;
 	color: #ff5328;
 
-	&:hover,
+	&:hover {
+		color: #FF7A48;
+	}
+
 	&:visited {
-		color: @link-visited;
+		color: #EE5A28;
 	}
 }
 
@@ -335,9 +338,12 @@ a.new,
 .new a {
 	color: #7846b4;
 
-	&:hover,
+	&:hover {
+		color: #8946b4;
+	}
+	
 	&:visited {
-		color: @link-red-visited;
+		color: #6746b4;
 	}
 }
 
@@ -978,6 +984,7 @@ body :not( :checked)>.toctogglespan:after {
 	border-bottom: 1px solid #D0D0D0;
 	padding-bottom: 10px;
 	font-weight: bold;
+	font-size: 24px;
 }
 
 .text-red {
