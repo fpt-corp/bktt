@@ -817,14 +817,14 @@ body :not( :checked)>.toctogglespan:after {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
-	padding: 0 22px;
+	padding: 0px;
 
 	.header-upper-item {
 		height: 100%;
 
 		a {
 			color: #fff;
-			padding: 0 11px !important;
+			padding: 0 8px;
 			cursor: pointer;
 			display: flex !important;
 			align-items: center;
@@ -835,6 +835,10 @@ body :not( :checked)>.toctogglespan:after {
 				background: #fff;
 				color: #000;
 				height: 100%;
+			}
+			
+			&:empty {
+				padding: 0!important;
 			}
 		}
 	}
