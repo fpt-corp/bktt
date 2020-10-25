@@ -421,15 +421,15 @@ class DefaultPreferencesFactory implements PreferencesFactory {
 		// 	// ]),
 		// ];
 
-		$defaultPreferences['realname'] = [
-			// (not really "private", but still shouldn't be edited without permission)
-			// 'type' => $canEditPrivateInfo && $this->authManager->allowsPropertyChange( 'realname' )
-			// ? 'text' : 'info',
-			'type' => 'info',
-			'default' => $user->getRealName(),
-			'section' => 'personal/info',
-			'label-message' => 'yourrealname',
-		];
+		// $defaultPreferences['realname'] = [
+		// 	// (not really "private", but still shouldn't be edited without permission)
+		// 	// 'type' => $canEditPrivateInfo && $this->authManager->allowsPropertyChange( 'realname' )
+		// 	// ? 'text' : 'info',
+		// 	'type' => 'info',
+		// 	'default' => $user->getRealName(),
+		// 	'section' => 'personal/info',
+		// 	'label-message' => 'yourrealname',
+		// ];
 
 		if ( $canEditPrivateInfo && $this->authManager->allowsAuthenticationDataChange(
 			new PasswordAuthenticationRequest(), false )->isGood()
