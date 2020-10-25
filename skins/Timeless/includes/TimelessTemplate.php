@@ -47,6 +47,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container' ],
 			$this->getHeaderUpper() .
+			$this->getHeaderUpperMobile() .
 			$this->getHeaderLower()
 		);
 
@@ -146,6 +147,45 @@ class TimelessTemplate extends BaseTemplate {
 			$pageTools .
 			Html::rawElement('div', ['class' => 'spacer']) .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
+		);
+	}
+
+	public function getHeaderUpperMobile() {
+		$user = $this->getSkin()->getUser();
+		$personalTools = $this->getPersonalTools();
+		// Preserve standard username label to allow customisation (T215822)
+		$userName = $personalTools['userpage']['links'][0]['text'] ?? $user->getName();
+		
+		$contentText = '';
+		foreach ( $personalTools as $key => $item ) {
+			$contentText .= Html::rawElement(
+				'a', 
+				['href' => $item['links'][0]['href'], 'id' => $item['links'][0]['single-id']],
+				 $item['links'][0]['text']
+			);
+		}
+
+		$pageTools = '';
+		$list = ['namespaces', 'page-primary', 'variants'];
+		foreach ( $list as $key => $groupName ) {
+			if ($this->pileOfTools[$groupName]) {
+				foreach ( $this->pileOfTools[$groupName] as $key => $item ) {
+					if ($item['href'] != $_SERVER['REQUEST_URI'] && $item['id'] != 'ca-nstab-main') {
+						$pageTools .= Html::rawElement('a', ['href' => $item['href']], $item['text']);
+					}
+				}
+			}
+			
+		}
+		$menuContent = Html::rawElement('div', ['class' => 'hamburger-menu-content'], 
+			Html::rawElement('div', ['class' => 'menu-block'], $pageTools) .
+			Html::rawElement('div', ['class' => 'menu-block'], $contentText)
+		);
+		
+		return Html::rawElement('div', ['class' => 'mw-header-upper-mobile'],
+			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
+			Html::rawElement('div', ['class' => 'hamburger-menu-icon', 'id' => 'hamburger-menu-icon'], 'm') .
+			Html::rawElement('div', ['class' => 'hamburger-menu', 'id' => 'hamburger-menu'], $menuContent)
 		);
 	}
 

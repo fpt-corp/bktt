@@ -341,7 +341,7 @@ a.new,
 	&:hover {
 		color: #8946b4;
 	}
-	
+
 	&:visited {
 		color: #6746b4;
 	}
@@ -810,6 +810,9 @@ body :not( :checked)>.toctogglespan:after {
 	flex: 1 1 1px;
 }
 
+// @resourcesRoot: '';
+@resourcesRoot: '/mediawiki';
+
 .mw-header-upper {
 	height: 50px;
 	background: #262626;
@@ -839,8 +842,54 @@ body :not( :checked)>.toctogglespan:after {
 		}
 	}
 }
-@resourcesRoot: '';
-// @resourcesRoot: '/mediawiki';
+
+.mw-header-upper-mobile {
+	height: 50px;
+	background-color: #fff;
+	// background-image: url('@{resourcesRoot}/skins/Timeless/resources/images/wiki.jpg');
+	display: none;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding: 0 10px;
+	box-shadow: 0px 5px 10px #0000001A;
+	position: relative;
+
+	.hamburger-menu-icon {
+		width: 34px;
+		height: 34px;
+		border: 1px solid #FF5A28;
+		border-radius: 3px;
+	}
+
+	.hamburger-menu {
+		position: fixed;
+		top: 0;
+		right: 0;
+		height: 100vh;
+		width: 100vw;
+		z-index: 1;
+		display: none;
+		justify-content: flex-end;
+		background: rgba(0, 0, 0, 0.5);
+
+		.hamburger-menu-content {
+			background: #fff;
+			width: 50%;
+			height: 100%;
+		}
+
+		a {
+			display: block;
+			padding: 5px;
+		}
+
+		.menu-block {
+			border-bottom: 1px solid #D0D0D0;
+		}
+	}
+}
+
 .mw-header-personal-tools {
 	display: flex;
 	height: 100%;
@@ -883,7 +932,7 @@ body :not( :checked)>.toctogglespan:after {
 		&#pt-watchlist {
 			background-image: url('@{resourcesRoot}/skins/Timeless/resources/images/personal-tools/watchlist.svg');
 		}
-		
+
 		&#pt-logout {
 			background-image: url('@{resourcesRoot}/skins/Timeless/resources/images/personal-tools/logout.svg');
 		}
@@ -1002,7 +1051,7 @@ body :not( :checked)>.toctogglespan:after {
 		justify-content: center;
 	}
 
-	.logo-text {
+	.mw-header-lower .logo-text {
 		display: none;
 	}
 

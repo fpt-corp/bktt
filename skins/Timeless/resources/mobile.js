@@ -40,4 +40,13 @@ $( function () {
 			$( '#menus-cover' ).fadeOut( toggleTime );
 		}
 	} );
+
+	$( '#hamburger-menu-icon' ).on( 'click', function () {
+		console.log('dsfsdf')
+		$('#hamburger-menu').css('display', 'flex')
+	} );
+
+	$( '#hamburger-menu' ).on( 'click', function () {
+		$('#hamburger-menu').css('display', 'none')
+	} );
 } );
