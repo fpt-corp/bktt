@@ -16,9 +16,18 @@ body {
 	line-height: 1.5;
 }
 
-.external , .toctogglelabel {
+.external , .toctogglelabel{
   color: #EE5A28 !important; 
 }
+
+span.oo-ui-labelElement-label {
+  color: #EE5A28; 
+}
+
+button span.oo-ui-labelElement-label {
+  color: #fff !important; 
+}
+
 
 #mw-content {
 	.box;
@@ -814,8 +823,8 @@ body :not( :checked)>.toctogglespan:after {
 	flex: 1 1 1px;
 }
 
-// @resourcesRoot: '';
-@resourcesRoot: '/mediawiki';
+@resourcesRoot: '';
+// @resourcesRoot: '/mediawiki';
 
 .mw-header-upper {
 	height: 50px;
@@ -866,8 +875,10 @@ body :not( :checked)>.toctogglespan:after {
 	.hamburger-menu-icon {
 		width: 34px;
 		height: 34px;
-		border: 1px solid #FF5A28;
-		border-radius: 3px;
+		border: none;
+		background-image: url('@{resourcesRoot}/skins/Timeless/resources/images/mobile-menu.svg');
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 
 	.hamburger-menu {
