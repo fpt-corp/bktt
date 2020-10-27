@@ -197,8 +197,12 @@ class TimelessTemplate extends BaseTemplate {
 				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
 			);
 		}
+		$notMainPage = ' not-main-page-lower';
+		if ($this->getSkin()->getTitle()->isMainPage()) {
+			$notMainPage = '';
+		}
 
-		return Html::rawElement('div', ['class' => 'mw-header-lower'], 
+		return Html::rawElement('div', ['class' => 'mw-header-lower' .$notMainPage], 
 			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
 			$this->getSearch() .
 			$alphabetSearch
