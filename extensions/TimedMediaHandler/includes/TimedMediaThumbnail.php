@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 class TimedMediaThumbnail {
 
 	/**
@@ -92,7 +95,7 @@ class TimedMediaThumbnail {
 			return false;
 		}
 
-		$cmd = wfEscapeShellArg( $wgFFmpegLocation ) . ' -threads 1 ';
+		$cmd = wfEscapeShellArg( $wgFFmpegLocation ) . ' -nostdin -threads 1 ';
 
 		$offset = intval( self::getThumbTime( $options ) );
 		/*
@@ -186,8 +189,9 @@ class TimedMediaThumbnail {
 		if ( !$src ) {
 			return false;
 		}
+		$localRepo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		$thumbFile = new UnregisteredLocalFile( $file->getTitle(),
-			RepoGroup::singleton()->getLocalRepo(), $src, false );
+			$localRepo, $src, false );
 		$thumbParams = [
 			"width" => $options['width'],
 			"height" => $options['height']
@@ -204,6 +208,7 @@ class TimedMediaThumbnail {
 		);
 
 		if ( !$scaledThumb || $scaledThumb->isError() ) {
+			// @phan-suppress-next-line PhanTypeMismatchReturnNullable
 			return $scaledThumb;
 		}
 		return true;

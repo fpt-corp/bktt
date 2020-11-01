@@ -2,11 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Beta16",
+			"Fringio",
+			"Horcrux92",
+			"Macofe",
 			"Ricordisamoa",
 			"Statix64",
-			"Fringio",
-			"Macofe",
-			"Horcrux92",
 			"Valepert"
 		]
 	},
@@ -77,6 +77,8 @@
 	"math-tracking-category-error": "Pagine con errori matematici",
 	"math-tracking-category-error-desc": "Le pagine in questa categoria hanno errori nell'uso dei tag math.",
 	"math-tracking-category-mhchem-deprecation": "Pagine che utilizzano un formato obsoleto del tag chem",
+	"math-tracking-category-texvc-deprecation": "Pagine che usano un formato dei tag math deprecato",
+	"math-tracking-category-texvc-deprecation-desc": "Le pagine in questa categoria usano un formato dei tag math deprecato",
 	"math-tracking-category-render-error": "Pagine con errori di rendering delle formule matematiche",
 	"math_unknown_error": "errore sconosciuto",
 	"math_unknown_function": "funzione sconosciuta '$1'",
@@ -88,5 +90,6 @@
 	"mathstatus": "Stato Math",
 	"datatypes-type-math": "Espressione matematica",
 	"wikibase-listdatatypes-math-head": "Espressione matematica",
-	"wikibase-listdatatypes-math-body": "Campo dati letterale per espressioni matematiche, formule, equazioni e simili, espresse in una variante di LaTeX."
+	"wikibase-listdatatypes-math-body": "Campo dati letterale per espressioni matematiche, formule, equazioni e simili, espresse in una variante di LaTeX.",
+	"math-wikibase-formula-elements-header": "Elementi della formula"
 }

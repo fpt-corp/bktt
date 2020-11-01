@@ -6,7 +6,8 @@
  * @ingroup JobQueue
  */
 
- use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MediaWikiServices;
 
 /**
  * Job for web video transcode
@@ -20,9 +21,9 @@
  */
 
 class WebVideoTranscodeJob extends Job {
-	/** @var TempFSFile */
+	/** @var TempFSFile|null */
 	public $targetEncodeFile = null;
-	/** @var string */
+	/** @var string|null|false */
 	public $sourceFilePath = null;
 	/** @var File */
 	public $file;
@@ -52,7 +53,8 @@ class WebVideoTranscodeJob extends Job {
 	 */
 	private function getFile() {
 		if ( !$this->file ) {
-			$this->file = wfLocalFile( $this->title );
+			$this->file = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo()
+				->newFile( $this->title );
 		}
 		return $this->file;
 	}
@@ -124,7 +126,6 @@ class WebVideoTranscodeJob extends Job {
 	 * @return bool success
 	 */
 	public function run() {
-		global $wgVersion;
 		// get a local pointer to the file
 		$file = $this->getFile();
 
@@ -155,8 +156,10 @@ class WebVideoTranscodeJob extends Job {
 		$options = WebVideoTranscode::$derivativeSettings[ $transcodeKey ];
 
 		if ( isset( $options[ 'novideo' ] ) ) {
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 			$this->output( "Encoding to audio codec: " . $options['audioCodec'] );
 		} else {
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 			$this->output( "Encoding to codec: " . $options['videoCodec'] );
 		}
 
@@ -170,7 +173,7 @@ class WebVideoTranscodeJob extends Job {
 			],
 			__METHOD__
 		);
-		if ( !is_null( $dbStartTime ) ) {
+		if ( $dbStartTime !== null ) {
 			$error = 'Error, running transcode job, for job that has already started';
 			$this->output( $error );
 			return true;
@@ -204,7 +207,9 @@ class WebVideoTranscodeJob extends Job {
 			} else {
 				$status = $this->ffmpegEncode( $options );
 			}
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 		} elseif ( $options['videoCodec'] == 'vp8' || $options['videoCodec'] == 'vp9' ||
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 			$options['videoCodec'] == 'h264'
 		) {
 			// Check for twopass:
@@ -218,7 +223,9 @@ class WebVideoTranscodeJob extends Job {
 				$status = $this->ffmpegEncode( $options );
 			}
 		} else {
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 			wfDebug( 'Error unknown codec:' . $options['videoCodec'] );
+			// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 			$status = 'Error unknown target encode codec:' . $options['videoCodec'];
 		}
 
@@ -235,7 +242,8 @@ class WebVideoTranscodeJob extends Job {
 			[
 				'transcode_image_name' => $this->getFile()->getName(),
 				'transcode_key' => $transcodeKey
-			]
+			],
+			__METHOD__
 		);
 
 		// Check for ( hopefully rare ) issue of or job restarted while transcode in progress
@@ -263,7 +271,7 @@ class WebVideoTranscodeJob extends Job {
 		if ( $status === true && filesize( $this->getTargetEncodePath() ) > 0 ) {
 			$file = $this->getFile();
 			$storeOptions = null;
-			if ( version_compare( $wgVersion, '1.23c', '>' ) &&
+			if (
 				strpos( $options['type'], '/ogg' ) !== false &&
 				$file->getLength()
 			) {
@@ -302,6 +310,7 @@ class WebVideoTranscodeJob extends Job {
 					'transcode',
 					[
 						'transcode_error' => '',
+						'transcode_time_error' => null,
 						'transcode_time_success' => $dbw->timestamp(),
 						'transcode_final_bitrate' => $bitrate
 					],
@@ -377,7 +386,7 @@ class WebVideoTranscodeJob extends Job {
 		// Set up the base command
 		$cmd = wfEscapeShellArg(
 			$wgFFmpegLocation
-		) . ' -y -i ' . wfEscapeShellArg( $this->getSourceFilePath() );
+		) . ' -nostdin -y -i ' . wfEscapeShellArg( $this->getSourceFilePath() );
 
 		if ( isset( $options['vpre'] ) ) {
 			$cmd .= ' -vpre ' . wfEscapeShellArg( $options['vpre'] );
@@ -390,13 +399,17 @@ class WebVideoTranscodeJob extends Job {
 		} elseif ( $options['videoCodec'] == 'h264' ) {
 			$cmd .= $this->ffmpegAddH264VideoOptions( $options, $pass );
 		}
+		// If necessary, add deinterlacing options
+		$cmd .= $this->ffmpegAddDeinterlaceOptions( $options );
 		// Add size options:
 		$cmd .= $this->ffmpegAddVideoSizeOptions( $options );
 
-		// Work around https://trac.ffmpeg.org/ticket/6375 in ffmpeg 3.4/4.0
-		// Sometimes caused transcode failures saying things like:
-		// "1 frames left in the queue on closing"
-		$cmd .= ' -max_muxing_queue_size 1024';
+		if ( !MediaWikiServices::getInstance()->getMainConfig()->get( 'UseFFmpeg2' ) ) {
+			// Work around https://trac.ffmpeg.org/ticket/6375 in ffmpeg 3.4/4.0
+			// Sometimes caused transcode failures saying things like:
+			// "1 frames left in the queue on closing"
+			$cmd .= ' -max_muxing_queue_size 1024';
+		}
 
 		// Check for start time
 		if ( isset( $options['starttime'] ) ) {
@@ -406,7 +419,8 @@ class WebVideoTranscodeJob extends Job {
 		}
 		// Check for end time:
 		if ( isset( $options['endtime'] ) ) {
-			$cmd .= ' -t ' . intval( $options['endtime'] ) - intval( $options['starttime'] );
+			$duration = intval( $options['endtime'] ) - intval( $options['starttime'] );
+			$cmd .= ' -t ' . $duration;
 		}
 
 		if ( $pass == 1 || isset( $options['noaudio'] ) ) {
@@ -416,7 +430,7 @@ class WebVideoTranscodeJob extends Job {
 		}
 
 		if ( $pass != 0 ) {
-			$cmd .= " -pass " . wfEscapeShellArg( $pass );
+			$cmd .= " -pass " . wfEscapeShellArg( (string)$pass );
 			$cmd .= " -passlogfile " . wfEscapeShellArg( $this->getTargetEncodePath() . '.log' );
 		}
 		// And the output target:
@@ -429,7 +443,6 @@ class WebVideoTranscodeJob extends Job {
 		$this->output( "Running cmd: \n\n" . $cmd . "\n" );
 
 		// Right before we output remove the old file
-		$retval = 0;
 		$shellOutput = $this->runShellExec( $cmd, $retval );
 
 		if ( $retval != 0 ) {
@@ -561,8 +574,8 @@ class WebVideoTranscodeJob extends Job {
 		if ( isset( $options['videoQuality'] ) && $options['videoQuality'] >= 0 ) {
 			// Map 0-10 to 63-0, higher values worse quality
 			$quality = 63 - intval( intval( $options['videoQuality'] ) / 10 * 63 );
-			$cmd .= " -qmin " . wfEscapeShellArg( $quality );
-			$cmd .= " -qmax " . wfEscapeShellArg( $quality );
+			$cmd .= " -qmin " . wfEscapeShellArg( (string)$quality );
+			$cmd .= " -qmax " . wfEscapeShellArg( (string)$quality );
 		}
 		// libvpx-specific constant quality or constrained quality
 		// note the range is different between VP8 and VP9
@@ -574,15 +587,15 @@ class WebVideoTranscodeJob extends Job {
 		if ( isset( $options['videoBitrate'] ) ) {
 			$qmin = $options['qmin'] ?? 1;
 			$qmax = $options['qmax'] ?? 51;
-			$cmd .= " -qmin " . wfEscapeShellArg( $qmin );
-			$cmd .= " -qmax " . wfEscapeShellArg( $qmax );
+			$cmd .= " -qmin " . wfEscapeShellArg( (string)$qmin );
+			$cmd .= " -qmax " . wfEscapeShellArg( (string)$qmax );
 
-			$cmd .= " -vb " . wfEscapeShellArg( $options['videoBitrate'] * 1000 );
+			$cmd .= " -vb " . wfEscapeShellArg( (string)( $options['videoBitrate'] * 1000 ) );
 			if ( isset( $options['minrate'] ) ) {
-				$cmd .= " -minrate " . wfEscapeShellArg( $options['minrate'] * 1000 );
+				$cmd .= " -minrate " . wfEscapeShellArg( (string)( $options['minrate'] * 1000 ) );
 			}
 			if ( isset( $options['maxrate'] ) ) {
-				$cmd .= " -maxrate " . wfEscapeShellArg( $options['maxrate'] * 1000 );
+				$cmd .= " -maxrate " . wfEscapeShellArg( (string)( $options['maxrate'] * 1000 ) );
 			}
 		}
 		// Set the codec:
@@ -621,6 +634,21 @@ class WebVideoTranscodeJob extends Job {
 
 		// Output WebM
 		$cmd .= " -f webm";
+
+		return $cmd;
+	}
+
+	/**
+	 * @param array $options
+	 * @return string
+	 */
+	private function ffmpegAddDeinterlaceOptions( $options ) {
+		$cmd = '';
+
+		$handler = $this->file->getHandler();
+		if ( $handler instanceof TimedMediaHandler && $handler->isInterlaced( $this->file ) ) {
+			$cmd .= ' -vf yadif=0';
+		}
 
 		return $cmd;
 	}
@@ -696,13 +724,13 @@ class WebVideoTranscodeJob extends Job {
 
 		$cmdString = implode( " ", $cmdArgs );
 
-		$retval = 0;
 		$shellOutput = $this->runShellExec( $cmdString, $retval );
+		'@phan-var int $retval';
 
 		// Fluidsynth doesn't give error codes - $retval always stays 0
 		if ( strpos( $shellOutput, "fluidsynth: error:" ) !== false ) {
 			return $cmdString .
-				"\n\nExitcode: $retval\nMemory: $wgTranscodeBackgroundMemoryLimit\n\n" .
+				"\n\nExitcode: " . (string)$retval . "\nMemory: $wgTranscodeBackgroundMemoryLimit\n\n" .
 				$shellOutput;
 		}
 
@@ -758,7 +786,7 @@ class WebVideoTranscodeJob extends Job {
 	 * else it just directly passes off to wfShellExec
 	 *
 	 * @param string $cmd Command to be run
-	 * @param string &$retval reference variable to return the exit code
+	 * @param int &$retval reference variable to return the exit code
 	 * @return string
 	 */
 	public function runShellExec( $cmd, &$retval ) {
@@ -820,7 +848,7 @@ class WebVideoTranscodeJob extends Job {
 
 	/**
 	 * @param string $cmd
-	 * @param string &$retval
+	 * @param int &$retval
 	 * @param string $encodingLog
 	 * @param string $retvalLog
 	 * @param string $caller The calling method
@@ -860,7 +888,7 @@ class WebVideoTranscodeJob extends Job {
 
 	/**
 	 * @param int $pid
-	 * @param string &$retval
+	 * @param int &$retval
 	 * @param string $encodingLog
 	 * @param string $retvalLog
 	 * @return string
@@ -875,7 +903,8 @@ class WebVideoTranscodeJob extends Job {
 
 		$this->output( "Encoding with pid: $pid \npcntl_waitpid: " .
 			pcntl_waitpid( $pid, $status, WNOHANG | WUNTRACED ) .
-			"\nisProcessRunning: " . self::isProcessRunningKillZombie( $pid ) . "\n" );
+			"\nisProcessRunning: " . ( self::isProcessRunningKillZombie( $pid ) ? 'true' : 'false' ) .
+			"\n" );
 
 		// Check that the child process is still running
 		// ( note this does not work well with  pcntl_waitpid for some reason :( )

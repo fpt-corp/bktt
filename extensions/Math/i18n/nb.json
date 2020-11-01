@@ -1,13 +1,13 @@
 {
 	"@metadata": {
 		"authors": [
-			"Event",
-			"Nghtwlkr",
-			"Stigmj",
 			"Danmichaelo",
-			"Macofe",
+			"Event",
 			"Jeblad",
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"Macofe",
+			"Nghtwlkr",
+			"Stigmj"
 		]
 	},
 	"math-desc": "Fremstill matematiske formler inne i taggparet <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code>",
@@ -88,7 +88,23 @@
 	"mw_math_source": "LaTeX-kilde (for tekstbaserte nettlesere)",
 	"prefs-math": "Matematiske formler",
 	"mathstatus": "Mattestatus",
+	"mathwikibase": "Matteformelinformasjon",
 	"datatypes-type-math": "Matematiske uttrykk",
 	"wikibase-listdatatypes-math-head": "Matematisk uttrykk",
-	"wikibase-listdatatypes-math-body": "Literalt datafelt for matematiske uttrykk, formler, ligninger og lignende, uttrykt i en variant av LaTeX."
+	"wikibase-listdatatypes-math-body": "Literalt datafelt for matematiske uttrykk, formler, ligninger og lignende, uttrykt i en variant av LaTeX.",
+	"math-wikibase-header": "Informasjon om matematiske elementer",
+	"math-wikibase-formula": "Formel",
+	"math-wikibase-formula-name": "Navn",
+	"math-wikibase-formula-type": "Type",
+	"math-wikibase-formula-description": "Beskrivelse",
+	"math-wikibase-formula-information": "Matteformelinformasjon",
+	"math-wikibase-formula-link-header": "Datakilde",
+	"math-wikibase-formula-elements-header": "Formelens elementer",
+	"math-wikibase-special-form-header": "Angi navnet til formelen:",
+	"math-wikibase-special-form-placeholder": "Formelens tittel",
+	"math-wikibase-special-form-button": "Be om informasjon",
+	"math-wikibase-special-error-header": "Feil",
+	"math-wikibase-special-error-invalid-argument": "Den angitte Wikibase-element-ID-en finnes ikke.",
+	"math-wikibase-special-error-unknown": "EN ukjent feil oppsto under henting av data fra Wikibase.",
+	"math-wikibase-special-error-no-wikibase": "Wikibase-utvidelsen er påkrevd for å kunne bruke denne spesialsiden."
 }

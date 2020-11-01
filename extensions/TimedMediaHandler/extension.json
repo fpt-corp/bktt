@@ -15,7 +15,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "media",
 	"requires": {
-		"MediaWiki": ">= 1.32.0"
+		"MediaWiki": ">= 1.35.0"
 	},
 	"APIModules": {
 		"timedtext": "ApiTimedText",
@@ -49,7 +49,7 @@
 	],
 	"SpecialPages": {
 		"OrphanedTimedText": "SpecialOrphanedTimedText",
-		"TimedMediaHandler": "SpecialTimedMediaHandler"
+		"TranscodeStatistics": "SpecialTranscodeStatistics"
 	},
 	"MessagesDirs": {
 		"TimedMediaHandler": [
@@ -100,6 +100,7 @@
 		"WAVHandler": "includes/handlers/WAVHandler/WAVHandler.php",
 		"Mp3Handler": "includes/handlers/Mp3Handler/Mp3Handler.php",
 		"MidiHandler": "includes/handlers/MidiHandler/MidiHandler.php",
+		"MPEGHandler": "includes/handlers/MPEGHandler/MPEGHandler.php",
 		"TextHandler": "includes/handlers/TextHandler/TextHandler.php",
 		"TimedTextPage": "includes/TimedTextPage.php",
 		"WebVideoTranscodeJob": "includes/WebVideoTranscode/WebVideoTranscodeJob.php",
@@ -107,18 +108,35 @@
 		"ApiTimedText": "includes/ApiTimedText.php",
 		"ApiTranscodeStatus": "includes/ApiTranscodeStatus.php",
 		"ApiTranscodeReset": "includes/ApiTranscodeReset.php",
-		"SpecialTimedMediaHandler": "includes/SpecialTimedMediaHandler.php",
+		"SpecialTranscodeStatistics": "includes/SpecialTranscodeStatistics.php",
 		"SpecialOrphanedTimedText": "includes/SpecialOrphanedTimedText.php"
 	},
 	"AutoloadNamespaces": {
 		"MediaWiki\\TimedMediaHandler\\TimedText\\": "includes/TimedText/"
 	},
 	"Hooks": {
+		"ArticleContentOnDiff": "TimedMediaHandlerHooks::checkForTimedTextDiff",
+		"ArticleFromTitle": "TimedMediaHandlerHooks::checkForTimedTextPage",
+		"ArticlePurge": "TimedMediaHandlerHooks::onArticlePurge",
+		"BeforePageDisplay": "TimedMediaHandlerHooks::pageOutputHook",
 		"CanonicalNamespaces": "TimedMediaHandlerHooks::onCanonicalNamespaces",
+		"FileDeleteComplete": "TimedMediaHandlerHooks::onFileDeleteComplete",
+		"FileUpload": "TimedMediaHandlerHooks::onFileUpload",
 		"GetBetaFeaturePreferences": "TimedMediaHandlerHooks::onGetBetaFeaturePreferences",
+		"ImageOpenShowImageInlineBefore": "TimedMediaHandlerHooks::onImageOpenShowImageInlineBefore",
+		"ImagePageAfterImageLinks": "TimedMediaHandlerHooks::checkForTranscodeStatus",
+		"ImagePageFileHistoryLine": "TimedMediaHandlerHooks::onImagePageFileHistoryLine",
+		"LoadExtensionSchemaUpdates": "TimedMediaHandlerHooks::checkSchemaUpdates",
+		"MediaWikiPerformAction": "TimedMediaIframeOutput::iframeHook",
+		"RevisionFromEditComplete": "TimedMediaHandlerHooks::onRevisionFromEditComplete",
 		"PageRenderingHash": "TimedMediaHandlerHooks::onPageRenderingHash",
 		"ParserTestGlobals": "TimedMediaHandlerHooks::onParserTestGlobals",
-		"ResourceLoaderGetConfigVars": "TimedMediaHandlerHooks::onResourceLoaderGetConfigVars"
+		"ParserTestTables": "TimedMediaHandlerHooks::onParserTestTables",
+		"RejectParserCacheValue": "TimedMediaHandlerHooks::onRejectParserCacheValue",
+		"ResourceLoaderGetConfigVars": "TimedMediaHandlerHooks::onResourceLoaderGetConfigVars",
+		"SkinTemplateNavigation": "TimedMediaHandlerHooks::onSkinTemplateNavigation",
+		"TitleMove": "TimedMediaHandlerHooks::checkTitleMove",
+		"wgQueryPages": "TimedMediaHandlerHooks::onwgQueryPages"
 	},
 	"config": {
 		"TmhUseBetaFeatures": {
@@ -127,9 +145,9 @@
 			"value": true
 		},
 		"TmhWebPlayer": {
-			"description": "Configure the webplayer. Allowed values: mwembed, videojs",
+			"description": "Configure the webplayer. Allowed value: videojs",
 			"public": true,
-			"value": "mwembed"
+			"value": "videojs"
 		},
 		"MwEmbedModuleConfig": {
 			"description": "MwEmbed module configuration.",
@@ -206,7 +224,7 @@
 			"value": 3600
 		},
 		"MinimumVideoPlayerSize": {
-			"description": "The minimum size for an embed video player (smaller than this size uses a pop-up player)",
+			"description": "Specific to the old mwembed player mode: the minimum size for an embed video player (smaller than this size uses a pop-up player)",
 			"public": true,
 			"value": 200
 		},
@@ -254,7 +272,7 @@
 			"value": 28800
 		},
 		"TranscodeBackgroundMemoryLimit": {
-			"description": "Maximum amount of virtual memory available to transcoding processes in KiB. 2GiB. ffmpeg/avconv mmap resources, so virtual memory needs to be high enough",
+			"description": "Maximum amount of virtual memory available to transcoding processes in KiB. 2GiB. ffmpeg mmap resources, so virtual memory needs to be high enough",
 			"public": true,
 			"value": 2097152
 		},
@@ -264,7 +282,7 @@
 			"value": 3145728
 		},
 		"FFmpegThreads": {
-			"description": "Number of threads to use in avconv for transcoding",
+			"description": "Number of threads to use in ffmpeg for transcoding",
 			"public": true,
 			"value": 1
 		},
@@ -279,9 +297,13 @@
 			"value": "/usr/bin/oggThumb"
 		},
 		"FFmpegLocation": {
-			"description": "Location of the avconv/ffmpeg binary (used to encode WebM and for thumbnails)",
+			"description": "Location of the ffmpeg binary (used to encode WebM and for thumbnails)",
 			"public": false,
-			"value": "/usr/bin/avconv"
+			"value": "/usr/bin/ffmpeg"
+		},
+		"UseFFmpeg2": {
+			"description": "Compatible with ffmpeg 2",
+			"value": false
 		},
 		"TimedTextNS": {
 			"description": "The NS for TimedText (registered on MediaWiki.org) https://www.mediawiki.org/wiki/Extension_namespace_registration Note that Wikimedia Commons pre-dates TimedMediaHandler, and sets this to 102.",
@@ -331,7 +353,7 @@
 			}
 		},
 		"EnabledAudioTranscodeSet": {
-			"description": "Default enabled audio transcodes\n\n If set to empty array, no derivatives will be created\n- These transcodes are *in addition to* the source file.\n- Derivative should be listed min to max\n\nllowed values:\n* ogg – Ogg Vorbis\n* opus – Note that Opus support must be available in avconv\n* mp3 – Note that avconv needs libmp3lame support\n* m4a – Note that avconv needs libvo_aacenc support",
+			"description": "Default enabled audio transcodes\n\n If set to empty array, no derivatives will be created\n- These transcodes are *in addition to* the source file.\n- Derivative should be listed min to max\n\nllowed values:\n* ogg – Ogg Vorbis\n* opus – Note that Opus support must be available in ffmpeg\n* mp3 – Note that fmpeg needs libmp3lame support\n* m4a – Note that ffmpeg needs libvo_aacenc support",
 			"public": true,
 			"value": {
 				"ogg": true,
@@ -359,7 +381,9 @@
 				"mp4",
 				"mp3",
 				"midi",
-				"mid"
+				"mid",
+				"mpg",
+				"mpeg"
 			]
 		},
 		"TmhPriorityResolutionThreshold": {
@@ -432,7 +456,7 @@
 			]
 		},
 		"ext.tmh.video-js": {
-			"scripts": "resources/videojs/video.js",
+			"scripts": "resources/videojs/alt/video.core.min.js",
 			"styles": "resources/videojs/video-js.css",
 			"noflip": true,
 			"targets": [
@@ -501,17 +525,6 @@
 				"ext.tmh.video-js"
 			]
 		},
-		"ext.tmh.mw-audio-captions": {
-			"scripts": "resources/mw-audio-captions/mw-audio-captions.js",
-			"styles": "resources/mw-audio-captions/mw-audio-captions.less",
-			"targets": [
-				"mobile",
-				"desktop"
-			],
-			"dependencies": [
-				"ext.tmh.video-js"
-			]
-		},
 		"ext.tmh.mw-info-button": {
 			"scripts": "resources/mw-info-button/mw-info-button.js",
 			"styles": "resources/mw-info-button/mw-info-button.css",
@@ -531,11 +544,37 @@
 				"desktop"
 			],
 			"dependencies": [
+				"ext.tmh.OgvJsSupport",
+				"mediawiki.Title"
+			],
+			"messages": [
+				"timedmedia-play-media"
+			]
+		},
+		"ext.tmh.player.dialog": {
+			"scripts": "resources/ext.tmh.player.dialog.js",
+			"styles": "resources/ext.tmh.player.dialog.less",
+			"targets": [
+				"mobile",
+				"desktop"
+			],
+			"dependencies": [
+				"oojs-ui-core",
+				"oojs-ui-windows",
+				"ext.tmh.player.inline",
+				"ext.tmh.player.inline.styles"
+			]
+		},
+		"ext.tmh.player.inline": {
+			"scripts": "resources/ext.tmh.player.inline.js",
+			"targets": [
+				"mobile",
+				"desktop"
+			],
+			"dependencies": [
 				"ext.tmh.video-js",
 				"ext.tmh.videojs-resolution-switcher",
-				"ext.tmh.mw-info-button",
-				"ext.tmh.mw-audio-captions",
-				"ext.tmh.OgvJsSupport"
+				"ext.tmh.mw-info-button"
 			],
 			"messages": [
 				"timedmedia-resolution-120",
@@ -554,6 +593,13 @@
 		},
 		"ext.tmh.player.styles": {
 			"styles": "resources/ext.tmh.player.styles.less",
+			"targets": [
+				"mobile",
+				"desktop"
+			]
+		},
+		"ext.tmh.player.inline.styles": {
+			"styles": "resources/ext.tmh.player.inline.styles.less",
 			"targets": [
 				"mobile",
 				"desktop"
@@ -675,8 +721,7 @@
 		"jquery.ui.touchPunch": {
 			"scripts": "resources/mwembed/lib/jquery.ui.touchPunch.js",
 			"dependencies": [
-				"jquery.ui.core",
-				"jquery.ui.mouse"
+				"jquery.ui"
 			]
 		},
 		"jquery.triggerQueueCallback": {
@@ -746,10 +791,9 @@
 				"jquery.client",
 				"jquery.hoverIntent",
 				"jquery.cookie",
-				"jquery.ui.mouse",
+				"jquery.ui",
 				"jquery.debouncedresize",
 				"jquery.embedMenu",
-				"jquery.ui.slider",
 				"jquery.ui.touchPunch"
 			],
 			"styles": [
@@ -923,6 +967,25 @@
 				"mw.ajaxProxy"
 			]
 		}
+	},
+	"MediaHandlers": {
+		"application/ogg": "OggHandler",
+		"audio/flac": "FLACHandler",
+		"audio/midi": "MidiHandler",
+		"audio/mpeg": "Mp3Handler",
+		"audio/wav": "WAVHandler",
+		"audio/webm": "WebMHandler",
+		"audio/x-flac": "FLACHandler",
+		"video/mp4": "Mp4Handler",
+		"video/mpeg": "MPEGHandler",
+		"video/webm": "WebMHandler"
+	},
+	"JobClasses": {
+		"webVideoTranscode": "WebVideoTranscodeJob",
+		"webVideoTranscodePrioritized": "WebVideoTranscodeJob"
+	},
+	"ConfigRegistry": {
+		"timedmediahandler": "GlobalVarConfig::newInstance"
 	},
 	"load_composer_autoloader": true,
 	"manifest_version": 2

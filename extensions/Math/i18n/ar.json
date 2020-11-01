@@ -1,18 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ciphers",
-			"Meno25",
-			"زكريا",
-			"Omda4wady",
 			"Abanima",
+			"Ciphers",
 			"Macofe",
-			"محمد أحمد عبد الفتاح",
 			"Maroen1990",
-			"Shbib Al-Subaie",
-			"Moud hosny",
+			"Meno25",
 			"Mido",
-			"ديفيد"
+			"Moud hosny",
+			"Omda4wady",
+			"Shbib Al-Subaie",
+			"Tala Ali",
+			"ديفيد",
+			"زكريا",
+			"محمد أحمد عبد الفتاح"
 		]
 	},
 	"math-desc": "حوِّل الصيغ الرياضية بين وسمي <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code>",
@@ -83,6 +84,7 @@
 	"math-tracking-category-error-desc": "الصفحات في هذا التصنيف تحتوي على أخطاء في استخدام وسوم الرياضيات.",
 	"math-tracking-category-mhchem-deprecation": "الصفحات التي تستخدم تنسيقا مهملا للعلامات الكيميائية",
 	"math-tracking-category-mhchem-deprecation-desc": "تستخدم الصفحات الموجودة في هذا التصنيف تنسيقا موقوفا للعلامات الكيميائية",
+	"math-tracking-category-texvc-deprecation-desc": "تستخدم الصفحات الموجودة في هذا التصنيف تنسيقا موقوفا لعلامات الرياضيات",
 	"math-tracking-category-render-error": "الصفحات بأخطاء عرض رياضيات",
 	"math-tracking-category-render-error-desc": "الصفحات في هذا التصنيف بها أخطاء عرض في وسوم الرياضيات.",
 	"math_unknown_error": "خطأ غير معروف",
@@ -93,7 +95,23 @@
 	"mw_math_source": "اعرض على هيئة LaTeX (للمتصفحات النصية)",
 	"prefs-math": "رياضيات",
 	"mathstatus": "حالة الرياضيات",
+	"mathwikibase": "معلومات الصيغة الرياضية",
 	"datatypes-type-math": "تعبير رياضي",
 	"wikibase-listdatatypes-math-head": "تعبير رياضي",
-	"wikibase-listdatatypes-math-body": "حقل بيانات حرفي للتعبيرات الرياضية، الصيغ، المعادلات وكذا، معبر عنها بتنويعة من LaTeX."
+	"wikibase-listdatatypes-math-body": "حقل بيانات حرفي للتعبيرات الرياضية، الصيغ، المعادلات وكذا، معبر عنها بتنويعة من LaTeX.",
+	"math-wikibase-header": "معلومات عن العناصر الرياضية",
+	"math-wikibase-formula": "الصيغة",
+	"math-wikibase-formula-name": "الاسم",
+	"math-wikibase-formula-type": "النوع",
+	"math-wikibase-formula-description": "الوصف",
+	"math-wikibase-formula-information": "معلومات الصيغة الرياضية",
+	"math-wikibase-formula-link-header": "مصدر البيانات",
+	"math-wikibase-formula-elements-header": "عناصر الصيغة",
+	"math-wikibase-special-form-header": "حدد اسم الصيغة:",
+	"math-wikibase-special-form-placeholder": "عنوان الصيغة",
+	"math-wikibase-special-form-button": "طلب معلومات",
+	"math-wikibase-special-error-header": "خطأ",
+	"math-wikibase-special-error-invalid-argument": "معرف عنصر قاعدة الويكي المحدد غير موجود.",
+	"math-wikibase-special-error-unknown": "حدث خطأ غير معروف بسبب جلب البيانات من قاعدة الويكي.",
+	"math-wikibase-special-error-no-wikibase": "ملحق قاعدة الويكي مطلوب من أجل استخدام هذه الصفحة الخاصة."
 }

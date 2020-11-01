@@ -48,5 +48,14 @@
 	"mw_math_source": "LaTeX kods (teksta pārlūkiem)",
 	"prefs-math": "Formulas",
 	"datatypes-type-math": "Matemātiska izteiksme",
-	"wikibase-listdatatypes-math-head": "Matemātiska izteiksme"
+	"wikibase-listdatatypes-math-head": "Matemātiska izteiksme",
+	"math-wikibase-formula": "Formula",
+	"math-wikibase-formula-name": "Nosaukums",
+	"math-wikibase-formula-description": "Apraksts",
+	"math-wikibase-formula-link-header": "Datu avots",
+	"math-wikibase-formula-elements-header": "Formulas elementi",
+	"math-wikibase-special-form-header": "Norādi formulas nosaukumu:",
+	"math-wikibase-special-form-placeholder": "Formulas nosaukums",
+	"math-wikibase-special-form-button": "Pieprasīt informāciju",
+	"math-wikibase-special-error-header": "Kļūda"
 }

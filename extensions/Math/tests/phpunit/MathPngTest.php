@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @covers MathPng
+ * @covers \MathPng
  *
  * @license GPL-2.0-or-later
  */
 class MathPngTest extends MediaWikiTestCase {
 
 	/** @var string The fallback image HTML tag */
-	const TEST_DUMMY = '<img src="test.png" />';
+	private const TEST_DUMMY = '<img src="test.png" />';
 
 	public function testConstructor() {
 		$renderer = new MathPng( 'a' );

@@ -1,17 +1,19 @@
 {
 	"@metadata": {
 		"authors": [
+			"1233thehongkonger",
+			"A2093064",
+			"Cwlin0416",
 			"Gaoxuewei",
 			"Justincheng12345",
+			"Kly",
+			"LNDDYL",
 			"Liuxinyu970226",
 			"Mark85296341",
 			"Simon Shek",
-			"LNDDYL",
-			"Cwlin0416",
-			"1233thehongkonger",
-			"蘭斯特",
-			"A2093064",
-			"Kly"
+			"Sunny00217",
+			"Xiplus",
+			"蘭斯特"
 		]
 	},
 	"timedmediahandler-desc": "音訊、影片與字幕處理程式，支援的格式包含 WebM、Ogg Theora、Vorbis、srt",
@@ -37,6 +39,8 @@
 	"timedmedia-midi-long-audio": "MIDI 音訊檔案，長度 $1，共 $2",
 	"timedmedia-mp4-short-video": "MP4 $1 影片檔，$2",
 	"timedmedia-mp4-long-video": "MP4 音訊/影片檔案，$1，長度 $2，$4 × $5 畫素，共 $3",
+	"timedmedia-mpeg-short-video": "MPEG $1 影片檔，$2",
+	"timedmedia-mpeg-long-video": "MPEG 音訊/影片檔案，$1，長度 $2，$4 × $5 畫素，共 $3",
 	"timedmedia-more": "更多...",
 	"timedmedia-dismiss": "關閉",
 	"timedmedia-download": "下載檔案",
@@ -54,7 +58,7 @@
 	"timedmedia-actions": "動作",
 	"timedmedia-direct-link": "下載",
 	"timedmedia-not-ready": "尚未就緒",
-	"timedmedia-completed-on": "已完成 $1",
+	"timedmedia-completed-on": "已完成於$1",
 	"timedmedia-error-on": "於 $1 發生錯誤。",
 	"timedmedia-started-transcode": "已於 $1 前開始。$2",
 	"timedmedia-percent-done": "大約已完成 $1%",
@@ -123,11 +127,7 @@
 	"timedmedia-subtitle-no-video": "目前沒有與字幕頁面相關的影片。",
 	"timedmedia-subtitle-no-subtitles": "此影片目前沒有 $1 的字幕，您可 [{{fullurl:{{FULLPAGENAME}}|action=edit}} 編輯此頁面] 來增加字幕。",
 	"timedmedia-subtitle-remote": "此檔案的字幕位於 $1",
-	"timedmedia-subtitle-remote-link": "您可於 $2 檢視此檔案的 [$1 描述頁面]",
-	"timedmediahandler": "定時媒體處理器",
-	"timedmedia-videos": "{{PLURAL:$1|$1 個影片}}",
-	"timedmedia-ogg-videos": "{{PLURAL:$1|$1 個 Ogg 影片}}",
-	"timedmedia-webm-videos": "{{PLURAL:$1|$1 個 WebM 影片}}",
+	"timedmedia-subtitle-remote-link": "您可於$2檢視此檔案的[$1 描述頁面]",
 	"timedmedia-derivative-state-transcodes": "{{PLURAL:$1|$1 個轉碼工作}}",
 	"timedmedia-derivative-state-active": "{{PLURAL:$1|$1 個正在執行的轉碼工作}}",
 	"timedmedia-derivative-state-queued": "{{PLURAL:$1|$1 個在序列中的轉碼工作}}",
@@ -135,11 +135,6 @@
 	"timedmedia-derivative-state-missing": "{{PLURAL:$1|$1 個未初始化轉碼|$1 個未初始化轉碼}}",
 	"timedmedia-no-derivatives": "不需轉碼。",
 	"timedmedia-file": "檔案",
-	"timedmedia-audios": "{{PLURAL:$1|$1 個音訊檔案}}",
-	"timedmedia-ogg-audios": "{{PLURAL:$1|$1 個 Ogg 音訊檔案}}",
-	"timedmedia-flac-audios": "{{PLURAL:$1|$1 個 FLAC 音訊檔案}}",
-	"timedmedia-wav-audios": "{{PLURAL:$1|$1 個 WAV 音訊檔案}}",
-	"timedmedia-webm-audios": "{{PLURAL:$1|$1 個 WebM 音訊檔案|$1 個 WebM 音訊檔案}}",
 	"beta-feature-timedmediahandler-message-videojs": "新影片播放器",
 	"beta-feature-timedmediahandler-description-videojs": "以具有清晰外觀及相容手機的現代化播放器來觀賞影片。",
 	"right-transcode-reset": "重設已失敗或已轉碼的影片，將其重新排入任務序列中。",
@@ -154,5 +149,6 @@
 	"orphanedtimedtext-unsupported": "此特殊頁面僅支援使用 MySQL 資料庫。",
 	"orphanedtimedtext-notimedtext": "此 Wiki 未開啟 TimedText 功能。",
 	"videojs-more-information": "更多資訊",
-	"videojs-quality": "影片品質"
+	"videojs-quality": "影片品質",
+	"transcodestatistics": "轉碼統計"
 }

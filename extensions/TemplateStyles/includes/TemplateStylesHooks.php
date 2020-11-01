@@ -5,6 +5,7 @@
  * @license GPL-2.0-or-later
  */
 
+use MediaWiki\Revision\SlotRecord;
 use Wikimedia\CSS\Grammar\CheckedMatcher;
 use Wikimedia\CSS\Grammar\Match;
 use Wikimedia\CSS\Grammar\MatcherFactory;
@@ -36,7 +37,7 @@ class TemplateStylesHooks {
 	/** @var Sanitizer[] */
 	private static $sanitizers = [];
 
-	/** @var Token[] */
+	/** @var (false|Token[])[] */
 	private static $wrappers = [];
 
 	/**
@@ -71,7 +72,7 @@ class TemplateStylesHooks {
 	/**
 	 * Validate an extra wrapper-selector
 	 * @param string $wrapper
-	 * @return Token[]|false Token representation of the selector, or null on failure
+	 * @return Token[]|false Token representation of the selector, or false on failure
 	 */
 	private static function validateExtraWrapper( $wrapper ) {
 		if ( !isset( self::$wrappers[$wrapper] ) ) {
@@ -195,30 +196,14 @@ class TemplateStylesHooks {
 
 	/**
 	 * Add `<templatestyles>` to the parser.
-	 * @param Parser &$parser Parser object being cleared
+	 * @param Parser $parser Parser object being cleared
 	 * @return bool
 	 */
-	public static function onParserFirstCallInit( &$parser ) {
+	public static function onParserFirstCallInit( Parser $parser ) {
 		$parser->setHook( 'templatestyles', 'TemplateStylesHooks::handleTag' );
 		/** @phan-suppress-next-line PhanUndeclaredProperty */
 		$parser->extTemplateStylesCache = new MapCacheLRU( 100 ); // 100 is arbitrary
 		return true;
-	}
-
-	/**
-	 * Fix Tidy screw-ups
-	 *
-	 * It seems some versions of Tidy try to wrap the contents of a `<style>`
-	 * tag in bare `<![CDATA[` ... `]]>`, which makes it invalid CSS. It should
-	 * be wrapping those additions with CSS comments.
-	 *
-	 * @todo When we kill Tidy in favor of RemexHTML or the like, kill this too.
-	 * @param Parser &$parser Parser object being used
-	 * @param string &$text text that will be returned
-	 */
-	public static function onParserAfterTidy( &$parser, &$text ) {
-		$text = preg_replace( '/(<(?i:style)[^>]*>\s*)(<!\[CDATA\[)/', '$1/*$2*/', $text );
-		$text = preg_replace( '/(\]\]>)(\s*<\/style>)/i', '/*$1*/$2', $text );
 	}
 
 	/**
@@ -306,13 +291,17 @@ class TemplateStylesHooks {
 			return self::formatTagError( $parser, [ 'templatestyles-invalid-src' ] );
 		}
 
-		$rev = $parser->fetchCurrentRevisionOfTitle( $title );
+		$revRecord = $parser->fetchCurrentRevisionRecordOfTitle( $title );
 
 		// It's not really a "template", but it has the same implications
 		// for needing reparse when the stylesheet is edited.
-		$parser->getOutput()->addTemplate( $title, $title->getArticleId(), $rev ? $rev->getId() : null );
+		$parser->getOutput()->addTemplate(
+			$title,
+			$title->getArticleId(),
+			$revRecord ? $revRecord->getId() : null
+		);
 
-		$content = $rev ? $rev->getContent() : null;
+		$content = $revRecord ? $revRecord->getContent( SlotRecord::MAIN ) : null;
 		if ( !$content ) {
 			$titleText = $title->getPrefixedText();
 			return self::formatTagError( $parser, [
@@ -333,8 +322,8 @@ class TemplateStylesHooks {
 
 		// If the revision actually has an ID, cache based on that.
 		// Otherwise, cache by hash.
-		if ( $rev->getId() ) {
-			$cacheKey = 'r' . $rev->getId();
+		if ( $revRecord->getId() ) {
+			$cacheKey = 'r' . $revRecord->getId();
 		} else {
 			$cacheKey = sha1( $content->getNativeData() );
 		}
@@ -375,8 +364,8 @@ class TemplateStylesHooks {
 			$comment = wfMessage(
 				'templatestyles-errorcomment',
 				$title->getPrefixedText(),
-				$rev->getId(),
-				$status->getWikiText( null, 'rawmessage' )
+				$revRecord->getId(),
+				$status->getWikiText( false, 'rawmessage' )
 			)->text();
 			$comment = trim( strtr( $comment, [
 				// Use some lookalike unicode characters to avoid things that might

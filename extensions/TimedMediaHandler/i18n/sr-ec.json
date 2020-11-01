@@ -1,15 +1,15 @@
 {
 	"@metadata": {
 		"authors": [
+			"BadDog",
 			"Milicevic01",
 			"Millosh",
+			"Obsuser",
 			"Rancher",
 			"Sasa Stefanovic",
+			"Zoranzoki21",
 			"Михајло Анђелковић",
-			"Сербијана",
-			"Obsuser",
-			"BadDog",
-			"Zoranzoki21"
+			"Сербијана"
 		]
 	},
 	"timedmediahandler-desc": "Управљач за звучне снимке, видео-снимке и временски текст, са подршком за формате WebM, Ogg Theora, Vorbis, SRT",
@@ -50,7 +50,7 @@
 	"timedmedia-minutes": "{{PLURAL:$1|1 минут|$1 минута}}",
 	"timedmedia-seconds": "{{PLURAL:$1|1 секунд|$1 секунда|$1 секунди}}",
 	"timedmedia-reset": "Ресетуј прекодирање",
-	"timedmedia-reset-areyousure": "Да ли сте сигурни да желите да наставите?",
+	"timedmedia-reset-areyousure": "Желите ли заиста да наставите?",
 	"timedmedia-reset-button-cancel": "Не ресетуј",
 	"timedmedia-reset-button-dismiss": "Одбаци",
 	"timedmedia-reset-button-reset": "Ресетуј",
@@ -105,16 +105,15 @@
 	"timedmedia-subtitle-no-subtitles": "Тренутно нема $1 титлова за овај видео-снимак. Можете да их додате тако што ћете [{{fullurl:{{FULLPAGENAME}}|action=edit}} уредити страницу]",
 	"timedmedia-subtitle-remote": "Временски текст за ову датотеку хостује се на $1",
 	"timedmedia-subtitle-remote-link": "Можете [$1 погледати страницу са описом] за ову датотеку на $2",
-	"timedmediahandler": "TimedMediaHandler",
-	"timedmedia-videos": "{{PLURAL:$1|$1 видео|$1 видеа}}",
 	"timedmedia-no-derivatives": "Нема других формата.",
 	"timedmedia-file": "Датотека",
-	"beta-feature-timedmediahandler-message-videojs": "Нови видео плејер",
-	"beta-feature-timedmediahandler-description-videojs": "Гледајте видео датотеке у модерном плејеру са чистијим изгледом и компатибилношћу за мобилне уређаје.",
+	"beta-feature-timedmediahandler-message-videojs": "Нови видео-плејер",
+	"beta-feature-timedmediahandler-description-videojs": "Гледајте видео-датотеке у модерном плејеру преуређеног изгледа и уз компатибилност с мобилним уређајима.",
 	"right-transcode-status": "прегледање [[Special:TimedMediaHandler|информација о тренутном активношћу транскодирања]]",
 	"action-transcode-reset": "поново поставите транскодирање",
 	"action-transcode-status": "прегледате актуелни статус транскодирања",
 	"log-name-timedmediahandler": "Дневник TimedMediaHandler-а",
 	"orphanedtimedtext-unsupported": "Ова посебна странице је подржана само на MySQL базама података.",
-	"orphanedtimedtext-notimedtext": "TimedText није омогућен на овом викију."
+	"orphanedtimedtext-notimedtext": "TimedText није омогућен на овом викију.",
+	"videojs-more-information": "Више информација"
 }

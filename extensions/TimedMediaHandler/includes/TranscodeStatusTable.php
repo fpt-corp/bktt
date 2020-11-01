@@ -117,7 +117,7 @@ class TranscodeStatusTable {
 
 			// Download file
 			$o .= '<td>';
-			$o .= ( !is_null( $state['time_success'] ) ) ?
+			$o .= ( $state['time_success'] !== null ) ?
 				'<a href="' . self::getSourceUrl( $file, $transcodeKey ) . '" title="' . wfMessage
 				( 'timedmedia-download' )->escaped() . '"><div class="download-btn"><span>' .
 				wfMessage( 'timedmedia-download' )->escaped() . '</span></div></a></td>' :
@@ -159,9 +159,9 @@ class TranscodeStatusTable {
 	 */
 	public static function getTranscodeDuration( $file, $state ) {
 		global $wgLang;
-		if ( !is_null( $state['time_success'] ) ) {
-			$startTime = wfTimestamp( TS_UNIX, $state['time_startwork'] );
-			$endTime = wfTimestamp( TS_UNIX, $state['time_success'] );
+		if ( $state['time_success'] !== null ) {
+			$startTime = (int)wfTimestamp( TS_UNIX, $state['time_startwork'] );
+			$endTime = (int)wfTimestamp( TS_UNIX, $state['time_success'] );
 			$delta = $endTime - $startTime;
 			$duration = $wgLang->formatTimePeriod( $delta );
 			return $duration;
@@ -177,7 +177,7 @@ class TranscodeStatusTable {
 	 */
 	public static function getTranscodeBitrate( $file, $state ) {
 		global $wgLang;
-		if ( !is_null( $state['time_success'] ) ) {
+		if ( $state['time_success'] !== null ) {
 			return $wgLang->formatBitrate( $state['final_bitrate'] );
 		} else {
 			return '';
@@ -191,15 +191,15 @@ class TranscodeStatusTable {
 	 */
 	public static function getStatusMsg( $file, $state ) {
 		// Check for success:
-		if ( !is_null( $state['time_success'] ) ) {
+		if ( $state['time_success'] !== null ) {
 			$contLang = MediaWikiServices::getInstance()->getContentLanguage();
 			return wfMessage( 'timedmedia-completed-on',
 				$contLang->timeAndDate( $state[ 'time_success' ] ) )->escaped();
 		}
 		// Check for error:
-		if ( !is_null( $state['time_error'] ) ) {
+		if ( $state['time_error'] !== null ) {
 			$attribs = [];
-			if ( !is_null( $state['error'] ) ) {
+			if ( $state['error'] !== null ) {
 				$attribs = [
 					'class' => 'mw-tmh-pseudo-error-link',
 					'data-error' => $state['error'],
@@ -214,8 +214,8 @@ class TranscodeStatusTable {
 		}
 
 		// Check for started encoding
-		if ( !is_null( $state['time_startwork'] ) ) {
-			$timePassed = time() - wfTimestamp( TS_UNIX, $state['time_startwork'] );
+		if ( $state['time_startwork'] !== null ) {
+			$timePassed = time() - (int)wfTimestamp( TS_UNIX, $state['time_startwork'] );
 			// Get the rough estimate of time done: ( this is not very costly considering everything else
 			// that happens in an action=purge video page request )
 			/*$filePath = WebVideoTranscode::getTargetEncodePath( $file, $state['key'] );
@@ -237,8 +237,8 @@ class TranscodeStatusTable {
 			)->escaped();
 		}
 		// Check for job added ( but not started encoding )
-		if ( !is_null( $state['time_addjob'] ) ) {
-			$timePassed = time() - wfTimestamp( TS_UNIX, $state['time_addjob'] );
+		if ( $state['time_addjob'] !== null ) {
+			$timePassed = time() - (int)wfTimestamp( TS_UNIX, $state['time_addjob'] );
 			return wfMessage(
 				'timedmedia-in-job-queue',
 				TimedMediaHandler::getTimePassedMsg( $timePassed )

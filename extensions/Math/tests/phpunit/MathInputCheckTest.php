@@ -1,37 +1,22 @@
 <?php
 
+use MediaWiki\Extension\Math\InputCheck\BaseChecker;
+
 /**
- * @covers MathInputCheck
+ * @covers \MediaWiki\Extension\Math\InputCheck\BaseChecker
  *
  * @group Math
  *
  * @license GPL-2.0-or-later
  */
 class MathInputCheckTest extends MediaWikiTestCase {
-	/**
-	 * @covers MathInputCheck::isValid
-	 */
-	public function testIsValid() {
-		$InputCheck = $this->getMockBuilder( MathInputCheck::class )->getMock();
-		$this->assertEquals( $InputCheck->IsValid(), false );
-	}
 
-	/**
-	 * @covers MathInputCheck::getError
-	 * @todo   Implement testGetError().
-	 */
-	public function testGetError() {
-		$InputCheck = $this->getMockBuilder( MathInputCheck::class )->getMock();
+	public function testAbstractClass() {
+		$InputCheck = $this->getMockForAbstractClass( BaseChecker::class );
+		/** @var BaseChecker $InputCheck */
+		$this->assertFalse( $InputCheck->IsValid() );
 		$this->assertNull( $InputCheck->getError() );
-	}
-
-	/**
-	 * @covers MathInputCheck::getValidTex
-	 */
-	public function testGetValidTex() {
-		$InputCheck = $this->getMockBuilder( MathInputCheck::class )
-			->setConstructorArgs( [ 'some tex input' ] )
-			->getMock();
 		$this->assertNull( $InputCheck->getValidTex() );
 	}
+
 }

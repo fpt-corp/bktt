@@ -3,16 +3,16 @@
 		"authors": [
 			"BeginaFelicysym",
 			"Chrumps",
-			"Sp5uhe",
-			"Woytecr",
-			"Matik7",
-			"Tar Lócesilion",
-			"Devwebtel",
-			"Matma Rex",
-			"Sethakill",
-			"Railfail536",
 			"CiaPan",
-			"Rail"
+			"Devwebtel",
+			"Matik7",
+			"Matma Rex",
+			"Rail",
+			"Railfail536",
+			"Sethakill",
+			"Sp5uhe",
+			"Tar Lócesilion",
+			"Woytecr"
 		]
 	},
 	"math-desc": "Renderowanie formuł matematycznych między znacznikami <code>&lt;math&gt;</code> … <code>&lt;/math&gt;</code>",
@@ -83,10 +83,12 @@
 	"math-tracking-category-error-desc": "Strony w tej kategorii zawierają błędy w użyciu znaczników matematycznych.",
 	"math-tracking-category-mhchem-deprecation": "Strony używające przestarzałej postaci znaczników chemicznych",
 	"math-tracking-category-mhchem-deprecation-desc": "W tej kategorii zebrano strony używające przestarzałej postaci znaczników chemicznych",
+	"math-tracking-category-texvc-deprecation": "Strony używające przestarzałej postaci znaczników matematycznych",
+	"math-tracking-category-texvc-deprecation-desc": "W tej kategorii zebrano strony używające przestarzałej postaci znaczników matematycznych",
 	"math-tracking-category-render-error": "Strony z błędami renderowania wyrażeń matematycznych",
 	"math-tracking-category-render-error-desc": "Strony w tej kategorii zawierają problemy z renderowaniem tagów math",
 	"math_unknown_error": "nieznany błąd",
-	"math_unknown_function": "nieznana funkcja '$1'",
+	"math_unknown_function": "nieznana funkcja „$1”",
 	"mw_math_latexml": "LaTeXML (eksperymentalne; wykorzystuje MathML)",
 	"mw_math_mathml": "MathML z przejściem w SVG lub PNG (zalecane dla nowoczesnych przeglądarek i narzędzi zwiększenia dostępności)",
 	"mw_math_png": "Obrazy PNG",
@@ -94,5 +96,10 @@
 	"prefs-math": "Wzory",
 	"mathstatus": "Status renderowania formuł matematycznych",
 	"datatypes-type-math": "Wyrażenie matematyczne",
-	"wikibase-listdatatypes-math-head": "Wyrażenie matematyczne"
+	"wikibase-listdatatypes-math-head": "Wyrażenie matematyczne",
+	"math-wikibase-formula": "Wzór",
+	"math-wikibase-formula-name": "Nazwa",
+	"math-wikibase-formula-type": "Typ",
+	"math-wikibase-formula-description": "Opis",
+	"math-wikibase-special-error-header": "Błąd"
 }

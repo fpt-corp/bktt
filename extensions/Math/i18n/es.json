@@ -1,19 +1,20 @@
 {
 	"@metadata": {
 		"authors": [
+			"Amitie 10g",
 			"Armando-Martin",
 			"Ciencia Al Poder",
 			"Dferg",
+			"Dgstranz",
+			"Fierodelveneto",
 			"Fitoschido",
+			"Indiralena",
+			"Macofe",
 			"MarcoAurelio",
 			"Platonides",
-			"Translationista",
-			"Macofe",
-			"Amitie 10g",
 			"Ryo567",
 			"Syum90",
-			"Indiralena",
-			"Dgstranz"
+			"Translationista"
 		]
 	},
 	"math-desc": "Representa fórmulas matemáticas entre las etiquetas <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code>",
@@ -94,7 +95,21 @@
 	"mw_math_source": "Código LaTeX (para navegadores de texto)",
 	"prefs-math": "Matemáticas",
 	"mathstatus": "Estado de matemáticas",
+	"mathwikibase": "Información de fórmula matemática",
 	"datatypes-type-math": "Expresión matemática",
 	"wikibase-listdatatypes-math-head": "Expresión matemática",
-	"wikibase-listdatatypes-math-body": "Campo de datos literales para expresiones matemáticas, fórmulas, ecuaciones y similares, expresado en una variante de LaTeX."
+	"wikibase-listdatatypes-math-body": "Campo de datos literales para expresiones matemáticas, fórmulas, ecuaciones y similares, expresado en una variante de LaTeX.",
+	"math-wikibase-formula": "Fórmula",
+	"math-wikibase-formula-name": "Nombre",
+	"math-wikibase-formula-type": "Tipo",
+	"math-wikibase-formula-description": "Descripción",
+	"math-wikibase-formula-information": "Información de fórmula matemática",
+	"math-wikibase-formula-link-header": "Fuente de datos",
+	"math-wikibase-formula-elements-header": "Elementos de la fórmula",
+	"math-wikibase-special-form-header": "Especifica el nombre de la fórmula:",
+	"math-wikibase-special-form-placeholder": "Título de la fórmula",
+	"math-wikibase-special-form-button": "Solicitar información",
+	"math-wikibase-special-error-header": "Error",
+	"math-wikibase-special-error-unknown": "Se produjo un error desconocido al recuperar datos de Wikibase.",
+	"math-wikibase-special-error-no-wikibase": "Es necesaria la extensión Wikibase para utilizar esta página especial."
 }

@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Waihorace",
-			"LNDDYL",
-			"Cwlin0416",
 			"A2093064",
-			"Kly"
+			"Cwlin0416",
+			"Kly",
+			"LNDDYL",
+			"Waihorace",
+			"Xiplus"
 		]
 	},
 	"codemirror-desc": "提供 wikitext 編輯器語法醒目標示",

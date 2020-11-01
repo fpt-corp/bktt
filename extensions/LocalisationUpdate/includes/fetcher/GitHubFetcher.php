@@ -5,7 +5,7 @@
  * @license GPL-2.0-or-later
  */
 
-namespace LocalisationUpdate;
+namespace LocalisationUpdate\Fetcher;
 
 /**
  * This class uses GitHub api to obtain a list of files present in a directory
@@ -23,12 +23,14 @@ class GitHubFetcher extends HttpFetcher {
 	 * @throws \Exception
 	 */
 	public function fetchDirectory( $pattern ) {
+		global $wgLocalisationUpdateHttpRequestOptions;
+
 		$domain = preg_quote( 'https://raw.github.com/', '~' );
 		$p = "~^$domain(?P<org>[^/]+)/(?P<repo>[^/]+)/(?P<branch>[^/]+)/(?P<path>.+)/.+$~";
 		preg_match( $p, $pattern, $m );
 
 		$apiURL = "https://api.github.com/repos/{$m['org']}/{$m['repo']}/contents/{$m['path']}";
-		$json = \Http::get( $apiURL );
+		$json = \Http::get( $apiURL, $wgLocalisationUpdateHttpRequestOptions );
 		if ( !$json ) {
 			throw new \Exception( "Unable to get directory listing for {$m['org']}/{$m['repo']}" );
 		}

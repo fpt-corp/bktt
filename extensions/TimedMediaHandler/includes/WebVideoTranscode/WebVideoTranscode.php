@@ -8,24 +8,25 @@
  *  extends video tag output to provide all the available sources
  */
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
  * Main WebVideoTranscode Class hold some constants and config values
  */
 class WebVideoTranscode {
-	/** @var array Static cache of transcode state per instantiation */
+	/** @var array[] Static cache of transcode state per instantiation */
 	public static $transcodeState = [];
 
 	/**
-	* Encoding parameters are set via firefogg encode api
-	*
-	* For clarity and compatibility with passing down
-	* client side encode settings at point of upload
-	*
-	* http://firefogg.org/dev/index.html
-	* @var array[]
-	*/
+	 * Encoding parameters are set via firefogg encode api
+	 *
+	 * For clarity and compatibility with passing down
+	 * client side encode settings at point of upload
+	 *
+	 * http://firefogg.org/dev/index.html
+	 * @var string[][]
+	 */
 	public static $derivativeSettings = [
 
 		// WebM transcode:
@@ -86,7 +87,7 @@ class WebVideoTranscode {
 				'maxSize'                    => '1280x720',
 				'videoBitrate'               => '2048',
 				'crf'                        => '10',
-				'audioQuality'               => 3,
+				'audioQuality'               => '3',
 				'twopass'                    => 'true',
 				'keyframeInterval'           => '240',
 				'videoCodec'                 => 'vp8',
@@ -99,7 +100,7 @@ class WebVideoTranscode {
 				'maxSize'                    => '1920x1080',
 				'videoBitrate'               => '4096',
 				'crf'                        => '10',
-				'audioQuality'               => 3,
+				'audioQuality'               => '3',
 				'twopass'                    => 'true',
 				'keyframeInterval'           => '240',
 				'videoCodec'                 => 'vp8',
@@ -112,7 +113,7 @@ class WebVideoTranscode {
 				'maxSize'                    => '2560x1440',
 				'videoBitrate'               => '8192',
 				'crf'                        => '10',
-				'audioQuality'               => 3,
+				'audioQuality'               => '3',
 				'twopass'                    => 'true',
 				'keyframeInterval'           => '240',
 				'videoCodec'                 => 'vp8',
@@ -125,7 +126,7 @@ class WebVideoTranscode {
 				'maxSize'                    => '3840x2160',
 				'videoBitrate'               => '16384',
 				'crf'                        => '10',
-				'audioQuality'               => 3,
+				'audioQuality'               => '3',
 				'twopass'                    => 'true',
 				'keyframeInterval'           => '240',
 				'videoCodec'                 => 'vp8',
@@ -475,8 +476,8 @@ class WebVideoTranscode {
 	 * Future versions might respect FileRepo::$abbrvThreshold.
 	 *
 	 * @param File $file
-	 * @param String $suffix Optional suffix (e.g. transcode key).
-	 * @return String File name, or the string transcode.
+	 * @param string $suffix Optional suffix (e.g. transcode key).
+	 * @return string File name, or the string transcode.
 	 */
 	public static function getTranscodeFileBaseName( $file, $suffix = '' ) {
 		$name = $file->getName();
@@ -527,6 +528,7 @@ class WebVideoTranscode {
 		$maxSize = 0;
 		foreach ( self::enabledVideoTranscodes() as $transcodeKey ) {
 			if ( isset( self::$derivativeSettings[$transcodeKey]['videoBitrate'] ) ) {
+				// @phan-suppress-next-line PhanTypePossiblyInvalidDimOffset
 				$currentSize = self::$derivativeSettings[$transcodeKey]['maxSize'];
 				if ( $currentSize > $maxSize ) {
 					$maxSize = $currentSize;
@@ -541,6 +543,7 @@ class WebVideoTranscode {
 	 * Note this is not always accurate.. especially with variable bitrate codecs ;)
 	 * @param File $file
 	 * @param string $transcodeKey
+	 * @suppress PhanTypePossiblyInvalidDimOffset
 	 * @return int
 	 */
 	public static function getProjectedFileSize( $file, $transcodeKey ) {
@@ -569,9 +572,11 @@ class WebVideoTranscode {
 	public static function getSources( &$file, $options = [] ) {
 		if ( $file->isLocal() || $file->repo instanceof ForeignDBViaLBRepo ) {
 			return self::getLocalSources( $file, $options );
-		} else {
+		} elseif ( $file instanceof ForeignAPIFile ) {
 			return self::getRemoteSources( $file, $options );
 		}
+
+		return [];
 	}
 
 	/**
@@ -581,60 +586,61 @@ class WebVideoTranscode {
 	 * 	 <https://gerrit.wikimedia.org/r/#/c/117916/>
 	 *
 	 * Because this works with commons regardless of whether TimedMediaHandler is installed or not
-	 * @param File &$file
+	 * @param ForeignAPIFile &$file
 	 * @param array $options
 	 * @return array|mixed
 	 */
 	public static function getRemoteSources( &$file, $options = [] ) {
-		global $wgMemc;
-		// Setup source attribute options
-		$dataPrefix = in_array( 'nodata', $options ) ? '' : 'data-';
+		$regenerator = function () use ( $file, $options ) {
+			// Setup source attribute options
+			$dataPrefix = in_array( 'nodata', $options ) ? '' : 'data-';
 
-		// Use descriptionCacheExpiry as our expire for timed text tracks info
-		if ( $file->repo->descriptionCacheExpiry > 0 ) {
-			wfDebug( "Attempting to get sources from cache..." );
-			$key = $file->repo->getLocalCacheKey( 'WebVideoSources', 'url', $file->getName() );
-			$sources = $wgMemc->get( $key );
-			if ( $sources ) {
-				wfDebug( "Success found sources in local cache\n" );
-				return $sources;
+			wfDebug( "Get Video sources from remote api for " . $file->getName() . "\n" );
+			$query = [
+				'action' => 'query',
+				'prop' => 'videoinfo',
+				'viprop' => 'derivatives',
+				'titles' => MWNamespace::getCanonicalName( NS_FILE ) . ':' . $file->getTitle()->getText()
+			];
+
+			$data = $file->getRepo()->fetchImageQuery( $query );
+
+			if ( isset( $data['warnings'] ) && isset( $data['warnings']['query'] )
+				&& $data['warnings']['query']['*'] == "Unrecognized value for parameter 'prop': videoinfo"
+			) {
+				// Commons does not yet have TimedMediaHandler.
+				// Use the normal file repo system single source:
+				return [ self::getPrimarySourceAttributes( $file, [ $dataPrefix ] ) ];
 			}
-			wfDebug( "source cache miss\n" );
-		}
 
-		wfDebug( "Get Video sources from remote api for " . $file->getName() . "\n" );
-		$query = [
-			'action' => 'query',
-			'prop' => 'videoinfo',
-			'viprop' => 'derivatives',
-			'titles' => MWNamespace::getCanonicalName( NS_FILE ) . ':' . $file->getTitle()->getText()
-		];
-
-		$data = $file->repo->fetchImageQuery( $query );
-
-		if ( isset( $data['warnings'] ) && isset( $data['warnings']['query'] )
-			&& $data['warnings']['query']['*'] == "Unrecognized value for parameter 'prop': videoinfo"
-		) {
-			// Commons does not yet have TimedMediaHandler.
-			// Use the normal file repo system single source:
-			return [ self::getPrimarySourceAttributes( $file, [ $dataPrefix ] ) ];
-		}
-		$sources = [];
-		// Generate the source list from the data response:
-		if ( isset( $data['query'] ) && $data['query']['pages'] ) {
-			$vidResult = array_shift( $data['query']['pages'] );
-			if ( isset( $vidResult['videoinfo'] ) ) {
-				$derResult = array_shift( $vidResult['videoinfo'] );
-				$derivatives = $derResult['derivatives'];
-				foreach ( $derivatives as $derivativeSource ) {
-					$sources[] = $derivativeSource;
+			$sources = [];
+			// Generate the source list from the data response:
+			if ( isset( $data['query'] ) && $data['query']['pages'] ) {
+				$vidResult = array_shift( $data['query']['pages'] );
+				if ( isset( $vidResult['videoinfo'] ) ) {
+					$derResult = array_shift( $vidResult['videoinfo'] );
+					$derivatives = $derResult['derivatives'];
+					foreach ( $derivatives as $derivativeSource ) {
+						$sources[] = $derivativeSource;
+					}
 				}
 			}
-		}
 
-		// Update the cache:
-		if ( $sources && $file->repo->descriptionCacheExpiry > 0 ) {
-			$wgMemc->set( $key, $sources, $file->repo->descriptionCacheExpiry );
+			return $sources;
+		};
+
+		$repoInfo = $file->getRepo()->getInfo();
+		$cacheTTL = $repoInfo['descriptionCacheExpiry'] ?? 0;
+
+		if ( $cacheTTL > 0 ) {
+			$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+			$sources = $cache->getWithSetCallback(
+				$cache->makeKey( 'WebVideoSources-url', $file->getRepoName(), $file->getName() ),
+				$cacheTTL,
+				$regenerator
+			);
+		} else {
+			$sources = $regenerator();
 		}
 
 		return $sources;
@@ -703,12 +709,12 @@ class WebVideoTranscode {
 			return false;
 		}
 		// Else return boolean ready state ( if not null, then ready ):
-		return !is_null( $transcodeState[ $transcodeKey ]['time_success'] );
+		return ( $transcodeState[ $transcodeKey ]['time_success'] ) !== null;
 	}
 
 	/**
 	 * Clear the transcode state cache:
-	 * @param String|null $fileName Optional fileName to clear transcode cache for
+	 * @param string|null $fileName Optional fileName to clear transcode cache for
 	 */
 	public static function clearTranscodeCache( $fileName = null ) {
 		if ( $fileName ) {
@@ -724,7 +730,7 @@ class WebVideoTranscode {
 	 *
 	 * @param File $file File object
 	 * @param IDatabase|bool $db
-	 * @return array
+	 * @return array[]
 	 */
 	public static function getTranscodeState( $file, $db = false ) {
 		global $wgTranscodeBackgroundTimeLimit;
@@ -798,7 +804,8 @@ class WebVideoTranscode {
 			// Remove any existing files ( regardless of their state )
 			$res = $file->repo->getMasterDB()->select( 'transcode',
 				[ 'transcode_key' ],
-				[ 'transcode_image_name' => $file->getName() ]
+				[ 'transcode_image_name' => $file->getName() ],
+				__METHOD__
 			);
 			$removeKeys = [];
 			foreach ( $res as $transcodeRow ) {
@@ -944,6 +951,7 @@ class WebVideoTranscode {
 	 * @param string $transcodeKey
 	 * @param array $options
 	 * @return array
+	 * @suppress PhanTypePossiblyInvalidDimOffset
 	 */
 	public static function getDerivativeSourceAttributes( $file, $transcodeKey, $options = [] ) {
 		$fileName = $file->getTitle()->getDBkey();
@@ -1055,6 +1063,7 @@ class WebVideoTranscode {
 	 * @param File $file File object
 	 * @param string $transcodeKey transcode key
 	 * @return bool
+	 * @suppress PhanTypePossiblyInvalidDimOffset
 	 */
 	public static function isTranscodeEnabled( File $file, $transcodeKey ) {
 		$handler = $file->getHandler();
@@ -1267,7 +1276,8 @@ class WebVideoTranscode {
 	 * Is the given transcode key the smallest configured transcode for
 	 * its video codec?
 	 * @param string $transcodeKey
-	 * @return true
+	 * @return bool
+	 * @suppress PhanTypePossiblyInvalidDimOffset
 	 */
 	public static function isSmallestTranscodeForCodec( $transcodeKey ) {
 		$settings = self::$derivativeSettings[$transcodeKey];

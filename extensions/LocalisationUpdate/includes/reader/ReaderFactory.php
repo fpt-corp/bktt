@@ -5,7 +5,7 @@
  * @license GPL-2.0-or-later
  */
 
-namespace LocalisationUpdate;
+namespace LocalisationUpdate\Reader;
 
 /**
  * Constructs readers for files based on the names.

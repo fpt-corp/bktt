@@ -5,7 +5,7 @@
  * @license GPL-2.0-or-later
  */
 
-namespace LocalisationUpdate;
+namespace LocalisationUpdate\Fetcher;
 
 /**
  * Accesses file system directly.

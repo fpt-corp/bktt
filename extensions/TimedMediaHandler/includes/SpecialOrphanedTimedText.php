@@ -7,8 +7,9 @@
  * @ingroup SpecialPage
  */
 
-use Wikimedia\Rdbms\IResultWrapper;
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 
 /**
  * Lists TimedText pages that don't have a corresponding video.
@@ -100,6 +101,7 @@ class SpecialOrphanedTimedText extends PageQueryPage {
 	 * Can we execute this special page
 	 *
 	 * That is, db is mysql, and TimedText namespace enabled.
+	 * @return bool
 	 */
 	private function canExecute() {
 		global $wgEnableLocalTimedText;
@@ -177,7 +179,7 @@ class SpecialOrphanedTimedText extends PageQueryPage {
 	protected function existenceCheck( Title $title ) {
 		$fileTitle = $this->getCorrespondingFile( $title );
 		if ( !$fileTitle ) {
-			return $title && !$title->isKnown();
+			return !$title->isKnown();
 		}
 		return !$title->isKnown() ||
 			( isset( $this->existingFiles[ $fileTitle->getDBKey() ] )
@@ -188,6 +190,7 @@ class SpecialOrphanedTimedText extends PageQueryPage {
 	/**
 	 * Given a TimedText title, get the File title
 	 *
+	 * @param Title $timedText
 	 * @return Title|null Title in File namespace. null on error.
 	 */
 	private function getCorrespondingFile( Title $timedText ) {
@@ -199,7 +202,7 @@ class SpecialOrphanedTimedText extends PageQueryPage {
 
 	/**
 	 * What group to include this page in on Special:SpecialPages
-	 * @return String
+	 * @return string
 	 */
 	protected function getGroupName() {
 		return 'media';
@@ -227,7 +230,8 @@ class SpecialOrphanedTimedText extends PageQueryPage {
 			}
 			$filesToLookFor[] = [ 'title' => $fileTitle, 'ignoreRedirect' => true ];
 		}
-		$this->existingFiles = RepoGroup::singleton()->getLocalRepo()->findFiles( $filesToLookFor );
+		$this->existingFiles = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo()
+			->findFiles( $filesToLookFor );
 		$res->seek( 0 );
 	}
 
@@ -241,12 +245,11 @@ class SpecialOrphanedTimedText extends PageQueryPage {
 	 * @return string
 	 */
 	public function formatResult( $skin, $row ) {
-		global $wgContLang;
-
 		$title = Title::makeTitleSafe( $row->namespace, $row->title );
 
 		if ( $title instanceof Title ) {
-			$text = $wgContLang->convert(
+			$contLang = MediaWikiServices::getInstance()->getContentLanguage();
+			$text = $contLang->convert(
 				htmlspecialchars( $title->getPrefixedText() )
 			);
 			$link = $this->getLinkRenderer()->makeLink( $title, new HtmlArmor( $text ) );

@@ -186,6 +186,7 @@
 				.on( 'click', function () {
 					self.checkMenuOverlay();
 					$kmenu = self.$playerTarget.find( '.k-menu' );
+					// eslint-disable-next-line no-jquery/no-sizzle
 					if ( $kmenu.is( ':visible' ) ) {
 						self.closeMenuOverlay();
 					} else {
@@ -376,7 +377,7 @@
 				$( '<div>' )
 					.addClass( 'credits_box ui-corner-all' )
 					.append(
-						$( '<div/>' )
+						$( '<div>' )
 							.loadingSpinner()
 							.css( { position: 'absolute', top: '50%', left: '50%' } )
 					)

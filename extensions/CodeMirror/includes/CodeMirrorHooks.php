@@ -14,6 +14,10 @@ class CodeMirrorHooks {
 		if ( in_array( 'ext.codeEditor', $out->getModules() ) ) {
 			return false;
 		}
+		// Disable CodeMirror when the WikiEditor toolbar is not enabled in preferences
+		if ( !$out->getUser()->getOption( 'usebetatoolbar' ) ) {
+			return false;
+		}
 		$context = $out->getContext();
 		return in_array( Action::getActionName( $context ), [ 'edit', 'submit' ] ) &&
 			// CodeMirror on textarea wikitext editors doesn't support RTL (T170001)
@@ -54,29 +58,6 @@ class CodeMirrorHooks {
 		$defaultPreferences['usecodemirror'] = [
 			'type' => 'api',
 			'default' => '1',
-		];
-	}
-
-	/**
-	 * Register test modules for CodeMirror.
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderTestModules
-	 *
-	 * @param array &$modules
-	 * @param ResourceLoader $rl
-	 */
-	public static function onResourceLoaderTestModules( array &$modules, ResourceLoader $rl ) {
-		$modules['qunit']['ext.CodeMirror.test'] = [
-			'scripts' => [
-				'resources/mode/mediawiki/tests/qunit/CodeMirror.mediawiki.test.js',
-			],
-			'dependencies' => [
-				'ext.CodeMirror.data',
-				'ext.CodeMirror.lib',
-				'ext.CodeMirror.mode.mediawiki',
-			],
-			'localBasePath' => __DIR__ . '/../',
-			'remoteExtPath' => 'CodeMirror',
 		];
 	}
 

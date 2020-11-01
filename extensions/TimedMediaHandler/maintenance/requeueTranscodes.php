@@ -8,6 +8,8 @@ if ( $IP === false ) {
 }
 require_once "$IP/maintenance/Maintenance.php";
 
+use MediaWiki\MediaWikiServices;
+
 class RequeueTranscodes extends Maintenance {
 
 	public function __construct() {
@@ -67,9 +69,10 @@ class RequeueTranscodes extends Maintenance {
 		}
 		$opts = [ 'ORDER BY' => 'img_media_type,img_name' ];
 		$res = $dbr->select( 'image', [ 'img_name' ], $where, __METHOD__, $opts );
+		$localRepo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		foreach ( $res as $row ) {
 			$title = Title::newFromText( $row->img_name, NS_FILE );
-			$file = wfLocalFile( $title );
+			$file = $localRepo->newFile( $title );
 			$handler = $file ? $file->getHandler() : null;
 			if ( $file && $handler && $handler instanceof TimedMediaHandler ) {
 				$this->output( $file->getName() . "\n" );
@@ -133,12 +136,11 @@ class RequeueTranscodes extends Maintenance {
 				if ( !array_key_exists( $key, $state ) || !$state[$key]['time_addjob'] ) {
 					$this->output( ".. queueing $key\n" );
 
-					if ( $this->hasOption( 'throttle' ) ) {
+					if ( !$this->hasOption( 'throttle' ) ) {
+						WebVideoTranscode::updateJobQueue( $file, $key );
+					} else {
 						$startSize = WebVideoTranscode::getQueueSize( $file, $key );
-					}
-
-					WebVideoTranscode::updateJobQueue( $file, $key );
-					if ( $this->hasOption( 'throttle' ) ) {
+						WebVideoTranscode::updateJobQueue( $file, $key );
 						while ( true ) {
 							$size = WebVideoTranscode::getQueueSize( $file, $key );
 							if ( $size > $startSize ) {

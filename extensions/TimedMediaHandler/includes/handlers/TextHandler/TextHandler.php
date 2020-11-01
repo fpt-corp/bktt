@@ -8,12 +8,12 @@
  * TODO On "new" timedtext language save purge all pages where file exists
  */
 
-use Wikimedia\Rdbms\IResultWrapper;
-
+use MediaWiki\MediaWikiServices;
+use MediaWiki\TimedMediaHandler\TimedText\ParseError;
 use MediaWiki\TimedMediaHandler\TimedText\SrtReader;
 use MediaWiki\TimedMediaHandler\TimedText\SrtWriter;
 use MediaWiki\TimedMediaHandler\TimedText\VttWriter;
-use MediaWiki\TimedMediaHandler\TimedText\ParseError;
+use Wikimedia\Rdbms\IResultWrapper;
 
 class TextHandler {
 	// lazy init remote Namespace number
@@ -37,47 +37,46 @@ class TextHandler {
 
 	/**
 	 * Get the timed text tracks elements as an associative array
-	 * @return array|mixed
+	 * @return array[]
 	 */
 	public function getTracks() {
 		if ( $this->file->isLocal() ) {
-			return $this->getLocalTextSources();
-		} elseif ( $this->file->getRepo() instanceof ForeignDBViaLBRepo ) {
-			return $this->getForeignDBTextSources();
+			return $this->getLocalDbTextSources();
+		} elseif ( $this->file instanceof ForeignDBFile ) {
+			return $this->getForeignDbTextSources();
+		} elseif ( $this->file instanceof ForeignAPIFile ) {
+			return $this->getRemoteTextSources( $this->file );
 		} else {
-			return $this->getRemoteTextSources();
+			return [];
 		}
 	}
 
 	/**
-	 * @return bool|int|null
+	 * @return bool|int
 	 */
 	public function getTimedTextNamespace() {
 		global $wgEnableLocalTimedText;
+
+		$repo = $this->file->getRepo();
+
 		if ( $this->file->isLocal() ) {
 			if ( $wgEnableLocalTimedText ) {
 				return NS_TIMEDTEXT;
-			} else {
-				return false;
 			}
-		} elseif ( $this->file->repo instanceof ForeignDBViaLBRepo ) {
+		} elseif ( $repo instanceof ForeignDBViaLBRepo ) {
 			global $wgTimedTextForeignNamespaces;
-			$wikiID = $this->file->getRepo()->getReplicaDB()->getDomainID();
+			$wikiID = $repo->getReplicaDB()->getDomainID();
 			if ( isset( $wgTimedTextForeignNamespaces[ $wikiID ] ) ) {
 				return $wgTimedTextForeignNamespaces[ $wikiID ];
 			}
 			// failed to get namespace via ForeignDBViaLBRepo, return NS_TIMEDTEXT
 			if ( $wgEnableLocalTimedText ) {
 				return NS_TIMEDTEXT;
-			} else {
-				return false;
 			}
-		} else {
+		} elseif ( $repo instanceof ForeignAPIRepo ) {
 			if ( $this->remoteNs !== null ) {
 				return $this->remoteNs;
 			}
-			$repo = $this->file->getRepo();
-			'@phan-var ForeignAPIRepo $repo';
 
 			// Get the namespace data from the image api repo:
 			// fetchImageQuery query caches results
@@ -97,9 +96,14 @@ class TextHandler {
 					}
 				}
 			}
-			// Return the remote Ns
-			return $this->remoteNs;
+
+			// Return the remote Ns, if found
+			if ( $this->remoteNs !== null ) {
+				return $this->remoteNs;
+			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -110,28 +114,36 @@ class TextHandler {
 	 *
 	 * @return IResultWrapper|bool
 	 */
-	public function getTextPages() {
+	private function getTextPagesFromDb() {
 		$ns = $this->getTimedTextNamespace();
 		if ( $ns === false ) {
-			wfDebug( 'Repo: ' . $this->file->repo->getName() . " does not have a TimedText namespace \n" );
+			wfDebug( 'Repo: ' . $this->file->getRepoName() . " does not have a TimedText namespace \n" );
 			// No timed text namespace, don't try to look up timed text tracks
 			return false;
 		}
-		$dbr = $this->file->getRepo()->getReplicaDB();
-		$prefix = $this->file->getTitle()->getDBkey();
-		return $dbr->select(
-			'page',
-			[ 'page_namespace', 'page_title' ],
-			[
-				'page_namespace' => $ns,
-				'page_title ' . $dbr->buildLike( $prefix, $dbr->anyString() )
-			],
-			__METHOD__,
-			[
-				'LIMIT' => 300,
-				'ORDER BY' => 'page_title'
-			]
-		);
+
+		$repo = $this->file->getRepo();
+		if ( $repo instanceof LocalRepo ||
+				$repo instanceof ForeignDBViaLBRepo ||
+				$repo instanceof ForeignDBRepo ) {
+			$dbr = $repo->getReplicaDB();
+			$prefix = $this->file->getTitle()->getDBkey();
+			return $dbr->select(
+				'page',
+				[ 'page_namespace', 'page_title' ],
+				[
+					'page_namespace' => $ns,
+					'page_title ' . $dbr->buildLike( $prefix, $dbr->anyString() )
+				],
+				__METHOD__,
+				[
+					'LIMIT' => 300,
+					'ORDER BY' => 'page_title'
+				]
+			);
+		}
+
+		return false;
 	}
 
 	/**
@@ -141,7 +153,7 @@ class TextHandler {
 	public function getRemoteTextPagesQuery() {
 		$ns = $this->getTimedTextNamespace();
 		if ( $ns === false ) {
-			wfDebug( 'Repo: ' . $this->file->repo->getName() . " does not have a TimedText namespace \n" );
+			wfDebug( 'Repo: ' . $this->file->getRepoName() . " does not have a TimedText namespace \n" );
 			// No timed text namespace, don't try to look up timed text tracks
 			return false;
 		}
@@ -156,46 +168,51 @@ class TextHandler {
 
 	/**
 	 * Retrieve the text sources belonging to a remote file
-	 * @return array|mixed
+	 * @param ForeignAPIFile $file
+	 * @return array[]
 	 */
-	public function getRemoteTextSources() {
-		global $wgMemc;
-		$repo = $this->file->getRepo();
-		'@phan-var ForeignAPIRepo $repo';
-		// Use descriptionCacheExpiry as our expire for timed text tracks info
-		if ( $repo->descriptionCacheExpiry > 0 ) {
-			wfDebug( "Attempting to get text tracks from cache..." );
-			$key = $repo->getLocalCacheKey(
-				'RemoteTextTracks', 'url', $this->file->getName()
-			);
-			$obj = $wgMemc->get( $key );
-			if ( $obj ) {
-				wfDebug( "success!\n" );
-				return $obj;
+	private function getRemoteTextSources( ForeignAPIFile $file ) {
+		$regenerator = function () use ( $file ) {
+			$repo = $file->getRepo();
+			wfDebug( "Get text tracks from remote api \n" );
+			$query = $this->getRemoteTextPagesQuery();
+			// Error in getting timed text namespace return empty array;
+			if ( $query === false || !( $repo instanceof ForeignAPIRepo ) ) {
+				return [];
 			}
-			wfDebug( "miss\n" );
-		}
-		wfDebug( "Get text tracks from remote api \n" );
-		$query = $this->getRemoteTextPagesQuery();
 
-		// Error in getting timed text namespace return empty array;
-		if ( $query === false ) {
-			return [];
+			$data = $file->getRepo()->fetchImageQuery( $query );
+
+			return $this->getTextTracksFromData( $data );
+		};
+
+		$repoInfo = $file->getRepo()->getInfo();
+		$cacheTTL = $repoInfo['descriptionCacheExpiry'] ?? 0;
+
+		if ( $cacheTTL > 0 ) {
+			$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+			$textTracks = $cache->getWithSetCallback(
+				$cache->makeKey(
+					'RemoteTextTracks-url',
+					$this->file->getRepoName(),
+					$this->file->getName()
+				),
+				$cacheTTL,
+				$regenerator
+			);
+		} else {
+			$textTracks = $regenerator();
 		}
-		$data = $repo->fetchImageQuery( $query );
-		$textTracks = $this->getTextTracksFromData( $data );
-		if ( $data && $repo->descriptionCacheExpiry > 0 ) {
-			$wgMemc->set( $key, $textTracks, $repo->descriptionCacheExpiry );
-		}
+
 		return $textTracks;
 	}
 
 	/**
 	 * Retrieve the text sources belonging to a foreign db accessible file
-	 * @return array
+	 * @return array[]
 	 */
-	public function getForeignDBTextSources() {
-		$data = $this->getTextPages();
+	public function getForeignDbTextSources() {
+		$data = $this->getTextPagesFromDb();
 		if ( $data !== false ) {
 			return $this->getTextTracksFromRows( $data );
 		}
@@ -204,12 +221,12 @@ class TextHandler {
 
 	/**
 	 * Retrieve the text sources belonging to a local file
-	 * @return array
+	 * @return array[]
 	 */
-	public function getLocalTextSources() {
+	public function getLocalDbTextSources() {
 		global $wgEnableLocalTimedText;
 		if ( $wgEnableLocalTimedText ) {
-			$data = $this->getTextPages();
+			$data = $this->getTextPagesFromDb();
 			if ( $data !== false ) {
 				return $this->getTextTracksFromRows( $data );
 			}
@@ -222,7 +239,7 @@ class TextHandler {
 	 * Handles both local and foreign Db results
 	 *
 	 * @param IResultWrapper $data Database result with page titles
-	 * @return array
+	 * @return array[]
 	 */
 	public function getTextTracksFromRows( IResultWrapper $data ) {
 		$textTracks = [];
@@ -238,6 +255,8 @@ class TextHandler {
 			if ( $this->file->isLocal() ) {
 				$subTitle = Title::newFromRow( $row );
 			} else {
+				// @phan-suppress-next-next-line PhanTypeMismatchArgumentNullable $namespaceName is set
+				// @phan-suppress-next-line PhanPossiblyUndeclaredVariable $namespaceName is set
 				$subTitle = new ForeignTitle( $row->page_namespace, $namespaceName, $row->page_title );
 			}
 			$titleParts = explode( '.', $row->page_title );
@@ -273,7 +292,7 @@ class TextHandler {
 	/**
 	 * Build an array of track information using an API result
 	 * @param mixed $data JSON decoded result from a query API request
-	 * @return array
+	 * @return array[]
 	 */
 	public function getTextTracksFromData( $data ) {
 		$textTracks = [];
@@ -347,7 +366,7 @@ class TextHandler {
 		$query = wfArrayToCgi( $params );
 
 		// Note: This will return false if scriptDirUrl is not set for repo.
-		return $this->file->repo->makeUrl( $query, 'api' );
+		return $this->file->getRepo()->makeUrl( $query, 'api' );
 	}
 
 	/**

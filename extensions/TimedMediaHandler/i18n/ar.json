@@ -1,17 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abanima",
 			"Alnokta",
 			"Asaifm",
-			"Meno25",
-			"OsamaK",
-			"روخو",
-			"Abanima",
 			"Maroen1990",
-			"محمد أحمد عبد الفتاح",
+			"Meno25",
 			"Mido",
+			"OsamaK",
 			"Sonic N800",
-			"ديفيد"
+			"ديفيد",
+			"روخو",
+			"محمد أحمد عبد الفتاح"
 		]
 	},
 	"timedmediahandler-extensionname": "معالج الميديا الزمنية",
@@ -38,6 +38,8 @@
 	"timedmedia-midi-long-audio": "ملف صوت MIDI، الطول $1، $2 إجمالا",
 	"timedmedia-mp4-short-video": "ام بي 4$1 ملف فيديو,$2",
 	"timedmedia-mp4-long-video": "ام بي 4 ملف صوت/فيديو بنسق WebM , $1, الطول $2, $4×$5 بكسل، $3 إجمالا",
+	"timedmedia-mpeg-short-video": "MPEG $1 ملف فيديو، $2",
+	"timedmedia-mpeg-long-video": "صوت/ملف فيديوMPEG، $1، الطول $2، $4 × $5 بكسل، $3 إجمالا",
 	"timedmedia-more": "المزيد...",
 	"timedmedia-dismiss": "أغلق",
 	"timedmedia-download": "نزل الملف",
@@ -59,7 +61,7 @@
 	"timedmedia-error-on": "خطأ: $1",
 	"timedmedia-started-transcode": "بدأ قبل $1. $2",
 	"timedmedia-percent-done": "وصل لنسبة $1% انتهى",
-	"timedmedia-in-job-queue": "تمت الإضافة إلى طابور المهام منذ $1",
+	"timedmedia-in-job-queue": "أُضِيفَ إلى طابور المهام قبلَ $1",
 	"timedmedia-unknown-target-size": "حجم هدف غير معروف، $1 مكود",
 	"timedmedia-days": "{{PLURAL:$1|يوم واحد|يومين|$1 أيام|$1 يوماً|$1 يوم}}",
 	"timedmedia-hours": "{{PLURAL:$1|ساعة واحدة|ساعتين|$1 ساعات|$1 ساعة}}",
@@ -130,10 +132,6 @@
 	"timedmedia-subtitle-no-subtitles": "لا توجد نصوص أو ترجمات في  $1 لهذا الفيديو، يمكنك [{{fullurl:{{FULLPAGENAME}}|action=edit}} تعديل هذه الصفحة] وإضافتهم.",
 	"timedmedia-subtitle-remote": "Timed text لهذا الملف مستضاف على $1",
 	"timedmedia-subtitle-remote-link": "يمكنك [$1 مطالعة صفحة الوصف] لهذا الملف على $2",
-	"timedmediahandler": "معالج الميديا الزمنية",
-	"timedmedia-videos": "{{PLURAL:$1|ملف فيديو واحد|ملفا فيديو|$1 ملفات فيديو|$1 ملف فيديو}}",
-	"timedmedia-ogg-videos": "{{PLURAL:$1|ملف|ملفا|$1 ملفات|$1 ملف}} فيديو Ogg",
-	"timedmedia-webm-videos": "{{PLURAL:$1|ملف|ملفا|$1 ملفات|$1 ملف}} فيديو WebM",
 	"timedmedia-derivative-state-transcodes": "{{PLURAL:$1|$1 تكويد|$1 تكويدات}}",
 	"timedmedia-derivative-state-active": "{{PLURAL:$1|$1 تكويد يعمل|$1 تكويدات تعمل}}",
 	"timedmedia-derivative-state-queued": "{{PLURAL:$1|$1 تكويد قيد الانتظار|$1 تكويدات قيد الانتظار}}",
@@ -141,11 +139,6 @@
 	"timedmedia-derivative-state-missing": "{{PLURAL:$1|$1 تكويد لم يبدأ|$1 تكويدات لم تبدأ}}",
 	"timedmedia-no-derivatives": "لا تكويد مطلوب.",
 	"timedmedia-file": "ملف",
-	"timedmedia-audios": "{{PLURAL:$1|ملف صوتي واحد|$1 ملف صوتي}}",
-	"timedmedia-ogg-audios": "{{PLURAL:$1|ملف صوتي واحد بصيغة أوغ|$1 ملف صوتي بصيغة أوغ}}",
-	"timedmedia-flac-audios": "{{PLURAL:$1|ملف|ملفا|$1 ملفات|$1 ملف}} صوتي FLAC",
-	"timedmedia-wav-audios": "{{PLURAL:$1|ملف|ملفا|$1 ملفات|$1 ملف}} صوتي WAV",
-	"timedmedia-webm-audios": "{{PLURAL:$1|$1 ملف صوت WebM|$1 ملفات صوت WebM}}",
 	"beta-feature-timedmediahandler-message-videojs": "برنامج الفيديو الجديد",
 	"beta-feature-timedmediahandler-description-videojs": "شاهد ملفات الفيديو في مشغل عصري وواجهة واضحة متوافقة أيضا مع المحمول.",
 	"right-transcode-reset": "إعادة ضبط الفيديوات الفاشلة أو المكودة ليتم إدخالها إلى طابور المهام مجدداً",
@@ -160,5 +153,6 @@
 	"orphanedtimedtext-unsupported": "هذه الصفحة الخاصة لا تدعمها إلا قواعد بيانات MySQL",
 	"orphanedtimedtext-notimedtext": "TimedText غير مفعل على هذا الويكي",
 	"videojs-more-information": "مزيد من المعلومات",
-	"videojs-quality": "جودة الفيديو"
+	"videojs-quality": "جودة الفيديو",
+	"transcodestatistics": "إحصاءات الترميز"
 }

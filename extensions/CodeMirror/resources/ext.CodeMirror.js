@@ -1,7 +1,6 @@
 ( function () {
 	var useCodeMirror, codeMirror, api, originHooksTextarea, cmTextSelection,
 		$textbox1,
-		enableContentEditable = true,
 		// Keep these modules in sync with CodeMirrorHooks.php
 		codeMirrorCoreModules = [
 			'ext.CodeMirror.lib',
@@ -9,8 +8,7 @@
 		];
 
 	// Exit if WikiEditor is disabled
-	// usebetatoolbar can be the string "0" if the user disabled the preference - Bug T54542#555387
-	if ( !( mw.loader.getState( 'ext.wikiEditor' ) && mw.user.options.get( 'usebetatoolbar' ) > 0 ) ) {
+	if ( !mw.loader.getState( 'ext.wikiEditor' ) ) {
 		return;
 	}
 
@@ -37,13 +35,6 @@
 			elem.value = value;
 		}
 	};
-
-	// Disable spellchecking for Firefox users on non-Mac systems (Bug T95104)
-	if ( navigator.userAgent.indexOf( 'Firefox' ) > -1 &&
-		navigator.userAgent.indexOf( 'Mac' ) === -1
-	) {
-		enableContentEditable = false;
-	}
 
 	// jQuery.textSelection overrides for CodeMirror.
 	// See jQuery.textSelection.js for method documentation
@@ -132,8 +123,8 @@
 					Home: 'goLineLeft',
 					End: 'goLineRight'
 				},
-				inputStyle: enableContentEditable ? 'contenteditable' : 'textarea',
-				spellcheck: enableContentEditable,
+				inputStyle: 'contenteditable',
+				spellcheck: true,
 				viewportMargin: Infinity
 			} );
 			$codeMirror = $( codeMirror.getWrapperElement() );
@@ -144,6 +135,7 @@
 			// CodeMirror. We unregister this when switching to normal textarea mode.
 			$textbox1.textSelection( 'register', cmTextSelection );
 
+			// RL module jquery.ui
 			$codeMirror.resizable( {
 				handles: 'se',
 				resize: function ( event, ui ) {

@@ -1,20 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
+			"Ahmad252",
+			"Alifakoor",
+			"Alirezaaa",
+			"Arash.pt",
 			"Armin1392",
 			"Ebraminio",
+			"FarsiNevis",
 			"Huji",
-			"Omidh",
-			"ZxxZxxZ",
-			"Reza1615",
-			"Alirezaaa",
+			"Ladsgroup",
+			"Macofe",
 			"Mehran",
 			"Mjbmr",
-			"Macofe",
-			"Ladsgroup",
-			"Alifakoor",
-			"Arash.pt",
-			"Ahmad252"
+			"Omidh",
+			"Reza1615",
+			"ZxxZxxZ"
 		]
 	},
 	"math-desc": "فرمول‌های ریاضی میان برچسب‌های <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code> را رندر می‌کند",
@@ -81,6 +82,17 @@
 	"mw_math_source": "در قالب LaTeX باقی بماند (برای مرورگرهای متنی)",
 	"prefs-math": "نمایش ریاضیات",
 	"mathstatus": "وضعیت ریاضی",
+	"mathwikibase": "اطلاعات فرمول ریاضی",
 	"datatypes-type-math": "عبارت ریاضی",
-	"wikibase-listdatatypes-math-head": "عبارت ریاضی"
+	"wikibase-listdatatypes-math-head": "عبارت ریاضی",
+	"math-wikibase-formula": "فرمول",
+	"math-wikibase-formula-name": "نام",
+	"math-wikibase-formula-type": "نوع",
+	"math-wikibase-formula-information": "اطلاعات فرمول ریاضی",
+	"math-wikibase-formula-link-header": "منبع داده‌ها",
+	"math-wikibase-formula-elements-header": "اجزای فرمول",
+	"math-wikibase-special-form-header": "نام فرمول را مشخص کنید:",
+	"math-wikibase-special-form-placeholder": "عنوان فرمول",
+	"math-wikibase-special-form-button": "درخواست اطلاعات",
+	"math-wikibase-special-error-header": "خطا"
 }

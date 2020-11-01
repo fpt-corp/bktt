@@ -1,17 +1,17 @@
 {
 	"@metadata": {
 		"authors": [
+			"Abella",
 			"Aleator",
 			"Alvaro Vidal-Abarca",
+			"Fitoschido",
+			"Joan manel",
+			"Macofe",
 			"Paucabot",
 			"Pitort",
 			"SMP",
 			"Toniher",
-			"Vriullop",
-			"Joan manel",
-			"Macofe",
-			"Fitoschido",
-			"Abella"
+			"Vriullop"
 		]
 	},
 	"timedmediahandler-desc": "Gestor de fitxers de vídeo, àudio i text sincronitzat amb suport pels formats WebM, Ogg Theora, Vorbi i srt",
@@ -48,9 +48,6 @@
 	"timedmedia-subtitle-new-desc": "Seleccioneu la llengua i premeu el botó '''{{int:Timedmedia-subtitle-new-go}}'''",
 	"timedmedia-subtitle-new-go": "Vés-hi",
 	"timedmedia-subtitle-language": "$1 ($2) subtítols",
-	"timedmedia-videos": "{{PLURAL:$1|$1 vídeo|$1 vídeos}}",
-	"timedmedia-ogg-videos": "{{PLURAL:$1|$1 vídeo Ogg|$1 vídeos Ogg}}",
-	"timedmedia-webm-videos": "{{PLURAL:$1|$1 vídeo WebM|$1 vídeosWebM}}",
 	"timedmedia-file": "Fitxer",
 	"beta-feature-timedmediahandler-message-videojs": "Reproductor de vídeos nou"
 }

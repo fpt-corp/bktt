@@ -1,5 +1,7 @@
 <?php
 
+use LocalisationUpdate\LocalisationUpdate;
+
 $IP = strval( getenv( 'MW_INSTALL_PATH' ) ) !== ''
 	? getenv( 'MW_INSTALL_PATH' )
 	: realpath( __DIR__ . '/../../' );

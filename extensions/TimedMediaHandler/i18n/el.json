@@ -3,12 +3,12 @@
 		"authors": [
 			"Consta",
 			"Dead3y3",
-			"Omnipaedista",
-			"ZaDiak",
 			"Evropi",
 			"Geraki",
+			"Nikosgranturismogt",
+			"Omnipaedista",
 			"Protnet",
-			"Nikosgranturismogt"
+			"ZaDiak"
 		]
 	},
 	"timedmediahandler-desc": "Χειριστής για ήχο, βίντεο και χρονισμένο κείμενο, με υποστήριξη μορφής για WebM, Ogg Theora, Vorbis, srt",
@@ -23,8 +23,14 @@
 	"timedmedia-more": "Περισσότερα...",
 	"timedmedia-dismiss": "Κλείσιμο",
 	"timedmedia-download": "Κατεβάστε το αρχείο",
+	"timedmedia-play-media": "Αναπαραγωγή πολυμέσου",
 	"timedmedia-desc-link": "Σχετικά με αυτό το αρχείο",
 	"timedmedia-source-file": "Πηγή $1",
 	"timedmedia-source-audio-file-desc": "Πρωτότυπο αρχείο $1 ($2)",
-	"timedmedia-derivative-desc-180p.vp9.webm": "Χαμηλό εύρος VP9 (180P)"
+	"timedmedia-derivative-desc-180p.vp9.webm": "Χαμηλό εύρος VP9 (180P)",
+	"timedmedia-file": "Αρχείο",
+	"beta-feature-timedmediahandler-description-videojs": "Παρακολουθήστε αρχεία βίντεο σε ένα σύγχρονο αναπαραγωγό με πιο καθαρή εμφάνιση και συμβατότητα με κινητά.",
+	"videojs-more-information": "Περισσότερες πληροφορίες",
+	"videojs-quality": "Ποιότητα βίντεο",
+	"transcodestatistics": "Στατιστικά διακωδικοποίησης"
 }

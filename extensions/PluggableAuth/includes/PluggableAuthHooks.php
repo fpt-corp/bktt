@@ -55,7 +55,7 @@ class PluggableAuthHooks {
 	/**
 	 * Implements AuthChangeFormFields hook.
 	 * See https://www.mediawiki.org/wiki/Manual:Hooks/AuthChangeFormFields
-	 * Moves login button to top of form.
+	 * Moves login button to bottom of form.
 	 *
 	 * @since 2.0
 	 * @param array $requests AuthenticationRequests the fields are created from

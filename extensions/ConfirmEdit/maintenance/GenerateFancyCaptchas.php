@@ -44,12 +44,15 @@ class GenerateFancyCaptchas extends Maintenance {
 		$this->addOption( "font-size", "The font size ", false, true );
 		$this->addOption( "blacklist", "A blacklist of words that should not be used", false, true );
 		$this->addOption( "fill", "Fill the captcha container to N files", true, true );
-		$this->addOption( "verbose", "Show debugging information" );
+		$this->addOption(
+			"verbose",
+			"Show debugging information when running the captcha python script"
+		);
 		$this->addOption(
 			"oldcaptcha",
 			"Whether to use captcha-old.py which doesn't have OCR fighting improvements"
 		);
-		$this->addOption( "delete", "Delete the old captches" );
+		$this->addOption( "delete", "Deletes all the old captchas" );
 		$this->addOption( "threads", "The number of threads to use to generate the images",
 			false, true );
 		$this->addDescription( "Generate new fancy captchas and move them into storage" );
@@ -97,7 +100,7 @@ class GenerateFancyCaptchas extends Maintenance {
 			wfEscapeShellArg( dirname( __DIR__ ) . '/' . $captchaScript ),
 			wfEscapeShellArg( $wgCaptchaSecret ),
 			wfEscapeShellArg( $tmpDir ),
-			wfEscapeShellArg( $countGen ),
+			wfEscapeShellArg( (string)$countGen ),
 			wfEscapeShellArg( $wgCaptchaDirectoryLevels )
 		);
 		foreach (
@@ -113,6 +116,7 @@ class GenerateFancyCaptchas extends Maintenance {
 		$captchaTime = -microtime( true );
 		wfShellExec( $cmd, $retVal, [], [ 'time' => 0 ] );
 		if ( $retVal != 0 ) {
+			$this->output( " Failed.\n" );
 			wfRecursiveRemoveDir( $tmpDir );
 			$this->fatalError( "An error occured when running $captchaScript.\n", 1 );
 		}
@@ -188,7 +192,7 @@ class GenerateFancyCaptchas extends Maintenance {
 			if ( !$ret->isGood() ) {
 				$this->output(
 					"Non fatal errors:\n" .
-					Status::wrap( $ret )->getWikiText( null, null, 'en' ) .
+					Status::wrap( $ret )->getWikiText( false, false, 'en' ) .
 					"\n"
 				);
 			}
@@ -208,7 +212,7 @@ class GenerateFancyCaptchas extends Maintenance {
 			$storeSucceeded = false;
 			$this->output( "Errored.\n" );
 			$this->error(
-				Status::wrap( $ret )->getWikiText( null, null, 'en' ) .
+				Status::wrap( $ret )->getWikiText( false, false, 'en' ) .
 				"\n"
 			);
 		}
@@ -232,14 +236,14 @@ class GenerateFancyCaptchas extends Maintenance {
 				if ( !$ret->isGood() ) {
 					$this->output(
 						"Non fatal errors:\n" .
-						Status::wrap( $ret )->getWikiText( null, null, 'en' ) .
+						Status::wrap( $ret )->getWikiText( false, false, 'en' ) .
 						"\n"
 					);
 				}
 			} else {
 				$this->output( "Errored.\n" );
 				$this->error(
-					Status::wrap( $ret )->getWikiText( null, null, 'en' ) .
+					Status::wrap( $ret )->getWikiText( false, false, 'en' ) .
 					"\n"
 				);
 			}

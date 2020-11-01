@@ -4,6 +4,7 @@
 			"EugeneZelenko",
 			"Jim-by",
 			"Red Winged Duck",
+			"Renessaince",
 			"Wizardist"
 		]
 	},
@@ -62,9 +63,9 @@
 	"timedmedia-subtitle-new": "Стварыць новы пераклад ці рэдагаваць існуючы",
 	"timedmedia-subtitle-new-go": "Пачаць",
 	"timedmedia-subtitle-language": "Субтытры ($2) на $1",
-	"timedmediahandler": "TimedMediaHandler",
-	"timedmedia-videos": "{{PLURAL:$1|$1}} відэа",
 	"timedmedia-file": "Файл",
+	"beta-feature-timedmediahandler-message-videojs": "Новы відэапрайгравач",
+	"beta-feature-timedmediahandler-description-videojs": "Праглядаць відэафайлы ў сучасным прайгравачы з чысьцейшым выглядам і мабільнай сумяшчальнасьцю.",
 	"right-transcode-reset": "скіданьне няўдалых або транскадаваных відэа, каб яны ізноў трапілі ў чаргу заданьняў",
 	"right-transcode-status": "прагляд [[Special:TimedMediaHandler|зьвестак пра актуальны стан перакадаваньня]]"
 }

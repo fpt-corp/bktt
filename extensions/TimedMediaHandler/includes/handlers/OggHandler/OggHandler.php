@@ -301,7 +301,7 @@ class OggHandler extends TimedMediaHandler {
 
 	/**
 	 * @param File $file
-	 * @return String
+	 * @return string
 	 */
 	public function getShortDesc( $file ) {
 		global $wgLang, $wgMediaAudioTypes, $wgMediaVideoTypes;
@@ -324,7 +324,7 @@ class OggHandler extends TimedMediaHandler {
 
 	/**
 	 * @param File $file
-	 * @return String
+	 * @return string
 	 */
 	public function getLongDesc( $file ) {
 		global $wgLang, $wgMediaVideoTypes, $wgMediaAudioTypes;
@@ -351,7 +351,7 @@ class OggHandler extends TimedMediaHandler {
 		}
 		$size = 0;
 		$unpacked = $this->unpackMetadata( $file->getMetadata() );
-		if ( !$unpacked || isset( $metadata['error'] ) ) {
+		if ( !$unpacked || isset( $unpacked['error'] ) ) {
 			$length = 0;
 		} else {
 			$length = $this->getLength( $file );

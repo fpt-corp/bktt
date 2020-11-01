@@ -1,16 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
+			"Anarhistička Maca",
+			"Bugoslav",
 			"CERminator",
 			"Dalibor Bosits",
 			"Ex13",
-			"SpeedyGonsales",
-			"Roberta F.",
 			"Fraxinus",
-			"Teoo3",
 			"MaGa",
-			"Bugoslav",
-			"Anarhistička Maca"
+			"Roberta F.",
+			"SpeedyGonsales",
+			"Teoo3"
 		]
 	},
 	"timedmediahandler-desc": "Poslužitelj za Ogg Theora i Vorbis datoteke, s JavaScript preglednikom",
@@ -78,13 +78,12 @@
 	"timedmedia-subtitle-language": "$1 ($2) podnaslovi",
 	"timedmedia-subtitle-no-video": "Nema video zapisa povezanog s trenutačnom stranicom podnapisa.",
 	"timedmedia-subtitle-no-subtitles": "Ne postoje podnaslovi u $1 za ovaj video zapis. Da biste ih dodali možete [{{fullurl:{{FULLPAGENAME}}|action=edit}} urediti ovu stranicu].",
-	"timedmediahandler": "Upravljački program za prikazivanje medija u vremenskim odsječcima i s titlovima – TimedMediaHandler",
-	"timedmedia-videos": "{{PLURAL:$1|Jedna videodatoteka|$1 videodatoteke|$1 videodatoteka}}",
 	"timedmedia-file": "Datoteka",
-	"timedmedia-audios": "{{PLURAL:$1|jedna audiodatoteka|$1 audiodatoteke|$1 audiodatoteka}}",
-	"beta-feature-timedmediahandler-message-videojs": "Novi reproduktor video zapisa",
+	"beta-feature-timedmediahandler-message-videojs": "Novi reproduktor videozapisa",
 	"beta-feature-timedmediahandler-description-videojs": "Gledajte video datoteke u modernom reproduktoru modernog izgleda i kompatibilnog s mobilnim uređajima.",
 	"log-name-timedmediahandler": "Evidencija medija s titlovima",
 	"log-description-timedmediahandler": "Ova stranica sadržava evidencije postavljanja titlova vezanu uz programsku opremu i uporabu TimedMediaHandlerovih transkôdova.",
-	"orphanedtimedtext": "Stranice siročad s TimedText titlovima"
+	"orphanedtimedtext": "Stranice siročad s TimedText titlovima",
+	"videojs-quality": "Kakvoća videa",
+	"transcodestatistics": "Statistika transkodiranja"
 }

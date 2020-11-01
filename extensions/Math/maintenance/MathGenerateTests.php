@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -20,9 +19,10 @@
  */
 
 require_once __DIR__ . '/../../../maintenance/Maintenance.php';
+use MediaWiki\MediaWikiServices;
 
 class MathGenerateTests extends Maintenance {
-	const REFERENCE_PAGE = 'mediawikiwiki:Extension:Math/CoverageTest';
+	private const REFERENCE_PAGE = 'mediawikiwiki:Extension:Math/CoverageTest';
 
 	public function __construct() {
 		parent::__construct();
@@ -45,7 +45,7 @@ class MathGenerateTests extends Maintenance {
 		} else {
 			if ( $title->getPrefixedDBkey() === self::REFERENCE_PAGE ) {
 				$wgEnableScaryTranscluding = true;
-				$parser = new Parser();
+				$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 				$wikiText = $parser->interwikiTransclude( $title, 'raw' );
 			} else {
 				return 'Page does not exist';
@@ -77,6 +77,7 @@ class MathGenerateTests extends Maintenance {
 		}
 		$i = 0;
 		foreach ( array_slice( $allEquations, $offset, $length, true ) as $input ) {
+			// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 			$output = MathRenderer::renderMath( $input[1], $input[2], 'png' );
 			$output = preg_replace( '#src="(.*?)/(([a-f]|\d)*)"#', 'src="\2"', $output );
 			$parserTests[] = [

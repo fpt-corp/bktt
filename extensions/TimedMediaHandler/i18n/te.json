@@ -3,8 +3,8 @@
 		"authors": [
 			"Kiranmayee",
 			"Veeven",
-			"వైజాసత్య",
-			"రహ్మానుద్దీన్"
+			"రహ్మానుద్దీన్",
+			"వైజాసత్య"
 		]
 	},
 	"timedmedia-ogg-short-audio": "Ogg $1 శ్రావ్యక ఫైలు, $2",
@@ -31,6 +31,5 @@
 	"timedmedia-source-audio-file-desc": "అసలు $1 దస్త్రం ($2)",
 	"timedmedia-subtitle-new-go": "వెళ్ళు",
 	"timedmedia-subtitle-language": "$1 ($2) ఉపశీర్షికలు",
-	"timedmedia-videos": "{{PLURAL:$1|$1 వీడియో|$1 వీడియోలు}}",
 	"timedmedia-file": "దస్త్రం"
 }

@@ -1,5 +1,9 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\User\UserIdentity;
+
 /**
  * Hooks for TimedMediaHandler extension
  *
@@ -42,7 +46,7 @@ class TimedMediaHandlerHooks {
 	 * @return bool
 	 */
 	public static function register() {
-		global $wgHooks, $wgJobClasses, $wgJobTypesExcludedFromDefaultQueue, $wgMediaHandlers,
+		global $wgJobTypesExcludedFromDefaultQueue,
 		$wgExcludeFromThumbnailPurge,
 		$wgFileExtensions, $wgTmhEnableMp4Uploads,
 		$wgMwEmbedModuleConfig, $wgEnableLocalTimedText, $wgTmhFileExtensions;
@@ -57,48 +61,8 @@ class TimedMediaHandlerHooks {
 			}
 		}
 
-		// Setup media Handlers:
-		$wgMediaHandlers['application/ogg'] = 'OggHandler';
-		$wgMediaHandlers['audio/webm'] = 'WebMHandler';
-		$wgMediaHandlers['video/webm'] = 'WebMHandler';
-		$wgMediaHandlers['video/mp4'] = 'Mp4Handler';
-		$wgMediaHandlers['audio/x-flac'] = 'FLACHandler';
-		$wgMediaHandlers['audio/flac'] = 'FLACHandler';
-		$wgMediaHandlers['audio/wav'] = 'WAVHandler';
-		$wgMediaHandlers['audio/midi'] = 'MidiHandler';
-		$wgMediaHandlers['audio/mpeg'] = 'Mp3Handler';
-
-		// Add transcode job class:
-		$wgJobClasses['webVideoTranscode'] = 'WebVideoTranscodeJob';
-		// Same class with different queue priority:
-		$wgJobClasses['webVideoTranscodePrioritized'] = 'WebVideoTranscodeJob';
-
 		// Transcode jobs must be explicitly requested from the job queue:
 		$wgJobTypesExcludedFromDefaultQueue[] = 'webVideoTranscode';
-
-		// Setup a hook for iframe embed handling:
-		$wgHooks['ArticleFromTitle'][] = 'TimedMediaIframeOutput::iframeHook';
-
-		// When an upload completes ( check clear any existing transcodes )
-		$wgHooks['FileUpload'][] = 'TimedMediaHandlerHooks::onFileUpload';
-
-		// When an image page is moved:
-		$wgHooks['TitleMove'][] = 'TimedMediaHandlerHooks::checkTitleMove';
-
-		// When image page is deleted so that we remove transcode settings / files.
-		$wgHooks['FileDeleteComplete'][] = 'TimedMediaHandlerHooks::onFileDeleteComplete';
-
-		// Use a BeforePageDisplay hook to load the styles in pages that pull in media dynamically.
-		// (Special:Upload, for example, when there is an "existing file" warning.)
-		$wgHooks['BeforePageDisplay'][] = 'TimedMediaHandlerHooks::pageOutputHook';
-
-		// Make sure modules are loaded on image pages that don't have a media file in the wikitext.
-		$wgHooks['ImageOpenShowImageInlineBefore'][] =
-			'TimedMediaHandlerHooks::onImageOpenShowImageInlineBefore';
-
-		// Bug T63923: Make sure modules are loaded for the image history of image pages.
-		// This is needed when ImageOpenShowImageInlineBefore is not triggered (diff previews).
-		$wgHooks['ImagePageFileHistoryLine'][] = 'TimedMediaHandlerHooks::onImagePageFileHistoryLine';
 
 		// Exclude transcoded assets from normal thumbnail purging
 		// ( a maintenance script could handle transcode asset purging)
@@ -109,41 +73,19 @@ class TimedMediaHandlerHooks {
 			$wgExcludeFromThumbnailPurge[] = 'log';
 		}
 
-		// Add unit tests
-		$wgHooks['ParserTestTables'][] = 'TimedMediaHandlerHooks::onParserTestTables';
-
-		/**
-		 * Add support for the "TimedText" NameSpace
-		 */
-		if ( $wgEnableLocalTimedText ) {
-			// Check for timed text page:
-			$wgHooks[ 'ArticleFromTitle' ][] = 'TimedMediaHandlerHooks::checkForTimedTextPage';
-			$wgHooks[ 'ArticleContentOnDiff' ][] = 'TimedMediaHandlerHooks::checkForTimedTextDiff';
-
-			$wgHooks[ 'SkinTemplateNavigation' ][] = 'TimedMediaHandlerHooks::onSkinTemplateNavigation';
-		} else {
+		if ( !$wgEnableLocalTimedText ) {
 			// overwrite TimedText.ShowInterface for video with mw-provider=local
 			$wgMwEmbedModuleConfig['TimedText.ShowInterface.local'] = 'off';
 		}
-
-		// Add transcode status to video asset pages:
-		$wgHooks['ImagePageAfterImageLinks'][] = 'TimedMediaHandlerHooks::checkForTranscodeStatus';
-		$wgHooks['NewRevisionFromEditComplete'][] =
-			'TimedMediaHandlerHooks::onNewRevisionFromEditComplete';
-		$wgHooks['ArticlePurge'][] = 'TimedMediaHandlerHooks::onArticlePurge';
-
-		$wgHooks['LoadExtensionSchemaUpdates'][] = 'TimedMediaHandlerHooks::checkSchemaUpdates';
-		$wgHooks['wgQueryPages'][] = 'TimedMediaHandlerHooks::onwgQueryPages';
-		$wgHooks['RejectParserCacheValue'][] = 'TimedMediaHandlerHooks::onRejectParserCacheValue';
 		return true;
 	}
 
 	/**
-	 * @param ImagePage &$imagePage the imagepage that is being rendered
-	 * @param OutputPage &$out the output for this imagepage
+	 * @param ImagePage $imagePage the imagepage that is being rendered
+	 * @param OutputPage $out the output for this imagepage
 	 * @return bool
 	 */
-	public static function onImageOpenShowImageInlineBefore( &$imagePage, &$out ) {
+	public static function onImageOpenShowImageInlineBefore( ImagePage $imagePage, OutputPage $out ) {
 		$file = $imagePage->getDisplayedFile();
 		return self::onImagePageHooks( $file, $out );
 	}
@@ -186,11 +128,16 @@ class TimedMediaHandlerHooks {
 	}
 
 	/**
-	 * @param Title &$title
-	 * @param Article &$article
+	 * @param Title $title
+	 * @param Article|null &$article
 	 * @return bool
 	 */
-	public static function checkForTimedTextPage( &$title, &$article ) {
+	public static function checkForTimedTextPage( Title $title, ?Article &$article ) {
+		global $wgEnableLocalTimedText;
+		if ( !$wgEnableLocalTimedText ) {
+			return true;
+		}
+
 		global $wgTimedTextNS;
 		if ( $title->getNamespace() === $wgTimedTextNS ) {
 			$article = new TimedTextPage( $title );
@@ -204,6 +151,11 @@ class TimedMediaHandlerHooks {
 	 * @return bool
 	 */
 	public static function checkForTimedTextDiff( $diffEngine, $output ) {
+		global $wgEnableLocalTimedText;
+		if ( !$wgEnableLocalTimedText ) {
+			return true;
+		}
+
 		global $wgTimedTextNS;
 		if ( $output->getTitle()->getNamespace() === $wgTimedTextNS ) {
 			$article = new TimedTextPage( $output->getTitle() );
@@ -218,6 +170,11 @@ class TimedMediaHandlerHooks {
 	 * @param array &$links
 	 */
 	public static function onSkinTemplateNavigation( SkinTemplate &$sktemplate, array &$links ) {
+		global $wgEnableLocalTimedText;
+		if ( !$wgEnableLocalTimedText ) {
+			return;
+		}
+
 		if ( self::isTimedMediaHandlerTitle( $sktemplate->getTitle() ) ) {
 			$ttTitle = Title::makeTitleSafe( NS_TIMEDTEXT, $sktemplate->getTitle()->getDBkey() );
 			if ( !$ttTitle ) {
@@ -237,7 +194,7 @@ class TimedMediaHandlerHooks {
 		if ( $title->getNamespace() != NS_FILE ) {
 			return false;
 		}
-		$file = wfFindFile( $title );
+		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $title );
 		return self::isTranscodableFile( $file );
 	}
 
@@ -246,7 +203,7 @@ class TimedMediaHandlerHooks {
 	 * @param File &$file File object
 	 * @return bool
 	 */
-	public static function isTranscodableFile( & $file ) {
+	public static function isTranscodableFile( &$file ) {
 		global $wgEnableTranscode, $wgEnabledAudioTranscodeSet;
 
 		// don't show the transcode table if transcode is disabled
@@ -270,7 +227,8 @@ class TimedMediaHandlerHooks {
 		$mediaType = $handler->getMetadataType( $file );
 		// If ogg or webm format and not audio we can "transcode" this file
 		$isAudio = $handler instanceof TimedMediaHandler && $handler->isAudio( $file );
-		if ( ( $mediaType == 'webm' || $mediaType == 'ogg' || $mediaType == 'mp4' )
+		if ( ( $mediaType == 'webm' || $mediaType == 'ogg'
+				|| $mediaType == 'mp4' || $mediaType == 'mpeg' )
 			&& !$isAudio
 		) {
 			return true;
@@ -289,7 +247,7 @@ class TimedMediaHandlerHooks {
 		if ( !$title->inNamespace( NS_FILE ) ) {
 			return false;
 		}
-		$file = wfFindFile( $title );
+		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $title );
 		// Can't find file
 		if ( !$file ) {
 			return false;
@@ -308,7 +266,7 @@ class TimedMediaHandlerHooks {
 	 */
 	public static function checkForTranscodeStatus( $article, &$html ) {
 		// load the file:
-		$file = wfFindFile( $article->getTitle() );
+		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $article->getTitle() );
 		if ( self::isTranscodableFile( $file ) ) {
 			$html .= TranscodeStatusTable::getHTML( $file );
 		}
@@ -346,7 +304,7 @@ class TimedMediaHandlerHooks {
 		if ( self::isTranscodableTitle( $title ) ) {
 			// Remove all the transcode files and db states for this asset
 			// ( will be re-added the first time the asset is displayed with its new title )
-			$file = wfFindFile( $title );
+			$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $title );
 			WebVideoTranscode::removeTranscodes( $file );
 		}
 		return true;
@@ -375,19 +333,19 @@ class TimedMediaHandlerHooks {
 	 * If file gets reverted to a previous version, reset transcodes.
 	 *
 	 * @param WikiPage $wikiPage
-	 * @param Revision $rev
+	 * @param RevisionRecord $rev
 	 * @param int $baseID
-	 * @param User $user
+	 * @param UserIdentity $user
 	 *
 	 * @return bool
 	 */
-	public static function onNewRevisionFromEditComplete(
-		WikiPage $wikiPage, Revision $rev, $baseID, User $user
+	public static function onRevisionFromEditComplete(
+		WikiPage $wikiPage, RevisionRecord $rev, $baseID, UserIdentity $user
 	) {
 		if ( $baseID !== false ) {
 			// Check if the article is a file and remove transcode files:
 			if ( $wikiPage->getTitle()->getNamespace() == NS_FILE ) {
-				$file = wfFindFile( $wikiPage->getTitle() );
+				$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $wikiPage->getTitle() );
 				if ( self::isTranscodableFile( $file ) ) {
 					WebVideoTranscode::removeTranscodes( $file );
 					WebVideoTranscode::startJobQueue( $file );
@@ -407,7 +365,7 @@ class TimedMediaHandlerHooks {
 	 */
 	public static function onArticlePurge( WikiPage $article ) {
 		if ( $article->getTitle()->getNamespace() == NS_FILE ) {
-			$file = wfFindFile( $article->getTitle() );
+			$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $article->getTitle() );
 			if ( self::isTranscodableFile( $file ) ) {
 				WebVideoTranscode::cleanupTranscodes( $file );
 			}
@@ -443,11 +401,11 @@ class TimedMediaHandlerHooks {
 	 * FIXME: There ought to be a better interface for determining whether the
 	 * page is liable to contain timed media.
 	 *
-	 * @param OutputPage &$out
-	 * @param Skin &$sk
+	 * @param OutputPage $out
+	 * @param Skin $sk
 	 * @return bool
 	 */
-	public static function pageOutputHook( &$out, &$sk ) {
+	public static function pageOutputHook( OutputPage $out, Skin $sk ) {
 		global $wgTimedTextNS;
 
 		$title = $out->getTitle();
@@ -459,7 +417,8 @@ class TimedMediaHandlerHooks {
 		}
 
 		if ( $title->isSpecialPage() ) {
-			list( $name, /* subpage */ ) = SpecialPageFactory::resolveAlias( $title->getDBkey() );
+			list( $name, /* subpage */ ) = MediaWikiServices::getInstance()
+				->getSpecialPageFactory()->resolveAlias( $title->getDBkey() );
 			if ( stripos( $name, 'file' ) !== false || stripos( $name, 'image' ) !== false
 				|| $name === 'Search' || $name === 'GlobalUsage' || $name === 'Upload' ) {
 					$addModules = true;
@@ -555,12 +514,13 @@ class TimedMediaHandlerHooks {
 	 * @param array &$prefs
 	 */
 	public static function onGetBetaFeaturePreferences( $user, &$prefs ) {
-		global $wgTmhUseBetaFeatures;
-
 		$coreConfig = RequestContext::getMain()->getConfig();
 		$iconpath = $coreConfig->get( 'ExtensionAssetsPath' ) . "/TimedMediaHandler";
 
-		if ( $wgTmhUseBetaFeatures ) {
+		$tmhConfig = MediaWikiServices::getInstance()->getConfigFactory()
+			->makeConfig( 'timedmediahandler' );
+
+		if ( $tmhConfig->get( 'TmhUseBetaFeatures' ) ) {
 			$prefs['tmh-videojs'] = [
 				'label-message' => 'beta-feature-timedmediahandler-message-videojs',
 				'desc-message' => 'beta-feature-timedmediahandler-description-videojs',
@@ -585,10 +545,17 @@ class TimedMediaHandlerHooks {
 	 * @return string
 	 */
 	public static function activePlayerMode() {
-		global $wgTmhUseBetaFeatures, $wgUser;
+		global $wgUser;
+
+		$tmhConfig = MediaWikiServices::getInstance()->getConfigFactory()
+			->makeConfig( 'timedmediahandler' );
+
 		$context = RequestContext::getMain();
-		if ( $wgTmhUseBetaFeatures && ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' ) &&
-			$wgUser->isSafeToLoad() && BetaFeatures::isFeatureEnabled( $context->getUser(), 'tmh-videojs' )
+		if (
+			$tmhConfig->get( 'TmhUseBetaFeatures' )
+			&& ExtensionRegistry::getInstance()->isLoaded( 'BetaFeatures' )
+			&& $wgUser->isSafeToLoad()
+			&& BetaFeatures::isFeatureEnabled( $context->getUser(), 'tmh-videojs' )
 		) {
 			return 'videojs';
 		} else {

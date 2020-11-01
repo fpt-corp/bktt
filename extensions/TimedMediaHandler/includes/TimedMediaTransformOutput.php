@@ -6,7 +6,7 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 
 	// Video file sources object lazy init in getSources()
 	// TODO these vars should probably be private
-	/** @var array|mixed|false|null */
+	/** @var array[]|false|null */
 	public $sources = null;
 
 	/** @var null */
@@ -48,6 +48,9 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 	/** @var string|false */
 	protected $playerClass;
 
+	/** @var bool */
+	protected $inline;
+
 	// The prefix for player ids
 	const PLAYER_ID_PREFIX = 'mwe_player_';
 
@@ -59,8 +62,8 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 		$this->thumbUrl = $conf['thumbUrl'] ?? false;
 		$this->start = $conf['start'] ?? false;
 		$this->end = $conf['end'] ?? false;
-		$this->width = $conf['width'] ?? false;
-		$this->height = $conf['height'] ?? false;
+		$this->width = $conf['width'] ?? 0;
+		$this->height = $conf['height'] ?? 0;
 		$this->length = $conf['length'] ?? false;
 		$this->offset = $conf['offset'] ?? false;
 		$this->isVideo = $conf['isVideo'] ?? false;
@@ -68,6 +71,7 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 		$this->fillwindow = $conf['fillwindow'] ?? false;
 		$this->disablecontrols = $conf['disablecontrols'] ?? false;
 		$this->playerClass = $conf['playerClass'] ?? false;
+		$this->inline = $conf['inline'] ?? false;
 	}
 
 	/**
@@ -92,13 +96,8 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 	 * @return string
 	 */
 	public function getUrl( $sizeOverride = false ) {
-		global $wgVersion, $wgResourceBasePath, $wgStylePath;
-		// Needs to be 1.24c because version_compare() works in confusing ways
-		if ( version_compare( $wgVersion, '1.24c', '>=' ) ) {
-			$url = "$wgResourceBasePath/resources/assets/file-type-icons/fileicon-ogg.png";
-		} else {
-			$url = "$wgStylePath/common/images/icons/fileicon-ogg.png";
-		}
+		global $wgResourceBasePath;
+		$url = "$wgResourceBasePath/resources/assets/file-type-icons/fileicon-ogg.png";
 
 		if ( $this->isVideo ) {
 			if ( $this->thumbUrl ) {
@@ -194,10 +193,10 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 	/**
 	 * Helper to determine if to use pop up dialog for videos
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function useImagePopUp() {
-		global  $wgMinimumVideoPlayerSize;
+		global $wgMinimumVideoPlayerSize;
 		// Check if the video is too small to play inline ( instead do a pop-up dialog )
 		// If we're filling the window (e.g. during an iframe embed) one probably doesn't want the pop up.
 		// Also the pop up is broken in that case.
@@ -297,6 +296,9 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 	 * The list should be in preferred source order, so we want the file
 	 * with the lowest bitrate (to save bandwidth) first, but we also want
 	 * appropriate resolution files before the 160p transcodes.
+	 * @param array $a
+	 * @param array $b
+	 * @return int
 	 */
 	private function sortMediaByBandwidth( $a, $b ) {
 		$width = $this->getPlayerWidth();
@@ -354,7 +356,7 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 		if ( !$firstSource['src'] ) {
 			// XXX media handlers don't seem to work with exceptions..
 			return 'Error missing media source';
-		};
+		}
 
 		// Sort sources by bandwidth least to greatest ( so default selection on resource constrained
 		// browsers ( without js? ) go with minimal source.
@@ -394,7 +396,6 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 			}
 		}
 
-		/** @phan-suppress-next-line PhanTypeInvalidDimOffset */
 		$width = $sizeOverride ? $sizeOverride[0] : $this->getPlayerWidth();
 		if ( $this->fillwindow ) {
 			$width = '100%';
@@ -425,8 +426,8 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 	/**
 	 * Get poster.
 	 * @param int $width width of poster. Should not equal $this->width.
+	 * @return string|bool url for poster or false
 	 * @throws Exception If $width is same as $this->width.
-	 * @return String|bool url for poster or false
 	 */
 	private function getPoster( $width ) {
 		if ( intval( $width ) === intval( $this->width ) ) {
@@ -502,6 +503,10 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 			if ( $this->fillwindow ) {
 				$mediaAttr[ 'class' ] .= ' vjs-fluid';
 				$mediaAttr[ 'data-player' ] = 'fillwindow';
+			}
+			if ( $this->inline ) {
+				$mediaAttr['class'] .= ' mw-tmh-inline';
+				$mediaAttr['playsinline'] = '';
 			}
 		} else {
 			$mediaAttr['style'] = "width:{$width}";
@@ -602,17 +607,36 @@ class TimedMediaTransformOutput extends MediaTransformOutput {
 	}
 
 	/**
+	 * @param array|null $options An optional array of strings to tweak
+	 *   the values returned.  Currently valid keys are `"fullurl"`, which
+	 *   calls `wfExpandUrl(..., PROTO_CURRENT)` on all URLs returned, and
+	 *   `"withhash"`, which ensures that returned URLs have the temporal
+	 *   url hash appended (as `getMediaSources()` does).
 	 * @return array
 	 */
-	public function getAPIData() {
-		$vals = [
-			'derivatives' => WebVideoTranscode::getSources( $this->file, [ 'fullurl' ] ),
-			'timedtext' => $this->getTextHandler()->getTracks(),
-		];
-		foreach ( $vals['timedtext'] as &$track ) {
-			$track['src'] = wfExpandUrl( $track['src'], PROTO_CURRENT );
+	public function getAPIData( ?array $options = null ) {
+		$options = $options ?? [ 'fullurl' ];
+
+		$timedtext = $this->getTextHandler()->getTracks();
+		if ( in_array( 'fullurl', $options ) ) {
+			foreach ( $timedtext as &$track ) {
+				$track['src'] = wfExpandUrl( $track['src'], PROTO_CURRENT );
+			}
+			unset( $track );
 		}
-		unset( $track );
-		return $vals;
+
+		$derivatives = WebVideoTranscode::getSources( $this->file, $options );
+		if ( in_array( 'withhash', $options ) ) {
+			// Check if we have "start or end" times and append the temporal url fragment hash
+			foreach ( $derivatives as &$source ) {
+				$source['src'] .= $this->getTemporalUrlHash();
+			}
+			unset( $source );
+		}
+
+		return [
+			'derivatives' => $derivatives,
+			'timedtext' => $timedtext,
+		];
 	}
 }

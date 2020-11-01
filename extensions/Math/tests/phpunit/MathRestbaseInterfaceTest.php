@@ -5,7 +5,7 @@
  * /media/math/check/{type}
  * /media/math/render/{format}/{hash}
  *
- * @covers MathRestbaseInterface
+ * @covers \MathRestbaseInterface
  *
  * @group Math
  *
@@ -14,7 +14,7 @@
 class MathRestbaseInterfaceTest extends MediaWikiTestCase {
 	protected static $hasRestbase;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		$rbi = new MathRestbaseInterface();
 		self::$hasRestbase = $rbi->checkBackend( true );
 	}
@@ -23,7 +23,7 @@ class MathRestbaseInterfaceTest extends MediaWikiTestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		if ( !self::$hasRestbase ) {
 			$this->markTestSkipped( "Can not connect to Restbase Math interface." );
@@ -40,19 +40,19 @@ class MathRestbaseInterfaceTest extends MediaWikiTestCase {
 		$rbi = new MathRestbaseInterface( $input );
 		$this->assertTrue( $rbi->getSuccess(), "Assuming that $input is valid input." );
 		$this->assertEquals( '\\sin x^{2}', $rbi->getCheckedTex() );
-		$this->assertContains( '<mi>sin</mi>', $rbi->getMathML() );
+		$this->assertStringContainsString( '<mi>sin</mi>', $rbi->getMathML() );
 		$url = $rbi->getFullSvgUrl();
 		$req = MWHttpRequest::factory( $url );
 		$status = $req->execute();
 		$this->assertTrue( $status->isOK() );
-		$this->assertContains( '</svg>', $req->getContent() );
+		$this->assertStringContainsString( '</svg>', $req->getContent() );
 	}
 
 	public function testFail() {
 		$input = '\\sin\\newcommand';
 		$rbi = new MathRestbaseInterface( $input );
 		$this->assertFalse( $rbi->getSuccess(), "Assuming that $input is invalid input." );
-		$this->assertEquals( '', $rbi->getCheckedTex() );
+		$this->assertNull( $rbi->getCheckedTex() );
 		$this->assertEquals( 'Illegal TeX function', $rbi->getError()->error->message );
 	}
 
@@ -62,60 +62,54 @@ class MathRestbaseInterfaceTest extends MediaWikiTestCase {
 		$this->assertTrue( $rbi->checkTeX(), "Assuming that $input is valid input." );
 		$this->assertTrue( $rbi->getSuccess(), "Assuming that $input is valid input." );
 		$this->assertEquals( '{\ce {H2O}}', $rbi->getCheckedTex() );
-		$this->assertContains( '<msubsup>', $rbi->getMathML() );
-		$this->assertContains( '<mtext>H</mtext>', $rbi->getMathML() );
+		$this->assertStringContainsString( '<msubsup>', $rbi->getMathML() );
+		$this->assertStringContainsString( '<mtext>H</mtext>', $rbi->getMathML() );
 	}
 
-	/**
-	 * @expectedException MWException
-	 * @expectedExceptionMessage TeX input is invalid.
-	 */
 	public function testException() {
 		$input = '\\newcommand';
 		$rbi = new MathRestbaseInterface( $input );
+		$this->expectException( MWException::class );
+		$this->expectExceptionMessage( 'TeX input is invalid.' );
 		$rbi->getMathML();
 	}
 
-	/**
-	 * @expectedException MWException
-	 * @expectedExceptionMessage TeX input is invalid.
-	 */
 	public function testExceptionSvg() {
 		$input = '\\newcommand';
 		$rbi = new MathRestbaseInterface( $input );
+		$this->expectException( MWException::class );
+		$this->expectExceptionMessage( 'TeX input is invalid.' );
 		$rbi->getFullSvgUrl();
 	}
 
 	/**
 	 * Incorporate the "details" in the error message, if the check requests passes, but the
 	 * mml/svg/complete endpoints returns an error
-	 * @expectedException MWException
-	 * @expectedExceptionMessage Cannot get mml. TeX parse error: Missing close brace
 	 */
 	public function testLateError() {
 		// phpcs:ignore Generic.Files.LineLength.TooLong
 		$input = '{"type":"https://mediawiki.org/wiki/HyperSwitch/errors/bad_request","title":"Bad Request","method":"POST","detail":["TeX parse error: Missing close brace"],"uri":"/complete"}';
+		$this->expectException( MWException::class );
+		$this->expectExceptionMessage( 'Cannot get mml. TeX parse error: Missing close brace' );
 		MathRestbaseInterface::throwContentError( 'mml', $input );
 	}
 
 	/**
 	 * Incorporate the "details" in the error message, if the check requests passes, but the
 	 * mml/svg/complete endpoints returns an error
-	 * @expectedException MWException
-	 * @expectedExceptionMessage Cannot get mml. TeX parse error: Missing close brace
 	 */
 	public function testLateErrorString() {
 		// phpcs:ignore Generic.Files.LineLength.TooLong
 		$input = '{"type":"https://mediawiki.org/wiki/HyperSwitch/errors/bad_request","title":"Bad Request","method":"POST","detail": "TeX parse error: Missing close brace","uri":"/complete"}';
+		$this->expectException( MWException::class );
+		$this->expectExceptionMessage( 'Cannot get mml. TeX parse error: Missing close brace' );
 		MathRestbaseInterface::throwContentError( 'mml', $input );
 	}
 
-	/**
-	 * @expectedException MWException
-	 * @expectedExceptionMessage Cannot get mml. Server problem.
-	 */
 	public function testLateErrorNoDetail() {
 		$input = '';
+		$this->expectException( MWException::class );
+		$this->expectExceptionMessage( 'Cannot get mml. Server problem.' );
 		MathRestbaseInterface::throwContentError( 'mml', $input );
 	}
 }

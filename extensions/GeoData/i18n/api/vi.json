@@ -1,9 +1,0 @@
-{
-	"@metadata": {
-		"authors": [
-			"Minh Nguyen"
-		]
-	},
-	"apihelp-query+geosearch-param-namespace": "Không gian tên để tìm kiếm.",
-	"apierror-geodata-badcoord": "Đã cung cấp tọa độ không hợp lệ"
-}

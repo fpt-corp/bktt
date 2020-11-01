@@ -111,10 +111,10 @@ class TimedMediaHandler extends MediaHandler {
 				$thumbtime = $matches[4];
 			}
 
-			if ( !is_null( $size ) && $size !== '' ) {
+			if ( $size !== null && $size !== '' ) {
 				$params['width'] = (int)$size;
 			}
-			if ( !is_null( $thumbtime ) ) {
+			if ( $thumbtime !== null ) {
 				$params['thumbtime'] = (float)$thumbtime;
 			}
 			return $params; // valid thumbnail URL
@@ -194,7 +194,7 @@ class TimedMediaHandler extends MediaHandler {
 	 * The core embedPlayer module lazy loaded by the loader modules
 	 *
 	 * @param Parser $parser
-	 * @param File $file
+	 * @param ?File $file
 	 */
 	public function parserTransformHook( $parser, $file ) {
 		$parserOutput = $parser->getOutput();
@@ -381,8 +381,20 @@ class TimedMediaHandler extends MediaHandler {
 			'start' => $params['start'] ?? false,
 			'end' => $params['end'] ?? false,
 			'fillwindow' => $params['fillwindow'] ?? false,
-			'disablecontrols' => $params['disablecontrols'] ?? false
+			'disablecontrols' => $params['disablecontrols'] ?? false,
+			'inline' => $params['inline'] ?? false,
 		];
+
+		// Allow start and end query string params on image pages (T203994)
+		if ( isset( $params['imagePageParams'] ) ) {
+			$requestParams = $params['imagePageParams'];
+			if ( !$options['start'] ) {
+				$options['start'] = $requestParams[ 'start' ] ?? false;
+			}
+			if ( !$options['end'] ) {
+				$options['end'] = $requestParams[ 'end' ] ?? false;
+			}
+		}
 
 		// No thumbs for audio
 		if ( !$options['isVideo'] ) {
@@ -461,7 +473,7 @@ class TimedMediaHandler extends MediaHandler {
 
 	/**
 	 * @param File $file
-	 * @return String
+	 * @return string
 	 */
 	public function getDimensionsString( $file ) {
 		global $wgLang;
@@ -472,5 +484,14 @@ class TimedMediaHandler extends MediaHandler {
 		} else {
 			return $wgLang->formatTimePeriod( $this->getLength( $file ) );
 		}
+	}
+
+	/**
+	 * Returns true if the file contains an interlaced video track.
+	 * @param File $file
+	 * @return bool
+	 */
+	public function isInterlaced( $file ) {
+		return false;
 	}
 }

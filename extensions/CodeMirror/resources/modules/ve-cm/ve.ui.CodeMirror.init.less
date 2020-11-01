@@ -17,13 +17,18 @@
 
 		// Skin specific paddings
 		.skin-vector & {
-			padding: 0 1.2em;
+			/* stylelint-disable-next-line unit-blacklist */
+			padding: 0 1rem;
 
 			@media screen and ( min-width: 982px ) {
-				padding: 0 1.8em;
+				.skin-vector-legacy& {
+					/* stylelint-disable-next-line unit-blacklist */
+					padding: 0 1.5rem;
+				}
 			}
 		}
 
+		.skin-minerva &,
 		.skin-monobook & {
 			padding: 0;
 		}

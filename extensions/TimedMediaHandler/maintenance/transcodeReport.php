@@ -8,6 +8,8 @@ if ( $IP === false ) {
 }
 require_once "$IP/maintenance/Maintenance.php";
 
+use MediaWiki\MediaWikiServices;
+
 class TranscodeReport extends Maintenance {
 
 	private $detail = false;
@@ -78,9 +80,10 @@ class TranscodeReport extends Maintenance {
 		$where = [ 'img_media_type' => $types ];
 		$opts = [ 'ORDER BY' => 'img_media_type,img_name' ];
 		$res = $dbr->select( 'image', [ 'img_name' ], $where, __METHOD__, $opts );
+		$localRepo = MediaWikiServices::getInstance()->getRepoGroup()->getLocalRepo();
 		foreach ( $res as $row ) {
 			$title = Title::newFromText( $row->img_name, NS_FILE );
-			$file = wfLocalFile( $title );
+			$file = $localRepo->newFile( $title );
 			$handler = $file ? $file->getHandler() : null;
 			if ( $file && $handler && $handler instanceof TimedMediaHandler ) {
 				$this->processFile( $file );
@@ -105,8 +108,8 @@ class TranscodeReport extends Maintenance {
 						$b = floor( ( $bucket + 1 ) * $this->max[$res] / $this->buckets ) - 1;
 
 						global $wgLang;
-						$aa = str_pad( $wgLang->formatBitrate( $a ), 10, " ", STR_PAD_LEFT );
-						$bb = str_pad( $wgLang->formatBitrate( $b ), 10, " ", STR_PAD_LEFT );
+						$aa = str_pad( $wgLang->formatBitrate( (int)$a ), 10, " ", STR_PAD_LEFT );
+						$bb = str_pad( $wgLang->formatBitrate( (int)$b ), 10, " ", STR_PAD_LEFT );
 						$legend = "$aa - $bb";
 
 						$val = $this->histo[$key][$bucket] ?? 0;

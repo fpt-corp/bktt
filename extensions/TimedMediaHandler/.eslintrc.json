@@ -5,13 +5,11 @@
 		"wikimedia/jquery"
 	],
 	"globals": {
-		"mw": false,
-		"OO": false
+		"mw": "readonly",
+		"OO": "readonly"
 	},
 	"rules": {
 		"valid-jsdoc": "off",
-		"no-underscore-dangle": "off",
-		"camelcase": "off",
 		"max-len": "off"
 	}
 }

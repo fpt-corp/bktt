@@ -52,10 +52,11 @@ class ApiTemplateData extends ApiBase {
 		$continuationManager = new ApiContinuationManager( $this, [], [] );
 		$this->setContinuationManager( $continuationManager );
 
-		if ( is_null( $params['lang'] ) ) {
+		if ( $params['lang'] === null ) {
 			$langCode = false;
 		} elseif ( !Language::isValidCode( $params['lang'] ) ) {
 			$this->dieWithError( [ 'apierror-invalidlang', 'lang' ] );
+			throw new LogicException();
 		} else {
 			$langCode = $params['lang'];
 		}

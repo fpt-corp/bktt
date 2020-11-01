@@ -1,9 +1,9 @@
 {
 	"@metadata": {
 		"authors": [
-			"Robin0van0der0vliet",
+			"PiefPafPier",
 			"Robin van der Vliet",
-			"PiefPafPier"
+			"Robin0van0der0vliet"
 		]
 	},
 	"timedmedia-more": "Mear…",
@@ -15,5 +15,6 @@
 	"timedmedia-source-file": "$1 boarne",
 	"timedmedia-source-audio-file-desc": "Orizjineel $1-bestân ($2)",
 	"timedmedia-file": "Bestân",
-	"beta-feature-timedmediahandler-message-videojs": "Nije fideospiler"
+	"beta-feature-timedmediahandler-message-videojs": "Nije fideospiler",
+	"beta-feature-timedmediahandler-description-videojs": "Fideobestannen besjen yn in moderne spiler mei in fris oansjoch en mobyl-freonlik."
 }

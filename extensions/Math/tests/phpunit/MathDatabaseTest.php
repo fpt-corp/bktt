@@ -3,7 +3,7 @@
 /**
  * Test the database access and core functionality of MathRenderer.
  *
- * @covers MathRenderer
+ * @covers \MathRenderer
  *
  * @group Math
  * @group Database
@@ -15,11 +15,11 @@ class MathDatabaseTest extends MediaWikiTestCase {
 	 * @var MathRenderer
 	 */
 	private $renderer;
-	const SOME_TEX = "a+b";
-	const SOME_HTML = "a<sub>b</sub> and so on";
-	const SOME_MATHML = "iℏ∂_tΨ=H^Ψ<mrow><\ci>";
-	const SOME_CONSERVATIVENESS = 2;
-	const SOME_OUTPUTHASH = 'C65c884f742c8591808a121a828bc09f8<';
+	private const SOME_TEX = "a+b";
+	private const SOME_HTML = "a<sub>b</sub> and so on";
+	private const SOME_MATHML = "iℏ∂_tΨ=H^Ψ<mrow><\ci>";
+	private const SOME_CONSERVATIVENESS = 2;
+	private const SOME_OUTPUTHASH = 'C65c884f742c8591808a121a828bc09f8<';
 
 	/**
 	 * creates a new database connection and a new math renderer
@@ -30,18 +30,17 @@ class MathDatabaseTest extends MediaWikiTestCase {
 	 * }
 	 * was not sufficient.
 	 */
-	protected function setup() {
+	protected function setUp() : void {
 		parent::setUp();
 		// TODO: figure out why this is necessary
 		$this->db = wfGetDB( DB_MASTER );
-		// Create a new instance of MathSource
 		$this->renderer = new MathMathML( self::SOME_TEX );
 		$this->tablesUsed[] = 'mathoid';
 	}
 
 	/**
 	 * Checks the tex and hash functions
-	 * @covers MathRenderer::getInputHash()
+	 * @covers \MathRenderer::getInputHash
 	 */
 	public function testInputHash() {
 		$expectedhash = $this->db->encodeBlob( pack( "H32", md5( self::SOME_TEX ) ) );
@@ -59,8 +58,8 @@ class MathDatabaseTest extends MediaWikiTestCase {
 
 	/**
 	 * Checks database access. Writes an entry and reads it back.
-	 * @covers MathRenderer::writeToDatabase
-	 * @covers MathRenderer::readFromDatabase
+	 * @covers \MathRenderer::writeToDatabase
+	 * @covers \MathRenderer::readFromDatabase
 	 */
 	public function testDBBasics() {
 		$this->setValues();
@@ -81,7 +80,7 @@ class MathDatabaseTest extends MediaWikiTestCase {
 
 	/**
 	 * Checks the creation of the math table.
-	 * @covers MathHooks::onLoadExtensionSchemaUpdates
+	 * @covers \MathHooks::onLoadExtensionSchemaUpdates
 	 */
 	public function testCreateTable() {
 		$this->setMwGlobals( 'wgMathValidModes', [ 'mathml' ] );
@@ -93,7 +92,7 @@ class MathDatabaseTest extends MediaWikiTestCase {
 		$this->renderer->writeToDatabase();
 		$res = $this->db->select( "mathoid", "*" );
 		$row = $res->fetchRow();
-		$this->assertEquals( 16, count( $row ) );
+		$this->assertCount( 16, $row );
 	}
 
 	/*

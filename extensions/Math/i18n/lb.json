@@ -5,16 +5,16 @@
 			"Soued031"
 		]
 	},
-	"math-visualeditor-mwchemdialog-title": "Chemesch Formel",
-	"math-visualeditor-mwcheminspector-title": "Chemesch Formel",
+	"math-visualeditor-mwchemdialog-title": "Cheemesch Formel",
+	"math-visualeditor-mwcheminspector-title": "Cheemesch Formel",
 	"math-visualeditor-mwlatexcontextitem-quickedit": "Séier Ännerung",
 	"math-visualeditor-mwlatexdialog-card-formula": "Formel",
 	"math-visualeditor-mwlatexdialog-card-options": "Optiounen",
 	"math-visualeditor-mwlatexinspector-display": "Ausgesinn",
 	"math-visualeditor-mwlatexinspector-display-default": "Standard",
 	"math-visualeditor-mwmathdialog-title": "Mathematesch Formel",
-	"math-visualeditor-symbol-group-chem-equations": "Chemesch Gläichungen",
-	"math-visualeditor-symbol-group-chem-formulae": "Chemesch Formelen",
+	"math-visualeditor-symbol-group-chem-equations": "Cheemesch Gläichungen",
+	"math-visualeditor-symbol-group-chem-formulae": "Cheemesch Formelen",
 	"math-visualeditor-symbol-group-chem-greek": "Griichesch Buschtawen",
 	"math-visualeditor-symbol-group-chem-isotopes": "Isotopen",
 	"math-visualeditor-symbol-group-math-arrows": "Feiler",
@@ -43,5 +43,13 @@
 	"mw_math_source": "LaTeX-Quell (fir Textbrowser)",
 	"prefs-math": "Math/TeX",
 	"datatypes-type-math": "Mathemateschen Ausdrock",
-	"wikibase-listdatatypes-math-head": "Mathemateschen Ausdrock"
+	"wikibase-listdatatypes-math-head": "Mathemateschen Ausdrock",
+	"math-wikibase-formula": "Formel",
+	"math-wikibase-formula-name": "Numm",
+	"math-wikibase-formula-type": "Typ",
+	"math-wikibase-formula-description": "Beschreiwung",
+	"math-wikibase-formula-link-header": "Source vun den Donnéeën",
+	"math-wikibase-formula-elements-header": "Elementer vun der Formel",
+	"math-wikibase-special-form-placeholder": "Titel vun der Formel",
+	"math-wikibase-special-error-header": "Feeler"
 }

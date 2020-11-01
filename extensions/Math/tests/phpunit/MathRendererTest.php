@@ -3,20 +3,20 @@
 /**
  * Test the database access and core functionality of MathRenderer.
  *
- * @covers MathRenderer
+ * @covers \MathRenderer
  *
  * @group Math
  *
  * @license GPL-2.0-or-later
  */
 class MathRendererTest extends MediaWikiTestCase {
-	const SOME_TEX = "a+b";
-	const TEXVCCHECK_INPUT = '\forall \epsilon \exist \delta';
-	const TEXVCCHECK_OUTPUT = '\forall \epsilon \exists \delta '; // be aware of the s at exists
+	private const SOME_TEX = "a+b";
+	private const TEXVCCHECK_INPUT = '\forall \epsilon \exist \delta';
+	private const TEXVCCHECK_OUTPUT = '\forall \epsilon \exists \delta ';
 
 	protected static $hasRestbase;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		$rbi = new MathRestbaseInterface();
 		self::$hasRestbase = $rbi->checkBackend( true );
 	}
@@ -25,7 +25,7 @@ class MathRendererTest extends MediaWikiTestCase {
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 		if ( !self::$hasRestbase ) {
 			$this->markTestSkipped( "Can not connect to Restbase Math interface." );
@@ -34,19 +34,20 @@ class MathRendererTest extends MediaWikiTestCase {
 
 	/**
 	 * Checks the tex and hash functions
-	 * @covers MathRenderer::getTex()
-	 * @covers MathRenderer::__construct()
+	 * @covers \MathRenderer::getTex
+	 * @covers \MathRenderer::__construct
 	 */
 	public function testBasics() {
 		$renderer = $this->getMockForAbstractClass( MathRenderer::class, [ self::SOME_TEX ] );
+		/** @var MathRenderer $renderer */
 		// check if the TeX input was corretly passed to the class
 		$this->assertEquals( self::SOME_TEX, $renderer->getTex(), "test getTex" );
-		$this->assertEquals( $renderer->isChanged(), false, "test if changed is initially false" );
+		$this->assertFalse( $renderer->isChanged(), "test if changed is initially false" );
 	}
 
 	/**
 	 * Test behavior of writeCache() when nothing was changed
-	 * @covers MathRenderer::writeCache()
+	 * @covers \MathRenderer::writeCache
 	 */
 	public function testWriteCacheSkip() {
 		$renderer =
@@ -55,14 +56,15 @@ class MathRendererTest extends MediaWikiTestCase {
 					'render',
 					'getMathTableName',
 					'getHtmlOutput'
-				] )->disableOriginalConstructor()->getMock();
+				] )->getMock();
 		$renderer->expects( $this->never() )->method( 'writeToDatabase' );
+		/** @var MathRenderer $renderer */
 		$renderer->writeCache();
 	}
 
 	/**
 	 * Test behavior of writeCache() when values were changed.
-	 * @covers MathRenderer::writeCache()
+	 * @covers \MathRenderer::writeCache
 	 */
 	public function testWriteCache() {
 		$renderer =
@@ -71,8 +73,9 @@ class MathRendererTest extends MediaWikiTestCase {
 					'render',
 					'getMathTableName',
 					'getHtmlOutput'
-				] )->disableOriginalConstructor()->getMock();
+				] )->getMock();
 		$renderer->expects( $this->never() )->method( 'writeToDatabase' );
+		/** @var MathRenderer $renderer */
 		$renderer->writeCache();
 	}
 
@@ -82,9 +85,10 @@ class MathRendererTest extends MediaWikiTestCase {
 					'render',
 					'getMathTableName',
 					'getHtmlOutput'
-				] )->disableOriginalConstructor()->getMock();
+				] )->getMock();
+		/** @var MathRenderer $renderer */
 		$renderer->setPurge();
-		$this->assertEquals( $renderer->isPurge(), true, "Test purge." );
+		$this->assertTrue( $renderer->isPurge(), "Test purge." );
 	}
 
 	public function testDisableCheckingAlways() {
@@ -100,9 +104,10 @@ class MathRendererTest extends MediaWikiTestCase {
 		$renderer->expects( $this->never() )->method( 'readFromDatabase' );
 		$renderer->expects( $this->once() )->method( 'setTex' )->with( self::TEXVCCHECK_OUTPUT );
 
-		$this->assertEquals( $renderer->checkTeX(), true );
+		/** @var MathRenderer $renderer */
+		$this->assertTrue( $renderer->checkTeX() );
 		// now setTex sould not be called again
-		$this->assertEquals( $renderer->checkTeX(), true );
+		$this->assertTrue( $renderer->checkTeX() );
 	}
 
 	public function testDisableCheckingNever() {
@@ -118,7 +123,8 @@ class MathRendererTest extends MediaWikiTestCase {
 		$renderer->expects( $this->never() )->method( 'readFromDatabase' );
 		$renderer->expects( $this->never() )->method( 'setTex' );
 
-		$this->assertEquals( $renderer->checkTeX(), true );
+		/** @var MathRenderer $renderer */
+		$this->assertTrue( $renderer->checkTeX() );
 	}
 
 	public function testCheckingNewUnknown() {
@@ -135,9 +141,10 @@ class MathRendererTest extends MediaWikiTestCase {
 			->will( $this->returnValue( false ) );
 		$renderer->expects( $this->once() )->method( 'setTex' )->with( self::TEXVCCHECK_OUTPUT );
 
-		$this->assertEquals( $renderer->checkTeX(), true );
+		/** @var MathRenderer $renderer */
+		$this->assertTrue( $renderer->checkTeX() );
 		// now setTex sould not be called again
-		$this->assertEquals( $renderer->checkTeX(), true );
+		$this->assertTrue( $renderer->checkTeX() );
 	}
 
 	public function testCheckingNewKnown() {
@@ -154,9 +161,10 @@ class MathRendererTest extends MediaWikiTestCase {
 			->will( $this->returnValue( true ) );
 		$renderer->expects( $this->never() )->method( 'setTex' );
 
-		$this->assertEquals( $renderer->checkTeX(), true );
+		/** @var MathRenderer $renderer */
+		$this->assertTrue( $renderer->checkTeX() );
 		// we don't mark a object as checked even though we rely on the database cache
 		// so readFromDatabase will be called again
-		$this->assertEquals( $renderer->checkTeX(), true );
+		$this->assertTrue( $renderer->checkTeX() );
 	}
 }

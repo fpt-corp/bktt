@@ -2,13 +2,12 @@
 	"@metadata": {
 		"authors": [
 			"Alma",
-			"Toliño",
-			"Xosé",
-			"Elisardojm",
 			"Banjo",
+			"Elisardojm",
+			"Iváns",
 			"Macofe",
-			"Navhy",
-			"Iváns"
+			"Toliño",
+			"Xosé"
 		]
 	},
 	"math-desc": "Renderiza fórmulas matemáticas entre etiquetas <code>&lt;math&gt;</code> ... <code>&lt;/math&gt;</code>",
@@ -87,7 +86,18 @@
 	"mw_math_source": "Código LaTeX (para os navegadores de texto)",
 	"prefs-math": "Fórmulas matemáticas",
 	"mathstatus": "Estado de Math",
+	"mathwikibase": "Información sobre fórmulas matemáticas Wikibase",
 	"datatypes-type-math": "Expresión matemática",
 	"wikibase-listdatatypes-math-head": "Expresión matemática",
-	"wikibase-listdatatypes-math-body": "Campo de dato literal para expresións matemáticas, fórmulas, ecuacións e similares, expresada nunha variante de LaTeX."
+	"wikibase-listdatatypes-math-body": "Campo de dato literal para expresións matemáticas, fórmulas, ecuacións e similares, expresada nunha variante de LaTeX.",
+	"math-wikibase-formula": "Fórmula",
+	"math-wikibase-formula-name": "Nome",
+	"math-wikibase-formula-type": "Tipo",
+	"math-wikibase-formula-description": "Descrición",
+	"math-wikibase-formula-link-header": "Fonte de datos",
+	"math-wikibase-formula-elements-header": "Elementos da fórmula",
+	"math-wikibase-special-form-header": "Especificar o nome da fórmula:",
+	"math-wikibase-special-form-placeholder": "Título da fórmula",
+	"math-wikibase-special-form-button": "Solicitar información",
+	"math-wikibase-special-error-header": "Erro"
 }

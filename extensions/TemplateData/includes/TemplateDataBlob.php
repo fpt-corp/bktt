@@ -43,8 +43,8 @@ class TemplateDataBlob {
 	 *
 	 * @param IDatabase $db
 	 * @param string $json
-	 * @throws Exception
 	 * @return TemplateDataBlob|TemplateDataCompressedBlob
+	 * @throws Exception
 	 */
 	public static function newFromJSON( $db, $json ) {
 		if ( $db->getType() === 'mysql' ) {
@@ -171,6 +171,7 @@ class TemplateDataBlob {
 
 		// Root.format
 		if ( isset( $data->format ) && $data->format !== null ) {
+			// @phan-suppress-next-line PhanTypeMismatchDimFetchNullable isset makes this non-null
 			$f = self::$formats[$data->format] ?? $data->format;
 			if (
 				!is_string( $f ) ||
@@ -704,6 +705,7 @@ class TemplateDataBlob {
 		} else {
 			$formatMsg = 'custom';
 		}
+		$sorting = count( (array)$data->params ) > 1 ? " sortable" : "";
 		$html =
 			Html::openElement( 'div', [ 'class' => 'mw-templatedata-doc-wrap' ] )
 			. Html::element(
@@ -717,7 +719,7 @@ class TemplateDataBlob {
 				$data->description ??
 					wfMessage( 'templatedata-doc-desc-empty' )->inLanguage( $lang )->text()
 			)
-			. '<table class="wikitable mw-templatedata-doc-params sortable">'
+			. '<table class="wikitable mw-templatedata-doc-params' . $sorting . '">'
 			. Html::rawElement(
 				'caption',
 				[],

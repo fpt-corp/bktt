@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * Allows users with the 'transcode-reset' right to reset / re-run a transcode job.
  *
@@ -25,6 +27,7 @@ class ApiTranscodeReset extends ApiBase {
 			$this->dieWithError( [ 'apierror-invalidtitle', wfEscapeWikiText( $params['title'] ) ] );
 		}
 		// Make sure the title can be transcoded
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
 		if ( !TimedMediaHandlerHooks::isTranscodableTitle( $titleObj ) ) {
 			$this->dieWithError(
 				[
@@ -50,7 +53,8 @@ class ApiTranscodeReset extends ApiBase {
 		}
 
 		// Don't reset if less than 1 hour has passed and we have no error )
-		$file = wfFindFile( $titleObj );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
+		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $titleObj );
 		$timeSinceLastReset = self::checkTimeSinceLastRest( $file, $transcodeKey );
 		if ( $timeSinceLastReset < $wgWaitTimeForTranscodeReset ) {
 			$msg = wfMessage(
@@ -68,6 +72,7 @@ class ApiTranscodeReset extends ApiBase {
 
 		$logEntry = new ManualLogEntry( 'timedmediahandler', 'resettranscode' );
 		$logEntry->setPerformer( $this->getUser() );
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable T240141
 		$logEntry->setTarget( $titleObj );
 		$logEntry->setParameters( [
 			'4::transcodekey' => $transcodeKey,
@@ -112,13 +117,13 @@ class ApiTranscodeReset extends ApiBase {
 		global $wgWaitTimeForTranscodeReset;
 		$db = wfGetDB( DB_REPLICA );
 		// if an error return waitTime +1
-		if ( !is_null( $state['time_error'] ) ) {
+		if ( $state['time_error'] !== null ) {
 			return $wgWaitTimeForTranscodeReset + 1;
 		}
 		// return wait time from most recent event
 		foreach ( [ 'time_success', 'time_startwork', 'time_addjob' ] as $timeField ) {
-			if ( !is_null( $state[ $timeField ] ) ) {
-				return $db->timestamp() - $db->timestamp( $state[ $timeField ] );
+			if ( ( $state[ $timeField ] ) !== null ) {
+				return (int)$db->timestamp() - (int)$db->timestamp( $state[ $timeField ] );
 			}
 		}
 		// No time info, return resetWaitTime

@@ -5,7 +5,7 @@
  * @license GPL-2.0-or-later
  */
 
-namespace LocalisationUpdate;
+namespace LocalisationUpdate\Fetcher;
 
 /**
  * Fetches files over HTTP(s).
@@ -17,7 +17,8 @@ class HttpFetcher implements Fetcher {
 	 * @return bool|string
 	 */
 	public function fetchFile( $url ) {
-		return \Http::get( $url );
+		global $wgLocalisationUpdateHttpRequestOptions;
+		return \Http::get( $url, $wgLocalisationUpdateHttpRequestOptions );
 	}
 
 	/**

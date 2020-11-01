@@ -1,6 +1,7 @@
 <?php
 
 use DataValues\StringValue;
+use MediaWiki\Extension\Math\InputCheck\RestbaseChecker;
 use ValueValidators\Error;
 use ValueValidators\Result;
 use ValueValidators\ValueValidator;
@@ -13,7 +14,7 @@ use ValueValidators\ValueValidator;
 class MathValidator implements ValueValidator {
 
 	/**
-	 * Validates a value with MathInputCheckRestbase
+	 * Validates a value with MediaWiki\Extension\Math\InputCheck\RestbaseChecker
 	 *
 	 * @param StringValue $value The value to validate
 	 *
@@ -28,7 +29,7 @@ class MathValidator implements ValueValidator {
 		// get input String from value
 		$tex = $value->getValue();
 
-		$checker = new MathInputCheckRestbase( $tex );
+		$checker = new RestbaseChecker( $tex );
 		if ( $checker->isValid() ) {
 			return Result::newSuccess();
 		}
@@ -36,7 +37,7 @@ class MathValidator implements ValueValidator {
 		// TeX string is not valid
 		return Result::newError(
 			[
-				Error::newError( null, null, 'malformed-value', [ $checker->getError() ] )
+				Error::newError( '', null, 'malformed-value', [ $checker->getError() ] )
 			]
 		);
 	}

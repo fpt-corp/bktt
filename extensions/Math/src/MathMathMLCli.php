@@ -1,13 +1,10 @@
 <?php
 
 use MediaWiki\Logger\LoggerFactory;
-use \MediaWiki\MediaWikiServices;
+use MediaWiki\MediaWikiServices;
 
 /**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 15.08.2017
- * Time: 09:33
+ * @author Moritz Schubotz
  */
 class MathMathMLCli extends MathMathML {
 
@@ -69,7 +66,12 @@ class MathMathMLCli extends MathMathML {
 		// cli interface seems to be OK.
 		$this->processJsonResult( $response, 'file://' . $wgMathoidCli[0] );
 		$this->mathStyle = $response->mathoidStyle;
-		$this->png = implode( array_map( "chr", $response->png->data ) );
+		if ( array_key_exists( 'png', $response ) ) {
+			$this->png = implode( array_map( "chr", $response->png->data ) );
+		} else {
+			LoggerFactory::getInstance( 'Math' )->error( 'Mathoid did not return a PNG image.' .
+				' Check your librsvg installation https://github.com/wikimedia/mathoid/.' );
+		}
 		$this->changed = true;
 	}
 
@@ -186,7 +188,7 @@ class MathMathMLCli extends MathMathML {
 	}
 
 	/**
-	 * @param $response object from cli
+	 * @param stdClass $response object from cli
 	 * @return string containing the location information
 	 */
 	private function appendLocationInfo( $response ) {

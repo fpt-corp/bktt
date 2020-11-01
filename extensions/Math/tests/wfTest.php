@@ -1,14 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Moritz
- * Date: 14.08.2017
- * Time: 12:09
+ * @author Moritz Schubotz
  */
 require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 
-class DummyTest extends Maintenance {
-	const REFERENCE_PAGE = 'mediawikiwiki:Extension:Math/CoverageTest';
+use MediaWiki\MediaWikiServices;
+
+class WfTest extends Maintenance {
+	private const REFERENCE_PAGE = 'mediawikiwiki:Extension:Math/CoverageTest';
 
 	public function __construct() {
 		parent::__construct();
@@ -31,7 +30,7 @@ class DummyTest extends Maintenance {
 		} else {
 			if ( $title == self::REFERENCE_PAGE ) {
 				$wgEnableScaryTranscluding = true;
-				$parser = new Parser();
+				$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 				$wikiText = $parser->interwikiTransclude( $title, 'raw' );
 			} else {
 				return 'Page does not exist';
@@ -102,5 +101,5 @@ class DummyTest extends Maintenance {
 	}
 }
 
-$maintClass = DummyTest::class;
+$maintClass = WfTest::class;
 require_once RUN_MAINTENANCE_IF_MAIN;

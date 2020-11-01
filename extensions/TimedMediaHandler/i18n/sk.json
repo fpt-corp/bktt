@@ -2,14 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Helix84",
-			"TomášPolonec",
-			"Wizzard",
-			"Teslaton",
+			"Luky001",
 			"Robert Važan",
-			"Luky001"
+			"Teslaton",
+			"TomášPolonec",
+			"Wizzard"
 		]
 	},
-	"timedmediahandler-desc": "Obsluha súborov Ogg Theora a Vorbis s JavaScriptovým prehrávačom",
+	"timedmediahandler-desc": "Obsluha zvukov, videa a časovaného textu s podporou formátov WebM, Ogg Theora, Vorbis, srt",
 	"timedmedia-ogg-short-audio": "Zvukový súbor ogg $1, $2",
 	"timedmedia-ogg-short-video": "Video súbor ogg $1, $2",
 	"timedmedia-ogg-short-general": "Multimediálny súbor ogg $1, $2",

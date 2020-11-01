@@ -5,14 +5,14 @@
  * @ingroup timedmedia
  */
 
-use MediaWiki\TimedMediaHandler\TimedText\SrtReader;
 use MediaWiki\TimedMediaHandler\TimedText\DOM;
+use MediaWiki\TimedMediaHandler\TimedText\SrtReader;
 
 /**
  * @covers SrtReader::read
  */
 class SrtReaderTest extends PHPUnit\Framework\TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		$this->reader = new SrtReader;
 	}
@@ -31,7 +31,7 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
+		$this->assertSame( 1, count( $cues ) );
 
 		$cue = $cues[0];
 		$this->assertEquals( 168, $cue->id );
@@ -69,7 +69,7 @@ END;
 
 		$this->assertEquals( 4, count( $cues ) );
 
-		$this->assertEquals( 1, $cues[1]->id );
+		$this->assertSame( '1', $cues[1]->id );
 		$this->assertEquals( 3, $cues[3]->id );
 		$this->assertEquals( 'uh-huh', $this->flatten( $cues[3] ) );
 	}
@@ -87,7 +87,7 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
+		$this->assertSame( 1, count( $cues ) );
 
 		$this->assertEquals( 9.0, $cues[0]->start );
 		$this->assertEquals( 10.169, $cues[0]->end );
@@ -106,7 +106,7 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
+		$this->assertSame( 1, count( $cues ) );
 
 		$this->assertEquals( 86.4, $cues[0]->start );
 		$this->assertEquals( 87.8, $cues[0]->end );
@@ -125,7 +125,7 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
+		$this->assertSame( 1, count( $cues ) );
 
 		$this->assertEquals( 31.200, $cues[0]->start );
 		$this->assertEquals( 46.040, $cues[0]->end );
@@ -144,8 +144,8 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
-		$this->assertEquals( 1, $cues[0]->id );
+		$this->assertSame( 1, count( $cues ) );
+		$this->assertSame( '1', $cues[0]->id );
 	}
 
 	public function testSquishedOnOneLine() {
@@ -159,8 +159,8 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
-		$this->assertEquals( 1, $cues[0]->id );
+		$this->assertSame( 1, count( $cues ) );
+		$this->assertSame( '1', $cues[0]->id );
 		$this->assertEquals( 7, $cues[0]->start );
 		$this->assertEquals( 10.5, $cues[0]->end );
 		$this->assertEquals(
@@ -208,7 +208,7 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
+		$this->assertSame( 1, count( $cues ) );
 		$this->assertEquals( 32, $cues[0]->id );
 		$this->assertEquals( 85.7, $cues[0]->start );
 		$this->assertEquals( 87.720, $cues[0]->end );
@@ -236,7 +236,7 @@ END;
 
 		$this->assertEquals( 2, count( $cues ) );
 
-		$this->assertEquals( '8', $cues[0]->id );
+		$this->assertSame( '8', $cues[0]->id );
 		$this->assertEquals( 33.041, $cues[0]->start );
 		$this->assertEquals( 35.689, $cues[0]->end );
 		$this->assertEquals(
@@ -257,7 +257,7 @@ END;
 			$this->flattenNode( $italic )
 		);
 
-		$this->assertEquals( '15', $cues[1]->id );
+		$this->assertSame( '15', $cues[1]->id );
 		$this->assertEquals(
 			'DeWitt: Calculations showed that radar equipment could be',
 			$this->flatten( $cues[1] )
@@ -291,9 +291,9 @@ END;
 		$errors = $this->reader->getErrors();
 		$this->assertEmpty( $errors );
 
-		$this->assertEquals( 1, count( $cues ) );
+		$this->assertSame( 1, count( $cues ) );
 
-		$this->assertEquals( '16', $cues[0]->id );
+		$this->assertSame( '16', $cues[0]->id );
 		$this->assertEquals(
 			'Ein NASA-Team wickelt den Start für AT&T ab.',
 			$this->flatten( $cues[0] )

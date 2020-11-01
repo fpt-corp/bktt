@@ -3,10 +3,13 @@
  * TimedText page display the current video with subtitles to the right.
  *
  * Future features for this page"
- *  @todo add srt download links
- *  @todo parse and validate srt files
- *  @todo link-in or include the universal subtitles editor
+ * @todo add srt download links
+ * @todo parse and validate srt files
+ * @todo link-in or include the universal subtitles editor
  */
+
+use MediaWiki\MediaWikiServices;
+
 class TimedTextPage extends Article {
 	// The width of the video plane:
 	private static $videoWidth = 400;
@@ -38,7 +41,7 @@ class TimedTextPage extends Article {
 
 		$oldid = $this->getOldID();
 		# Are we looking at an old revision
-		if ( $oldid && $this->mRevision ) {
+		if ( $oldid && $this->fetchRevisionRecord() ) {
 			$this->fetchContentObject();
 			$out->setRevisionId( $this->getRevIdFetched() );
 			$this->setOldSubtitle( $oldid );
@@ -49,10 +52,11 @@ class TimedTextPage extends Article {
 			}
 		}
 
+		$repoGroup = MediaWikiServices::getInstance()->getRepoGroup();
 		// Check for File name without text extension:
 		// i.e TimedText:myfile.ogg
 		$fileTitle = Title::newFromText( $this->getTitle()->getDBkey(), NS_FILE );
-		$file = wfFindFile( $fileTitle );
+		$file = $repoGroup->findFile( $fileTitle );
 		// Check for a valid srt page, present redirect form for the full title match:
 		if ( !in_array( $timedTextExtension, self::$knownTimedTextExtensions ) &&
 			$file && $file->exists()
@@ -71,7 +75,7 @@ class TimedTextPage extends Article {
 		$videoTitle = Title::newFromText( implode( '.', $titleParts ), NS_FILE );
 
 		// Check for remote file
-		$basefile = wfFindFile( $videoTitle );
+		$basefile = $repoGroup->findFile( $videoTitle );
 		if ( !$basefile ) {
 			$out->addHTML( wfMessage( 'timedmedia-subtitle-no-video' )->escaped() );
 			return;
@@ -92,7 +96,7 @@ class TimedTextPage extends Article {
 		}
 
 		// Set title
-		$message = $this->exists() ?
+		$message = $this->getPage()->exists() ?
 			'mwe-timedtext-language-subtitles-for-clip' :
 			'mwe-timedtext-language-no-subtitles-for-clip';
 		$out->setPageTitle( wfMessage( $message, $languageName, $videoTitle ) );
@@ -108,6 +112,11 @@ class TimedTextPage extends Article {
 				)
 			)
 		);
+
+		if ( !$oldid ) {
+			// Set wgRevision at the end from what we actually fetched.
+			$out->setRevisionId( $this->getRevIdFetched() );
+		}
 	}
 
 	/**
@@ -119,7 +128,7 @@ class TimedTextPage extends Article {
 		$output->setPageTitle( wfMessage( 'timedmedia-subtitle-remote',
 			$file->getRepo()->getDisplayName() ) );
 		$output->addHTML( wfMessage( 'timedmedia-subtitle-remote-link',
-			$file->getDescriptionUrl(), $file->getRepo()->getDisplayName() ) );
+			$file->getDescriptionUrl(), $file->getRepo()->getDisplayName() )->parse() );
 	}
 
 	private function doRedirectToPageForm() {
@@ -172,11 +181,11 @@ class TimedTextPage extends Article {
 	/**
 	 * Gets the video HTML ( with the current language set as default )
 	 * @param string $videoTitle
-	 * @return String
+	 * @return string
 	 */
 	private function getVideoHTML( $videoTitle ) {
 		// Get the video embed:
-		$file = wfFindFile( $videoTitle );
+		$file = MediaWikiServices::getInstance()->getRepoGroup()->findFile( $videoTitle );
 		if ( !$file ) {
 			return wfMessage( 'timedmedia-subtitle-no-video' )->escaped();
 		} else {
@@ -196,7 +205,7 @@ class TimedTextPage extends Article {
 	 * @return Message|string
 	 */
 	private function getTimedTextHTML( $languageName ) {
-		if ( !$this->exists() ) {
+		if ( !$this->getPage()->exists() ) {
 			return wfMessage( 'timedmedia-subtitle-no-subtitles',  $languageName );
 		}
 		return Xml::element(

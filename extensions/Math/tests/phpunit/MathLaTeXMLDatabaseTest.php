@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @covers MathLaTeXML
+ * @covers \MathLaTeXML
  *
  * @group Math
  * @group Database
@@ -10,12 +10,12 @@
  */
 class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	public $renderer;
-	const SOME_TEX = "a+b";
-	const SOME_HTML = "a<sub>b</sub>";
-	const SOME_MATHML = "iℏ∂_tΨ=H^Ψ<mrow><\ci>";
-	const SOME_LOG = "Sample Log Text.";
-	const SOME_TIMESTAMP = 1272509157;
-	const SOME_SVG = "<?xml </svg >>%%LIKE;'\" DROP TABLE math;";
+	private const SOME_TEX = "a+b";
+	private const SOME_HTML = "a<sub>b</sub>";
+	private const SOME_MATHML = "iℏ∂_tΨ=H^Ψ<mrow><\ci>";
+	private const SOME_LOG = "Sample Log Text.";
+	private const SOME_TIMESTAMP = 1272509157;
+	private const SOME_SVG = "<?xml </svg >>%%LIKE;'\" DROP TABLE math;";
 
 	/**
 	 * Helper function to test protected/private Methods
@@ -38,18 +38,17 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	 * }
 	 * was not sufficient.
 	 */
-	protected function setup() {
+	protected function setUp() : void {
 		parent::setUp();
 		// TODO: figure out why this is necessary
 		$this->db = wfGetDB( DB_MASTER );
-		// Create a new instance of MathSource
 		$this->renderer = new MathLaTeXML( self::SOME_TEX );
 		self::setupTestDB( $this->db, "mathtest" );
 	}
 
 	/**
 	 * Checks the tex and hash functions
-	 * @covers MathRenderer::getInputHash()
+	 * @covers \MathRenderer::getInputHash
 	 */
 	public function testInputHash() {
 		$expectedhash = $this->db->encodeBlob( pack( "H32", md5( self::SOME_TEX ) ) );
@@ -66,7 +65,7 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 	}
 
 	/**
-	 * @covers MathLaTeXML::getMathTableName
+	 * @covers \MathLaTeXML::getMathTableName
 	 */
 	public function testTableName() {
 		$fnGetMathTableName = self::getMethod( 'getMathTableName' );
@@ -77,7 +76,7 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 
 	/**
 	 * Checks the creation of the math table.
-	 * @covers MathHooks::onLoadExtensionSchemaUpdates
+	 * @covers \MathHooks::onLoadExtensionSchemaUpdates
 	 */
 	public function testCreateTable() {
 		$this->setMwGlobals( 'wgMathValidModes', [ 'latexml' ] );
@@ -89,14 +88,14 @@ class MathLaTeXMLDatabaseTest extends MediaWikiTestCase {
 		$this->renderer->writeToDatabase();
 		$res = $this->db->select( "mathlatexml", "*" );
 		$row = $res->fetchRow();
-		$this->assertEquals( 12,  count( $row ) );
+		$this->assertCount( 12, $row );
 	}
 
 	/**
 	 * Checks database access. Writes an entry and reads it back.
 	 * @depends testCreateTable
-	 * @covers MathRenderer::writeToDatabase
-	 * @covers MathRenderer::readFromDatabase
+	 * @covers \MathRenderer::writeToDatabase
+	 * @covers \MathRenderer::readFromDatabase
 	 */
 	public function testDBBasics() {
 		$this->setValues();

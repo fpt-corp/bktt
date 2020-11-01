@@ -76,7 +76,7 @@ class SrtReader extends Reader {
 
 	protected function peek() {
 		if ( $this->pos < $this->len ) {
-			return $this->input{$this->pos};
+			return $this->input[$this->pos];
 		} else {
 			return '';
 		}
@@ -84,7 +84,7 @@ class SrtReader extends Reader {
 
 	protected function consume() {
 		if ( $this->pos < $this->len ) {
-			$c = $this->input{$this->pos++};
+			$c = $this->input[$this->pos++];
 			if ( $c === "\n" ) {
 				$this->line++;
 				$this->lineStart = $this->pos;
@@ -98,7 +98,7 @@ class SrtReader extends Reader {
 	protected function consumeWhile( $callback ) {
 		$str = '';
 		while ( $this->pos < $this->len ) {
-			$c = $this->input{$this->pos};
+			$c = $this->input[$this->pos];
 			if ( !$callback( $c ) ) {
 				break;
 			}
@@ -231,22 +231,25 @@ class SrtReader extends Reader {
 		return html_entity_decode( $entity, ENT_QUOTES | ENT_HTML5, 'utf-8' );
 	}
 
+	/**
+	 * @return float|false
+	 */
 	protected function consumeTimestamp() {
-		$accumulator = 0;
+		$accumulator = 0.0;
 		do {
 			$digits = $this->consumeDigits();
 			if ( $digits === '' ) {
 				$this->recordError( 'Expected digit in timestamp' );
 				return false;
 			}
-			$accumulator += $digits;
+			$accumulator += (float)$digits;
 			$this->consumeSpace();
 
 			$c = $this->peek();
 			if ( $c === ':' ) {
 				$this->consume();
 				$this->consumeSpace();
-				$accumulator *= 60;
+				$accumulator *= 60.0;
 				continue;
 			} elseif ( $c === ',' || $c === '.' ) {
 				$this->consume();
@@ -255,7 +258,7 @@ class SrtReader extends Reader {
 					$this->recordError( 'Expected digit in millis' );
 					return false;
 				}
-				$accumulator += ( $millis / 1000.0 );
+				$accumulator += ( (float)$millis / 1000.0 );
 				return $accumulator;
 			} else {
 				return $accumulator;

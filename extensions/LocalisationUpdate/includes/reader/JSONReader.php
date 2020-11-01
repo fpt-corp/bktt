@@ -5,7 +5,7 @@
  * @license GPL-2.0-or-later
  */
 
-namespace LocalisationUpdate;
+namespace LocalisationUpdate\Reader;
 
 /**
  * Reads MediaWiki JSON i18n files.

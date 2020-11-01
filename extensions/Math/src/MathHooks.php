@@ -15,7 +15,7 @@ class MathHooks {
 	 */
 	private static $tags = [];
 
-	const MATHCACHEKEY = 'math=';
+	private const MATHCACHEKEY = 'math=';
 
 	public static function mathConstantToString( $value, array $defs, $prefix, $default ) {
 		foreach ( $defs as $defKey => $defValue ) {
@@ -151,7 +151,7 @@ class MathHooks {
 	/**
 	 * Register the <math> tag with the Parser.
 	 *
-	 * @param Parser $parser instance of Parser
+	 * @param Parser $parser
 	 * @return bool true
 	 */
 	public static function onParserFirstCallInit( $parser ) {
@@ -295,11 +295,11 @@ class MathHooks {
 	/**
 	 * LoadExtensionSchemaUpdates handler; set up math table on install/upgrade.
 	 *
-	 * @param DatabaseUpdater|null $updater
+	 * @param DatabaseUpdater $updater
 	 * @throws Exception
 	 * @return bool
 	 */
-	public static function onLoadExtensionSchemaUpdates( $updater = null ) {
+	public static function onLoadExtensionSchemaUpdates( DatabaseUpdater $updater ) {
 		$type = $updater->getDB()->getType();
 
 		if ( in_array( 'latexml', MathRenderer::getValidModes() ) ) {
@@ -389,6 +389,20 @@ class MathHooks {
 	public static function chemTagHook( $content, $attributes, $parser ) {
 		$attributes['chem'] = true;
 		return self::mathTagHook( '\ce{' . $content . '}', $attributes, $parser );
+	}
+
+	/**
+	 * Remove Special:MathWikibase if the Wikibase client extension isn't loaded
+	 *
+	 * @param array &$list
+	 * @return bool true
+	 */
+	// phpcs:ignore MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
+	public static function onSpecialPage_initList( &$list ) {
+		if ( !class_exists( '\Wikibase\Client\WikibaseClient' ) ) {
+			unset( $list['MathWikibase'] );
+		}
+		return true;
 	}
 
 }
