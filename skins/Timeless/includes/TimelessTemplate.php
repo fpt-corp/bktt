@@ -497,10 +497,10 @@ class TimelessTemplate extends BaseTemplate {
 			Html::rawElement( 'div', [ 'id' => 'simpleSearch' ],
 				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Tìm kiếm ...'] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
-				$this->makeSearchButton(
-					'fulltext',
-					[ 'id' => 'mw-searchButton', 'class' => 'searchButton mw-fallbackSearchButton' ]
-				) .
+				//$this->makeSearchButton(
+				//	'fulltext',
+				//	[ 'id' => 'mw-searchButton', 'class' => 'searchButton mw-fallbackSearchButton' ]
+				//) .
 				$this->makeSearchButton(
 					'go',
 					[ 'id' => 'searchButton', 'class' => 'searchButton' ]
