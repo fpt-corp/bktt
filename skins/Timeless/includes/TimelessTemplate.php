@@ -128,7 +128,7 @@ class TimelessTemplate extends BaseTemplate {
 					if ($item['href'] != $_SERVER['REQUEST_URI']) { // && $item['id'] != 'ca-nstab-main') {
 						$pageTools .= Html::rawElement('div', 
 						[
-							'id' => $item['id'], 
+							//'id' => $item['id'], 
 							'class' => 'header-upper-item'
 						], 
 						Html::rawElement('a', ['href' => $item['href']], $item['text']));
