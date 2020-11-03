@@ -1,3 +1,3 @@
 The development of this software is covered by a [Code of Conduct](https://www.mediawiki.org/wiki/Special:MyLanguage/Code_of_Conduct).
 
-Các nút ở góc trên bên trái không có id, và không dùng CSS để giấu dựa trên id. Mà thay vào đó sửa thông điệp hệ thống: MediaWiki:Timeless-view-view và MediaWiki:view thành chuỗi rỗng. Cần theo dõi xem MediaWiki:Timeless-view-view và MediaWiki:view có còn được dùng ở chỗ nao khác không, và việc để thành chuỗi rỗng có gây ra vấn đề gì không.
+Các nút ở góc trên bên trái có thể cho ra không có id, và không dùng CSS để giấu dựa trên id; mà thay vào đó sửa thông điệp hệ thống: MediaWiki:Timeless-view-view và MediaWiki:view thành chuỗi rỗng. Tuy nhiên cn theo dõi xem MediaWiki:Timeless-view-view và MediaWiki:view có còn được dùng ở chỗ nao khác không, và việc để thành chuỗi rỗng có gây ra vấn đề gì không. Ngoài ra việc sửa thông điệp cần phải thực hiện cho mọi ngôn ngữ (vì người dùng có thể chọn giao diện ngôn ngữ khác).
