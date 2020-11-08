@@ -28,7 +28,10 @@ button span.oo-ui-labelElement-label {
   color: #fff !important; 
 }
 
-
+#ca-view {
+ 	.hidden();
+}	
+	
 #mw-content {
 	.box;
 	background: @background;
@@ -68,38 +71,6 @@ button span.oo-ui-labelElement-label {
 
 	ul {
 		margin: 0;
-	}
-}
-
-#p-logo {
-	text-align: center;
-	margin: auto;
-}
-
-#p-logo-text {
-	max-width: @column-left-size;
-	text-align: center;
-	line-height: 1;
-
-	a {
-		padding: 0.1em 1em 0.2em;
-		color: @text;
-		font-family: @fonts-secondary;
-		font-variant: small-caps;
-		font-size: 1.85em;
-		display: block;
-
-		/* 13+ character names */
-		&.long {
-			font-size: 1.5em;
-			padding: 0 0.75em 0 0;
-			line-height: 0.8;
-		}
-
-		/* images */
-		&.wordmark {
-			padding: 0 0.5em 0 0;
-		}
 	}
 }
 
