@@ -68,6 +68,7 @@ class RememberMeAuthenticationRequest extends AuthenticationRequest {
 				'help' => wfMessage( 'authmanager-userlogin-remembermypassword-help' ),
 				'optional' => true,
 				'skippable' => true,
+				'default' => true
 			]
 		];
 	}
