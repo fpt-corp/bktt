@@ -924,6 +924,7 @@ abstract class LoginSignupSpecialPage extends AuthManagerSpecialPage {
 					'label-message' => $this->msg( 'userlogin-remembermypassword' )
 						->numParams( $expirationDays ),
 					'id' => 'wpRemember',
+					'weight' => -2000,
 				],
 				'loginattempt' => [
 					// submit button
