@@ -1198,19 +1198,19 @@ abstract class LoginSignupSpecialPage extends AuthManagerSpecialPage {
 			unset( $formDescriptor['createaccount'], $formDescriptor['loginattempt'] );
 		}
 
-		if ( !$this->isSignup() ) {
+		//if ( !$this->isSignup() ) {
 			// FIXME HACK don't focus on non-empty field
 			// maybe there should be an autofocus-if similar to hide-if?
-			if (
-				isset( $formDescriptor['username'] )
-				&& empty( $formDescriptor['username']['default'] )
-				&& !$this->getRequest()->getCheck( 'wpName' )
-			) {
-				$formDescriptor['username']['autofocus'] = true;
-			} elseif ( isset( $formDescriptor['password'] ) ) {
-				$formDescriptor['password']['autofocus'] = true;
-			}
-		}
+		//	if (
+		//		isset( $formDescriptor['username'] )
+		//		&& empty( $formDescriptor['username']['default'] )
+		//		&& !$this->getRequest()->getCheck( 'wpName' )
+		//	) {
+		//		$formDescriptor['username']['autofocus'] = true;
+		//	} elseif ( isset( $formDescriptor['password'] ) ) {
+		//		$formDescriptor['password']['autofocus'] = true;
+		//	}
+		//}
 
 		$this->addTabIndex( $formDescriptor );
 	}
