@@ -69,7 +69,7 @@ class PluggableAuthHooks {
 	) {
 		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
 			$formDescriptor['pluggableauthlogin']['weight'] = -1000;
-			$formDescriptor['pluggableauthlogin']['autofocus'] = true;
+			//$formDescriptor['pluggableauthlogin']['autofocus'] = true;
 		}
 	}
 
