@@ -70,9 +70,6 @@ class PluggableAuthHooks {
 		if ( isset( $formDescriptor['pluggableauthlogin'] ) ) {
 			$formDescriptor['pluggableauthlogin']['weight'] = -1000;
 		}
-		if ( isset( $formDescriptor['wpRemember'] ) ) {
-		        $formDescriptor['wpRemember']['weight'] = -2000;
-		}
 	}
 
 	/**
