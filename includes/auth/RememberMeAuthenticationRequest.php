@@ -39,7 +39,7 @@ class RememberMeAuthenticationRequest extends AuthenticationRequest {
 	protected $expiration = null;
 
 	/** @var bool */
-	public $rememberMe = false;
+	public $rememberMe = true;
 
 	/**
 	 * @stable to call
@@ -68,6 +68,7 @@ class RememberMeAuthenticationRequest extends AuthenticationRequest {
 				'help' => wfMessage( 'authmanager-userlogin-remembermypassword-help' ),
 				'optional' => true,
 				'skippable' => true,
+				'value' => true
 			]
 		];
 	}
