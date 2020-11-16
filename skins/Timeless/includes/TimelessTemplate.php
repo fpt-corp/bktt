@@ -177,9 +177,37 @@ class TimelessTemplate extends BaseTemplate {
 			}
 			
 		}
+		$siteTools= '';
+		foreach ( $this->sidebar as $name => $content ) {
+			if ( $content === false ) {
+				continue;
+			}
+			// Numeric strings gets an integer when set as key, cast back - T73639
+			$name = (string)$name;
+			$div = '';
+			foreach ( $content['content'] as $key => $item ) {
+				if (array_key_exists('text', $item)) {
+					$div .= Html::rawElement('a', ['href' => $item['href']], $item['text']);
+				} else {
+					$href = $item['href'];
+					$ci = strpos($href, ':');
+					$fs = strpos($href, '/', $ci);
+					$itemName = '';
+					if ($fs === false) {
+						$itemName .= substr($href, $ci + 1);
+					} else {
+						$itemName .= substr($href, $ci + 1, $fs - $ci - 1);
+					}
+					$itemName = preg_replace('/([a-z])([A-Z])/s','$1 $2', $itemName);
+					$div .= Html::rawElement('a', ['href' => $item['href']], $itemName);
+				}
+			}
+			$siteTools .= Html::rawElement('div', ['class' => 'menu-block'], $div);
+		};
 		$menuContent = Html::rawElement('div', ['class' => 'hamburger-menu-content'], 
 			Html::rawElement('div', ['class' => 'menu-block'], $pageTools) .
-			Html::rawElement('div', ['class' => 'menu-block'], $contentText)
+			Html::rawElement('div', ['class' => 'menu-block'], $contentText) .
+			$siteTools
 		);
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper-mobile'],
