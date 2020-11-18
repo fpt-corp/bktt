@@ -188,19 +188,19 @@ class TimelessTemplate extends BaseTemplate {
 			foreach ( $content['content'] as $key => $item ) {
 				if (array_key_exists('text', $item)) {
 					$div .= Html::rawElement('a', ['href' => $item['href']], $item['text']);
-				} else {
-					$href = $item['href'];
-					$ci = strpos($href, ':');
-					$fs = strpos($href, '/', $ci);
-					$itemName = '';
-					if ($fs === false) {
-						$itemName .= substr($href, $ci + 1);
-					} else {
-						$itemName .= substr($href, $ci + 1, $fs - $ci - 1);
-					}
-					$itemName = preg_replace('/([a-z])([A-Z])/s','$1 $2', $itemName);
-					$div .= Html::rawElement('a', ['href' => $item['href']], $itemName);
-				}
+				}// else {
+				//	$href = $item['href'];
+				//	$ci = strpos($href, ':');
+				//	$fs = strpos($href, '/', $ci);
+				//	$itemName = '';
+				//	if ($fs === false) {
+				//		$itemName .= substr($href, $ci + 1);
+				//	} else {
+				//		$itemName .= substr($href, $ci + 1, $fs - $ci - 1);
+				//	}
+				//	$itemName = preg_replace('/([a-z])([A-Z])/s','$1 $2', $itemName);
+				//	$div .= Html::rawElement('a', ['href' => $item['href']], $itemName);
+				//}
 			}
 			$siteTools .= Html::rawElement('div', ['class' => 'menu-block'], $div);
 		};
