@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+width="34" height="34" viewBox="0 0 34 34">
+  <path
+     d="M 8.5,10 H 25.8"
+     style="fill:#000000;fill-opacity:1;stroke:#ff5a28;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:#ff5a28;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 8.5,17 h 17.2"/>
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:#ff5a28;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 8.5,24 h 17.2"/>
+</svg>
