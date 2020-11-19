@@ -30,7 +30,6 @@ class SkinTimeless extends SkinTemplate {
 			'skins.timeless',
 		] );
 		$out->addModules( [
-			'skins.timeless.js',
 			'skins.timeless.mobile'
 		] );
 
