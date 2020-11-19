@@ -53,12 +53,10 @@ $( function () {
 	$( '#sidebar-button' ).on( 'click', function () {
 		if ($('#mw-site-navigation').css('display') == 'none') {
 			$('#mw-site-navigation').css('display','block')
-			$('#sidebar-button').removeClass('sidebar-button')
-			$('#sidebar-button').addClass('sidebar-nume')
+			$('#sidebar-button').css('background-image','url("@{resourcesRoot}/skins/Timeless/resources/images/nume.svg")';
 		} else {
 		        $('#mw-site-navigation').css('display','none')
-			$('#sidebar-button').removeClass('sidebar-nume')
-			$('#sidebar-button').addClass('sidebar-button')
+			$('#sidebar-button').css('background-image','url("@{resourcesRoot}/skins/Timeless/resources/images/menu.svg")';
 		}
 	} );
 	
