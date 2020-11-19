@@ -120,7 +120,7 @@ class TimelessTemplate extends BaseTemplate {
 			);
 		}
 
-		$pageTools = '';
+		$pageTools = Html::rawElement('div',['id' => 'sidebar-button', 'class' => 'sidebar-button']);
 		$list = ['namespaces', 'page-primary', 'variants'];
 		foreach ( $list as $key => $groupName ) {
 			if ($this->pileOfTools[$groupName]) {
