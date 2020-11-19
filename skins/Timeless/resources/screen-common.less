@@ -720,7 +720,16 @@ body :not( :checked)>.toctogglespan:after {
 	align-items: center;
 	flex-wrap: wrap;
 	padding: 0px;
-
+	
+        .sidebar-button {
+		width: 34px;
+		height: 34px;
+		border: none;
+		background-image: url('@{resourcesRoot}/skins/Timeless/resources/images/mobile-menu.svg');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+	
 	.header-upper-item {
 		height: 100%;
 
@@ -799,15 +808,6 @@ body :not( :checked)>.toctogglespan:after {
 .mw-header-personal-tools {
 	display: flex;
 	height: 100%;
-	
-	.sidebar-button {
-		width: 34px;
-		height: 34px;
-		border: none;
-		background-image: url('@{resourcesRoot}/skins/Timeless/resources/images/mobile-menu.svg');
-		background-position: center;
-		background-repeat: no-repeat;
-	}
 
 	a {
 		color: #fff;
