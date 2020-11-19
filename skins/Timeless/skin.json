@@ -41,13 +41,10 @@
 					"media": "screen and (min-width: 851px)"
 				},
 				"resources/screen-desktop-full.less": {
-					"media": "screen and (min-width: 1340px)"
+					"media": "screen and (min-width: 1100px)"
 				},
 				"resources/screen-desktop-mid.less": {
-					"media": "screen and (min-width: 1100px) and (max-width: 1339px)"
-				},
-				"resources/screen-desktop-small.less": {
-					"media": "screen and (min-width: 851px) and (max-width: 1099px)"
+					"media": "screen and (min-width: 815px) and (max-width: 1100px)"
 				},
 				"resources/screen-mobile.less": {
 					"media": "screen and (max-width: 850px)"
@@ -61,15 +58,6 @@
 				}
 			},
 			"@NOTE": "Remember to also update variables.less if you change the width cutoffs here. screen-misc.less and mobile.js may also need updating."
-		},
-		"skins.timeless.js": {
-			"targets": [ "desktop" ],
-			"scripts": [
-				"resources/main.js"
-			],
-			"dependencies": [
-				"jquery.tabIndex"
-			]
 		},
 		"skins.timeless.mobile": {
 			"targets": [ "desktop", "mobile" ],
