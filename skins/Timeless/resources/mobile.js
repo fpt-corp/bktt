@@ -53,10 +53,12 @@ $( function () {
 	$( '#sidebar-button' ).on( 'click', function () {
 		if ($('#mw-site-navigation').css('display') == 'none') {
 			$('#mw-site-navigation').css('display','block')
-			$('#sidebar-button').css('class','sidebar-nume')
+			$('#sidebar-button').removeClass('sidebar-button')
+			$('#sidebar-button').addClass('sidebar-nume')
 		} else {
 		        $('#mw-site-navigation').css('display','none')
-			$('#sidebar-button').css('class','sidebar-button')
+			$('#sidebar-button').removeClass('sidebar-nume')
+			$('#sidebar-button').addClass('sidebar-button')
 		}
 	} );
 	
