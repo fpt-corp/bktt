@@ -56,7 +56,7 @@ $( function () {
 			$('#sidebar-button').css('class','sidebar-nume')
 		} else {
 		        $('#mw-site-navigation').css('display','none')
-			$('#sidebar-button').css('class','sidebar-menu')
+			$('#sidebar-button').css('class','sidebar-button')
 		}
 	} );
 	
