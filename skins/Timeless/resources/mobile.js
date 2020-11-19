@@ -51,13 +51,12 @@ $( function () {
 	
 	// Nút trên bên trái 
 	$( '#sidebar-button' ).on( 'click', function () {
-		console.log('aaa')
 		if ($('#mw-site-navigation').css('display') == 'none') {
-			console.log('ddd')
 			$('#mw-site-navigation').css('display','block')
+			$('#sidebar-button').css('class','sidebar-nume')
 		} else {
-			console.log('bbbb')
 		        $('#mw-site-navigation').css('display','none')
+			$('#sidebar-button').css('class','sidebar-menu')
 		}
 	} );
 	
