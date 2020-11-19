@@ -42,7 +42,6 @@ $( function () {
 	} );
 
 	$( '#hamburger-menu-icon' ).on( 'click', function () {
-		console.log('dsfsdf')
 		$('#hamburger-menu').css('display', 'flex')
 	} );
 
