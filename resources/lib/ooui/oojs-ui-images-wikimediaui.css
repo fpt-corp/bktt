@@ -980,8 +980,8 @@
   background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/reload-invert.svg');
 }
 .oo-ui-image-progressive.oo-ui-icon-reload {
-  background-image: url('themes/wikimediaui/images/icons/reload.png');
-  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/reload.svg');
+  background-image: url('themes/wikimediaui/images/icons/reload-progressive.png');
+  background-image: linear-gradient(transparent, transparent), /* @embed */ url('themes/wikimediaui/images/icons/reload-progressive.svg');
 }
 .oo-ui-icon-search {
   background-image: url('themes/wikimediaui/images/icons/search.png');
