@@ -68,7 +68,6 @@ FilterWrapperWidget = function MwRcfiltersUiFilterWrapperWidget(
 	this.showNewChangesLink = new OO.ui.ButtonWidget( {
 		icon: 'reload',
 		framed: false,
-		flags: [ 'progressive' ],
 		classes: [ 'mw-rcfilters-ui-filterWrapperWidget-showNewChanges' ]
 	} );
 
