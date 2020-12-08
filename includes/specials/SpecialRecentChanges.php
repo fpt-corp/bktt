@@ -651,7 +651,7 @@ class SpecialRecentChanges extends ChangesListSpecialPage {
 					'label' => new OOUI\HtmlSnippet( $this->msg( 'rcfilters-other-review-tools' )->parse() ),
 					'framed' => false,
 					'indicator' => $collapsedState !== 'expanded' ? 'down' : 'up',
-					'flags' => [ 'primary' ],
+					'flags' => [ 'progressive' ],
 				] );
 
 				$contentWrapper = Html::rawElement( 'div',
