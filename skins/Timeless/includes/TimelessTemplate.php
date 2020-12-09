@@ -523,7 +523,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => 'searchform' ],
 			Html::rawElement( 'div', [ 'id' => 'simpleSearch' ],
-				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Tìm kiếm ...'] ) .
+				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Tìm trong BÁCH KHOA TOÀN THƯ VIỆT NAM ...'] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
 				//$this->makeSearchButton(
 				//	'fulltext',
