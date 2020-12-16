@@ -58,15 +58,6 @@ class TimelessTemplate extends BaseTemplate {
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
 					$this->getMainNavigation() .
 					$this->getPageToolSidebar() .
-					$this->getSidebarChunk(
-						'site-tools',
-						'timeless-sitetools',
-						$this->getPortlet(
-							'tb',
-							$this->pileOfTools['general'],
-							'timeless-sitetools'
-						)
-					) .
 					$this->getCategories()
 				) .
 				$this->getClear()
@@ -508,6 +499,11 @@ class TimelessTemplate extends BaseTemplate {
 			'cactions',
 			$this->pileOfTools['page-secondary'],
 			'timeless-pageactions'
+		);
+		$pageTools .= $this->getPortlet(
+			'tb',
+			$this->pileOfTools['general'],
+			'timeless-sitetools'
 		);
 		$pageTools .= $this->getPortlet(
 			'userpagetools',
