@@ -846,7 +846,7 @@ class TimelessTemplate extends BaseTemplate {
 				'watch',
 				'unwatch'
 			] ) ) {
-				$currentSet = 'namespaces';
+				$currentSet = 'page-secondary';
 			} elseif ( in_array( $navKey, [
 				'edit',
 				'view',
