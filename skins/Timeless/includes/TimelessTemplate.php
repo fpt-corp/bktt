@@ -4,6 +4,7 @@
  *
  * @ingroup Skins
  */
+
 class TimelessTemplate extends BaseTemplate {
 
 	/** @var array */
@@ -18,7 +19,6 @@ class TimelessTemplate extends BaseTemplate {
 	/** @var array|null */
 	protected $collectionPortlet;
 	
-	protected $wgLogo;
 
 	/**
 	 * Outputs the entire contents of the page
@@ -26,11 +26,6 @@ class TimelessTemplate extends BaseTemplate {
 	public function execute() {
 		$this->sidebar = $this->getSidebar();
 
-		// WikiBase sidebar thing
-		if ( isset( $this->sidebar['wikibase-otherprojects'] ) ) {
-			$this->otherProjects = $this->sidebar['wikibase-otherprojects'];
-			unset( $this->sidebar['wikibase-otherprojects'] );
-		}
 		// Collection sidebar thing
 		if ( isset( $this->sidebar['coll-print_export'] ) ) {
 			$this->collectionPortlet = $this->sidebar['coll-print_export'];
@@ -62,6 +57,7 @@ class TimelessTemplate extends BaseTemplate {
 				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
 					$this->getMainNavigation() .
+					$this->getPageToolSidebar() .
 					$this->getSidebarChunk(
 						'site-tools',
 						'timeless-sitetools',
@@ -71,8 +67,6 @@ class TimelessTemplate extends BaseTemplate {
 							'timeless-sitetools'
 						)
 					) .
-					$this->getPageToolSidebar() .
-					$this->getInterwikiLinks() .
 					$this->getCategories()
 				) .
 				$this->getClear()
@@ -439,73 +433,6 @@ class TimelessTemplate extends BaseTemplate {
 	}
 
 	/**
-	 * The logo and (optionally) site title
-	 *
-	 * @param string $id
-	 * @param string $part whether it's only image, only text, or both
-	 *
-	 * @return string html
-	 */
-	protected function getLogo( $id = 'p-logo', $part = 'both' ) {
-		$html = '';
-		$language = $this->getSkin()->getLanguage();
-		$config = $this->getSkin()->getContext()->getConfig();
-
-		$html .= Html::openElement(
-			'div',
-			[
-				'id' => Sanitizer::escapeId( $id ),
-				'class' => 'mw-portlet',
-				'role' => 'banner'
-			]
-		);
-		if ( $part !== 'image' ) {
-			$wordmarkImage = $this->getLogoImage( $config->get( 'TimelessWordmark' ), true );
-
-			$titleClass = '';
-			if ( !$wordmarkImage ) {
-				if ( $language->hasVariants() ) {
-					$siteTitle = $language->convert( $this->getMsg( 'timeless-sitetitle' )->escaped() );
-				} else {
-					$siteTitle = $this->getMsg( 'timeless-sitetitle' )->escaped();
-				}
-				// width is 11em; 13 characters will probably fit?
-				if ( mb_strlen( $siteTitle ) > 13 ) {
-					$titleClass = 'long';
-				}
-			} else {
-				$titleClass = 'wordmark';
-			}
-			$html .= Html::rawElement( 'a', [
-					'id' => 'p-banner',
-					'class' => [ 'mw-wiki-title', $titleClass ],
-					'href' => $this->data['nav_urls']['mainpage']['href']
-				],
-				$wordmarkImage ?: $siteTitle
-			);
-
-		}
-		if ( $part !== 'text' ) {
-			$logoImage = $this->getLogoImage( $config->get( 'TimelessLogo' ) );
-
-			$html .= Html::rawElement(
-				'a',
-				array_merge(
-					[
-						'class' => [ 'mw-wiki-logo', !$logoImage ? 'fallback' : 'timeless-logo' ],
-						'href' => $this->data['nav_urls']['mainpage']['href']
-					],
-					Linker::tooltipAndAccesskeyAttribs( 'p-logo' )
-				),
-				$logoImage ?: ''
-			);
-		}
-		$html .= Html::closeElement( 'div' );
-
-		return $html;
-	}
-
-	/**
 	 * The search box at the top
 	 *
 	 * @return string html
@@ -566,36 +493,6 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		$html = $this->getSidebarChunk( 'site-navigation', 'navigation', $html );
-
-		return $html;
-	}
-
-	/**
-	 * The colour bars
-	 * Split this out so we don't have to look at it/can easily kill it later
-	 *
-	 * @return string html
-	 */
-	protected function getHeaderHack() {
-		$html = '';
-
-		// These are almost exactly the same and this is stupid.
-		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-hack', 'class' => 'color-bar' ],
-			Html::rawElement( 'div', [ 'class' => 'color-middle-container' ],
-				Html::element( 'div', [ 'class' => 'color-middle' ] )
-			) .
-			Html::element( 'div', [ 'class' => 'color-left' ] ) .
-			Html::element( 'div', [ 'class' => 'color-right' ] )
-		);
-		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-nav-hack' ],
-			Html::rawElement( 'div', [ 'class' => 'color-bar' ],
-				Html::rawElement( 'div', [ 'class' => 'color-middle-container' ],
-					Html::element( 'div', [ 'class' => 'color-middle' ] )
-				) .
-				Html::element( 'div', [ 'class' => 'color-left' ] ) .
-				Html::element( 'div', [ 'class' => 'color-right' ] )
-			)
-		);
 
 		return $html;
 	}
@@ -844,18 +741,7 @@ class TimelessTemplate extends BaseTemplate {
 
 			if ( in_array( $navKey, [
 				'watch',
-				'unwatch'
-			] ) ) {
-				$currentSet = 'page-secondary';
-			} elseif ( in_array( $navKey, [
-				'edit',
-				'view',
-				'history',
-				'addsection',
-				'viewsource'
-			] ) ) {
-				$currentSet = 'page-primary';
-			} elseif ( in_array( $navKey, [
+				'unwatch',
 				'delete',
 				'rename',
 				'protect',
@@ -1039,179 +925,5 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		return $html;
-	}
-
-	/**
-	 * Interwiki links block
-	 *
-	 * @return string html
-	 */
-	protected function getInterwikiLinks() {
-		$html = '';
-		$variants = '';
-		$otherprojects = '';
-		$languages = '';
-		$show = false;
-		$variantsOnly = false;
-
-		if ( $this->pileOfTools['variants'] ) {
-			$variants = $this->getPortlet(
-				'variants',
-				$this->pileOfTools['variants']
-			);
-			$show = true;
-			$variantsOnly = true;
-		}
-		if ( $this->data['language_urls'] !== false ) {
-			$languages = $this->getPortlet(
-				'lang',
-				$this->data['language_urls'] ?: [],
-				'otherlanguages'
-			);
-			$show = true;
-			$variantsOnly = false;
-		}
-		// if using wikibase for 'in other projects'
-		if ( isset( $this->otherProjects ) ) {
-			$otherprojects = $this->getPortlet(
-				'wikibase-otherprojects',
-				$this->otherProjects['content']
-			);
-			$show = true;
-			$variantsOnly = false;
-		}
-
-		if ( $show ) {
-			$html .= $this->getSidebarChunk(
-				'other-languages',
-				'timeless-projects',
-				$variants . $languages . $otherprojects,
-				$variantsOnly ? [ 'variants-only' ] : []
-			);
-		}
-
-		return $html;
-	}
-
-	/**
-	 * Generate img-based logos for proper HiDPI support
-	 *
-	 * @param string|array|null $logo
-	 * @param bool $doLarge Render extra-large HiDPI logos for mobile devices?
-	 *
-	 * @return string|false html|we're not doing this
-	 */
-	protected function getLogoImage( $logo, $doLarge = false ) {
-		if ( $logo === null ) {
-			// not set, fall back to generic methods
-			return false;
-		}
-
-		// Generate $logoData from a file upload
-		if ( is_string( $logo ) ) {
-			$file = wfFindFile( $logo );
-
-			if ( !$file || !$file->canRender() ) {
-				// eeeeeh bail, scary
-				return false;
-			}
-			$logoData = [];
-
-			// Calculate intended sizes
-			$width = $file->getWidth();
-			$height = $file->getHeight();
-			$bound = $width > $height ? $width : $height;
-			$svg = File::normalizeExtension( $file->getExtension() ) === 'svg';
-
-			// Mobile stuff is generally a lot more than just 2ppp. Let's go with 4x?
-			// Currently we're just doing this for wordmarks, which shouldn't get that
-			// big in practice, so this is probably safe enough. And no need to use
-			// this for desktop logos, so fall back to 2x for 2x as default...
-			$large = $doLarge ? 4 : 2;
-
-			if ( $bound <= 165 ) {
-				// It's a 1x image
-				$logoData['width'] = $width;
-				$logoData['height'] = $height;
-
-				if ( $svg ) {
-					$logoData['1x'] = $file->createThumb( $logoData['width'] );
-					$logoData['1.5x'] = $file->createThumb( $logoData['width'] * 1.5 );
-					$logoData['2x'] = $file->createThumb( $logoData['width'] * $large );
-				} elseif ( $file->mustRender() ) {
-					$logoData['1x'] = $file->createThumb( $logoData['width'] );
-				} else {
-					$logoData['1x'] = $file->getUrl();
-				}
-
-			} elseif ( $bound >= 230 && $bound <= 330 ) {
-				// It's a 2x image
-				$logoData['width'] = $width / 2;
-				$logoData['height'] = $height / 2;
-
-				$logoData['1x'] = $file->createThumb( $logoData['width'] );
-				$logoData['1.5x'] = $file->createThumb( $logoData['width'] * 1.5 );
-
-				if ( $svg || $file->mustRender() ) {
-					$logoData['2x'] = $file->createThumb( $logoData['width'] * 2 );
-				} else {
-					$logoData['2x'] = $file->getUrl();
-				}
-			} else {
-				// Okay, whatever, we get to pick something random
-				// Yes I am aware this means they might have arbitrarily tall logos,
-				// and you know what, let 'em, I don't care
-				$logoData['width'] = 155;
-				$logoData['height'] = File::scaleHeight( $width, $height, $logoData['width'] );
-
-				$logoData['1x'] = $file->createThumb( $logoData['width'] );
-				if ( $svg || $logoData['width'] * 1.5 <= $width ) {
-					$logoData['1.5x'] = $file->createThumb( $logoData['width'] * 1.5 );
-				}
-				if ( $svg || $logoData['width'] * 2 <= $width ) {
-					$logoData['2x'] = $file->createThumb( $logoData['width'] * $large );
-				}
-			}
-		} elseif ( is_array( $logo ) ) {
-			// manually set logo data for non-file-uploads
-			$logoData = $logo;
-		} else {
-			// nope
-			return false;
-		}
-
-		// Render the html output!
-		$attribs = [
-			'alt' => $this->getMsg( 'sitetitle' )->text(),
-			// Should we care? It's just a logo...
-			'decoding' => 'auto',
-			'width' => $logoData['width'],
-			'height' => $logoData['height'],
-		];
-
-		if ( !isset( $logoData['1x'] ) && isset( $logoData['2x'] ) ) {
-			// We'll allow it...
-			$attribs['src'] = $logoData['2x'];
-		} else {
-			// Okay, we really do want a 1x otherwise. If this throws an error or
-			// something because there's nothing here, GOOD.
-			$attribs['src'] = $logoData['1x'];
-
-			// Throw the rest in a srcset
-			unset( $logoData['1x'], $logoData['width'], $logoData['height'] );
-			$srcset = '';
-			foreach ( $logoData as $res => $path ) {
-				if ( $srcset != '' ) {
-					$srcset .= ', ';
-				}
-				$srcset .= $path . ' ' . $res;
-			}
-
-			if ( $srcset !== '' ) {
-				$attribs['srcset'] = $srcset;
-			}
-		}
-
-		return Html::element( 'img', $attribs );
 	}
 }
