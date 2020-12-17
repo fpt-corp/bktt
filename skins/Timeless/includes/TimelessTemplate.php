@@ -14,9 +14,6 @@ class TimelessTemplate extends BaseTemplate {
 	protected $sidebar;
 
 	/** @var array|null */
-	protected $otherProjects;
-
-	/** @var array|null */
 	protected $collectionPortlet;
 	
 
@@ -721,8 +718,7 @@ class TimelessTemplate extends BaseTemplate {
 			'id' => 'ca-more',
 			'class' => 'dropdown-toggle'
 		];
-		if ( $this->data['language_urls'] !== false || $sortedPileOfTools['variants']
-			|| isset( $this->otherProjects ) ) {
+		if ( $this->data['language_urls'] !== false || $sortedPileOfTools['variants'] ) {
 			$pileOfTools['languages'] = [
 				'text' => $this->getMsg( 'timeless-languages' )->escaped(),
 				'id' => 'ca-languages',
@@ -901,25 +897,4 @@ class TimelessTemplate extends BaseTemplate {
 		return $html;
 	}
 
-	/**
-	 * Interlanguage links block, with variants if applicable
-	 * Layout sort of assumes we're using ULS compact language handling
-	 * if there's a lot of languages.
-	 *
-	 * @return string html
-	 */
-	protected function getVariants() {
-		$html = '';
-
-		if ( $this->pileOfTools['variants'] ) {
-			$html .= $this->getPortlet(
-				'variants-desktop',
-				$this->pileOfTools['variants'],
-				'variants',
-				[ 'body-extra-classes' => 'dropdown' ]
-			);
-		}
-
-		return $html;
-	}
 }
