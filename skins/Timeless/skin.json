@@ -1,8 +1,5 @@
 {
 	"name": "Timeless",
-	"version": "0.8.9",
-	"author": "Isarra Yos",
-	"url": "https://www.mediawiki.org/wiki/Skin:Timeless",
 	"descriptionmsg": "timeless-desc",
 	"namemsg": "skinname-timeless",
 	"license-name": "GPL-2.0-or-later",
@@ -18,14 +15,10 @@
 			"i18n"
 		]
 	},
-	"config": {
-		"TimelessBackdropImage": "cat.svg",
-		"TimelessLogo": null,
-		"TimelessWordmark": null
-	},
 	"ResourceModules": {
 		"skins.timeless": {
 			"targets": [ "desktop", "mobile" ],
+			"class": "ResourceLoaderSkinModule",
 			"styles": {
 				"resources/libraries/normalise.css": {
 					"media": "screen"
@@ -52,8 +45,7 @@
 				"resources/print.css": {
 					"media": "print"
 				}
-			},
-			"@NOTE": "Remember to also update variables.less if you change the width cutoffs here. screen-misc.less and mobile.js may also need updating."
+			}
 		},
 		"skins.timeless.mobile": {
 			"targets": [ "desktop", "mobile" ],
