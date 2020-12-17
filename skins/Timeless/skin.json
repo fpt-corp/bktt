@@ -20,7 +20,7 @@
 			"targets": [ "desktop", "mobile" ],
 			"class": "ResourceLoaderSkinModule",
 			"styles": {
-				"resources/libraries/normalise.css": {
+				"resources/normalise.css": {
 					"media": "screen"
 				},
 				"resources/forms.less": {
