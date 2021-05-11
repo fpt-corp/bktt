@@ -428,7 +428,7 @@ class TimelessTemplate extends BaseTemplate {
 	protected function getSearch($txt,$id) {
 		$html = '';
 
-		$html .= Html::openElement( 'div', [  'id' => $id.'p-search' ] );
+		$html .= Html::openElement( 'div', [  'id' => $id.'p-search', 'class' => 'search' ] );
 
 		$html .= Html::rawElement(
 			'h3',
