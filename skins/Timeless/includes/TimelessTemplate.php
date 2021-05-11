@@ -194,7 +194,7 @@ class TimelessTemplate extends BaseTemplate {
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper-mobile'],
 			Html::rawElement('a', [ 'href' => $this->data['nav_urls']['mainpage']['href'] ], Html::rawElement('div', ['class' => 'home'], '') ).
-			$this->getSearch('Bách khoa Toàn thư Việt Nam','m-search') .
+			$this->getSearch('Bách khoa Toàn thư Việt Nam','m') .
 			Html::rawElement('div', ['class' => 'hamburger-menu-icon', 'id' => 'hamburger-menu-icon'], '') .
 			Html::rawElement('div', ['class' => 'hamburger-menu', 'id' => 'hamburger-menu'], $menuContent)
 		);
@@ -215,7 +215,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower' .$notMainPage], 
 			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
-			$this->getSearch('Tìm ở Bách khoa Toàn thư Việt Nam ...','p-search') .
+			$this->getSearch('Tìm ở Bách khoa Toàn thư Việt Nam ...','') .
 			$alphabetSearch
 		);
 	}
@@ -428,17 +428,17 @@ class TimelessTemplate extends BaseTemplate {
 	protected function getSearch($txt,$id) {
 		$html = '';
 
-		$html .= Html::openElement( 'div', [  'id' => $id ] );
+		$html .= Html::openElement( 'div', [  'id' => $id.'p-search' ] );
 
 		$html .= Html::rawElement(
 			'h3',
 			[ 'lang' => $this->get( 'userlang' ), 'dir' => $this->get( 'dir' ) ],
-			Html::rawElement( 'label', [ 'for' => 'searchInput' ], $this->getMsg( 'search' )->escaped() )
+			Html::rawElement( 'label', [ 'for' => $id.'searchInput' ], $this->getMsg( 'search' )->escaped() )
 		);
 
-		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => 'searchform' ],
-			Html::rawElement( 'div', [ 'id' => 'simpleSearch' ],
-				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => $txt] ) .
+		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => $id.'searchform' ],
+			Html::rawElement( 'div', [ 'id' => $id.'simpleSearch' ],
+				$this->makeSearchInput( ['id' => $id.'searchInput', 'placeholder' => $txt] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
 				//$this->makeSearchButton(
 				//	'fulltext',
@@ -446,7 +446,7 @@ class TimelessTemplate extends BaseTemplate {
 				//) .
 				$this->makeSearchButton(
 					'go',
-					[ 'id' => 'searchButton', 'class' => 'searchButton' ]
+					[ 'id' => $id.'searchButton', 'class' => 'searchButton' ]
 				)
 			)
 		);
