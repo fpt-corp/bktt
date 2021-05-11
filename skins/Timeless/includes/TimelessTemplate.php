@@ -194,7 +194,7 @@ class TimelessTemplate extends BaseTemplate {
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper-mobile'],
 			Html::rawElement('a', [ 'href' => $this->data['nav_urls']['mainpage']['href'] ], Html::rawElement('div', ['class' => 'home'], '') ).
-			$this->getSearch('Bách khoa Toàn thư Việt Nam') .
+			$this->getSearch('Bách khoa Toàn thư Việt Nam','m-search') .
 			Html::rawElement('div', ['class' => 'hamburger-menu-icon', 'id' => 'hamburger-menu-icon'], '') .
 			Html::rawElement('div', ['class' => 'hamburger-menu', 'id' => 'hamburger-menu'], $menuContent)
 		);
@@ -215,7 +215,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower' .$notMainPage], 
 			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
-			$this->getSearch('Tìm ở Bách khoa Toàn thư Việt Nam ...') .
+			$this->getSearch('Tìm ở Bách khoa Toàn thư Việt Nam ...','p-search') .
 			$alphabetSearch
 		);
 	}
@@ -425,10 +425,10 @@ class TimelessTemplate extends BaseTemplate {
 	 *
 	 * @return string html
 	 */
-	protected function getSearch($txt) {
+	protected function getSearch($txt,$id) {
 		$html = '';
 
-		$html .= Html::openElement( 'div', [  'id' => 'p-search' ] );
+		$html .= Html::openElement( 'div', [  'id' => $id ] );
 
 		$html .= Html::rawElement(
 			'h3',
