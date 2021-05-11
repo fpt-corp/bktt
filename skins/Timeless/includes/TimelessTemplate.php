@@ -48,14 +48,14 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
 			Html::rawElement( 'div', [ 'id' => 'mw-content-block'],
-				Html::rawElement( 'div', [ 'id' => 'mw-parser-output' ],
-					$this->getContentBlock() .
-					$this->getAfterContent()
-				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
 					$this->getMainNavigation() .
 					$this->getPageToolSidebar() .
 					$this->getCategories()
+				) .
+				Html::rawElement( 'div', [ 'id' => 'mw-parser-output' ],
+					$this->getContentBlock() .
+					$this->getAfterContent()
 				) .
 				$this->getClear()
 			)
