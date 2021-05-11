@@ -193,6 +193,7 @@ class TimelessTemplate extends BaseTemplate {
 		);
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper-mobile'],
+			Html::rawElement('a', [ 'href' => $this->data['nav_urls']['mainpage']['href'] ], Html::rawElement('div', ['class' => 'home'], '') ).
 			$this->getSearch('Bách khoa Toàn thư Việt Nam') .
 			Html::rawElement('div', ['class' => 'hamburger-menu-icon', 'id' => 'hamburger-menu-icon'], '') .
 			Html::rawElement('div', ['class' => 'hamburger-menu', 'id' => 'hamburger-menu'], $menuContent)
