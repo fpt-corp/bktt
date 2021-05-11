@@ -237,7 +237,6 @@ class TimelessTemplate extends BaseTemplate {
 			$this->getIndicators() .
 			Html::rawElement( 'div', [ 'id' => 'bodyContentOuter' ],
 				Html::rawElement( 'div', [ 'id' => 'siteSub' ], $this->getMsg( 'tagline' )->parse() ) .
-				$this->getClear() .
 				Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
 					$title .
 					$this->getContentSub() .
