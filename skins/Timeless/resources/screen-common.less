@@ -84,6 +84,9 @@ button span.oo-ui-labelElement-label {
 	width: 100%;
 	min-height: 0;
 	font-family: inherit;
+	&:focus {
+		outline: none;
+	}
 }
 
 .searchButton,
@@ -876,10 +879,6 @@ body :not( :checked)>.toctogglespan:after {
 		height: 46px;
 		background: #F2F2F2;
 		border-radius: 5px;
-
-		&:focus {
-			outline: none;
-		}
 	}
 
 	#searchButton {
