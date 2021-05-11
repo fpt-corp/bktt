@@ -48,7 +48,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
 			Html::rawElement( 'div', [ 'id' => 'mw-content-block'],
-				Html::rawElement( 'div', [ 'id' => 'mw-parser-output' ],
+				Html::rawElement( 'div', [ 'id' => 'mw-content-wrapper' ],
 					$this->getContentBlock() .
 					$this->getAfterContent()
 				) .
