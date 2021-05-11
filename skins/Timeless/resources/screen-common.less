@@ -72,10 +72,13 @@ button span.oo-ui-labelElement-label {
 	box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
 	background: @background;
 	position: relative;
-	border: solid 1px @base70;
+	border: none;
+	
 }
 
 .searchInput {
+	background: #F2F2F2;
+	border-radius: 5px;
 	border: 0;
 	margin: 0;
 	height: 2.1em;
@@ -84,15 +87,18 @@ button span.oo-ui-labelElement-label {
 	width: 100%;
 	min-height: 0;
 	font-family: inherit;
+	&:focus {
+		outline: none;
+	}
 }
 
 .searchButton,
 #mw-searchButton {
 	position: absolute;
-	top: 0;
+	top: 6px;
 	margin: 0;
 	padding: 0;
-	right: 0;
+	right: 5px;
 	width: 1.5em;
 	height: 2.9em;
 	.icon;
@@ -866,26 +872,6 @@ body :not( :checked)>.toctogglespan:after {
 	align-items: center;
 	flex-wrap: wrap;
 	padding: 0 22px;
-
-	#simpleSearch {
-		border: none;
-	}
-
-	#searchInput {
-		padding: 0 12px;
-		height: 46px;
-		background: #F2F2F2;
-		border-radius: 5px;
-
-		&:focus {
-			outline: none;
-		}
-	}
-
-	#searchButton {
-		top: 6px;
-		right: 5px;
-	}
 
 	.search-alphabet {
 		font-size: 16px;
