@@ -37,7 +37,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::openElement( 'div', [ 'id' => 'mw-wrapper', 'class' => $userLinks['class'] ] );
 
-		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container' ],
+		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container mw-parser-output' ],
 			$this->getHeaderUpper() .
 			$this->getHeaderUpperMobile() .
 			$this->getHeaderLower()
