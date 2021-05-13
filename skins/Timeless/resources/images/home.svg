@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34">
-<defs><style>.a{fill:#fff;stroke:#ff5a28;}.b{fill:none;fill-opacity:1;stroke:#ff5a28;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;}.c{stroke:none;}.d{fill:none;}</style>
-</defs>
-<g class="a"><rect class="c" width="34" height="34" rx="3" x="0" y="0"/>
-<rect class="d" x="0.5" y="0.5" width="33" height="33" rx="2.5"/></g>
+<defs><style>.b{fill:none;fill-opacity:1;stroke:#ff5a28;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;}</style></defs>
 <path d="M 8.4424248,15.255917 16.912443,8.8396915 25.742425,15.255917" class="b"/>
 <path d="m 11.740485,17.788026 3.62e-4,7.760813 10.988174,-0.01463 -0.02487,-7.731556" class="b"/>
 </svg>
