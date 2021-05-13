@@ -214,7 +214,7 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		return Html::rawElement('div', ['class' => 'mw-header-lower' .$notMainPage], 
-			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
+			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text', 'title' => 'Đi đến Trang Chính'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
 			$this->getSearch('Tìm kiếm ...','') .
 			$alphabetSearch
 		);
