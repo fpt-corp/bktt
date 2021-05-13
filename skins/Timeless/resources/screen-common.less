@@ -73,9 +73,6 @@ button span.oo-ui-labelElement-label {
 }
 
 .searchInput {
-	border: solid 1px @base70;
-	box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-	border-radius: 5px;
 	margin: 0;
 	height: 2.1em;
 	width: 100%;
@@ -737,6 +734,13 @@ body :not( :checked)>.toctogglespan:after {
 	box-shadow: 0px 5px 10px #0000001A;
 	position: relative;
 
+	#msearchInput {
+		background: #333;
+		border: none;
+		border-radius: 20px;
+		color: white;
+	}
+	
 	.hamburger-menu-icon {
 		width: 34px;
 		height: 34px;
@@ -867,6 +871,9 @@ body :not( :checked)>.toctogglespan:after {
 		padding: 0 12px;
 		height: 42px;
 		background: #F2F2F2;
+		border: solid 1px @base70;
+		box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+		border-radius: 5px;
 	}
 
 	.search-alphabet {
