@@ -130,94 +130,6 @@ class TimelessTemplate extends BaseTemplate {
 		);
 	}
 
-	public function getHeaderUpperMobile() {
-		$user = $this->getSkin()->getUser();
-		$personalTools = $this->getPersonalTools();
-		// Preserve standard username label to allow customisation (T215822)
-		$userName = $personalTools['userpage']['links'][0]['text'] ?? $user->getName();
-		
-		$contentText = '';
-		foreach ( $personalTools as $key => $item ) {
-			$contentText .= Html::rawElement(
-				'a', 
-				['href' => $item['links'][0]['href'], 'id' => $item['links'][0]['single-id']],
-				 $item['links'][0]['text']
-			);
-		}
-
-		$pageTools = '';
-		$list = ['namespaces', 'page-primary', 'variants'];
-		foreach ( $list as $key => $groupName ) {
-			if ($this->pileOfTools[$groupName]) {
-				foreach ( $this->pileOfTools[$groupName] as $key => $item ) {
-					if ($item['href'] != $_SERVER['REQUEST_URI'] && $item['id'] != 'ca-nstab-main') {
-						$pageTools .= Html::rawElement('a', ['href' => $item['href']], $item['text']);
-					}
-				}
-			}
-			
-		}
-		$siteTools= '';
-		foreach ( $this->sidebar as $name => $content ) {
-			if ( $content === false ) {
-				continue;
-			}
-			// Numeric strings gets an integer when set as key, cast back - T73639
-			$name = (string)$name;
-			$div = '';
-			foreach ( $content['content'] as $key => $item ) {
-				if (array_key_exists('text', $item)) {
-					$div .= Html::rawElement('a', ['href' => $item['href']], $item['text']);
-				}// else {
-				//	$href = $item['href'];
-				//	$ci = strpos($href, ':');
-				//	$fs = strpos($href, '/', $ci);
-				//	$itemName = '';
-				//	if ($fs === false) {
-				//		$itemName .= substr($href, $ci + 1);
-				//	} else {
-				//		$itemName .= substr($href, $ci + 1, $fs - $ci - 1);
-				//	}
-				//	$itemName = preg_replace('/([a-z])([A-Z])/s','$1 $2', $itemName);
-				//	$div .= Html::rawElement('a', ['href' => $item['href']], $itemName);
-				//}
-			}
-			$siteTools .= Html::rawElement('div', ['class' => 'menu-block'], $div);
-		};
-		$menuContent = Html::rawElement('div', ['class' => 'hamburger-menu-content'], 
-			Html::rawElement('div', ['class' => 'menu-block'], $pageTools) .
-			Html::rawElement('div', ['class' => 'menu-block'], $contentText) .
-			$siteTools
-		);
-		
-		return Html::rawElement('div', ['class' => 'mw-header-upper-mobile'],
-			Html::rawElement('a', [ 'href' => $this->data['nav_urls']['mainpage']['href'] ], Html::rawElement('div', ['class' => 'home'], '') ).
-			$this->getSearch('Bách khoa Toàn thư Việt Nam','m') .
-			Html::rawElement('div', ['class' => 'hamburger-menu-icon', 'id' => 'hamburger-menu-icon'], '') .
-			Html::rawElement('div', ['class' => 'hamburger-menu', 'id' => 'hamburger-menu'], $menuContent)
-		);
-	}
-
-	public function getHeaderLower() {
-		$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
-		$alphabetSearch = '';
-		foreach ( $alphabet as $key => $item ) {
-			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
-				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
-			);
-		}
-		$notMainPage = ' not-main-page-lower';
-		if ($this->getSkin()->getTitle()->isMainPage()) {
-			$notMainPage = '';
-		}
-
-		return Html::rawElement('div', ['class' => 'mw-header-lower' .$notMainPage], 
-			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text', 'title' => 'Đi đến Trang Chính'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
-			$this->getSearch('Tìm kiếm ...','') .
-			$alphabetSearch
-		);
-	}
-
 	/**
 	 * Generate the page content block
 	 * Broken out here due to the excessive indenting, or stuff.
@@ -471,10 +383,10 @@ class TimelessTemplate extends BaseTemplate {
 			// Numeric strings gets an integer when set as key, cast back - T73639
 			$name = (string)$name;
 			$html .= $this->getPortlet( $name, $content['content'] );
-			$html .= $this->getUserLinks();
 		}
 
 		$html = $this->getSidebarChunk( 'site-navigation', 'navigation', $html );
+		$html .= $this->getSidebarChunk( 'site-personal', 'personal', $this->getUserLinks() );
 
 		return $html;
 	}
