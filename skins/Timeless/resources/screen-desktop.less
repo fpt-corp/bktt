@@ -31,25 +31,9 @@ div.mw-notification-area {
 }
 
 #mw-header-container {
-	/* Stupid IE10+ bug requires defining the height property for this to work
-	 * the way it is intended; without doing that this'll break horribly under
-	 * IE10 and IE11.
-	 * @see https://phabricator.wikimedia.org/T173769
-	 */
 	z-index: 100;
 	width: 100%;
-	background: @background;
-	color: @text;
 	box-sizing: border-box;
-}
-
-#p-logo-text {
-	.flex(0, 0, auto, 1);
-}
-
-#p-search {
-	.flex(1, 1, auto, unset);
-	margin: 0 11px;
 }
 
 #user-tools {
