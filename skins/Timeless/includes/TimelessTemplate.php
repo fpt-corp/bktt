@@ -487,7 +487,7 @@ class TimelessTemplate extends BaseTemplate {
 		$pageTools = '';
 		// - begine add more tools 
 		$pageTools .= $this->getPortlet(
-			'namespaces', // id = "p-".(this value)
+			'cnamespaces', // id = "p-".(this value)
 			$this->pileOfTools['namespaces'],
 			'Không gian'
 		);
