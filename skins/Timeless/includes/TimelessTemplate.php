@@ -489,12 +489,12 @@ class TimelessTemplate extends BaseTemplate {
 		$pageTools .= $this->getPortlet(
 			'namespaces', // id = "p-".(this value)
 			$this->pileOfTools['namespaces'],
-			'bktt-namespaces'
+			'Không gian'
 		);
 		$pageTools .= $this->getPortlet(
 			'actions', // id = "p-".(this value)
 			$this->pileOfTools['page-primary'],
-			'bktt-pageactions'
+			'Thao tác'
 		);
 		// - end add more tools
 		$pageTools .= $this->getPortlet(
