@@ -459,8 +459,8 @@ class TimelessTemplate extends BaseTemplate {
 
 		// Already hardcoded into header
 		$this->sidebar['SEARCH'] = false;
-		// Parsed as part of pageTools
-		$this->sidebar['TOOLBOX'] = false;
+		// Parsed as part of pageTools - but still keep for flexible display in mobile
+		// $this->sidebar['TOOLBOX'] = false;
 		// Forcibly removed to separate chunk
 		$this->sidebar['LANGUAGES'] = false;
 
