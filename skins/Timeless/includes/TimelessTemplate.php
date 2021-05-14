@@ -451,15 +451,10 @@ class TimelessTemplate extends BaseTemplate {
 		$personalTools = $this->getPersonalTools();
 		// Preserve standard username label to allow customisation (T215822)
 		$userName = $personalTools['userpage']['links'][0]['text'] ?? $user->getName();
-
-		// Remove Echo badges
-		if ( isset( $personalTools['notifications-alert'] ) ) {
-			$extraTools['notifications-alert'] = $personalTools['notifications-alert'];
-			unset( $personalTools['notifications-alert'] );
-		}
-		if ( isset( $personalTools['notifications-notice'] ) ) {
-			$extraTools['notifications-notice'] = $personalTools['notifications-notice'];
-			unset( $personalTools['notifications-notice'] );
+		
+		// Remove Watchlist for mobile view
+		if ( isset( $personalTools['watchlist'] ) ) {
+			unset( $personalTools['watchlist'] );
 		}
 		
 		if ( $user->isRegistered() ) {
