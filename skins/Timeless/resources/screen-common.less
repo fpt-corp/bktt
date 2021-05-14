@@ -700,24 +700,23 @@ body :not( :checked)>.toctogglespan:after {
 		background-color: #fff;
 	}
 	
+	a {
+		color: #767676;
+		cursor: pointer;
+		display: flex !important;
+		align-items: center;
+		&:hover {
+			background: #fff;
+		}
+	
+	}	
+	
 	.header-upper-item {
 		height: 100%;
-
 		a {
-			color: #fff;
-			padding: 0 8px;
-			cursor: pointer;
-			display: flex !important;
-			align-items: center;
 			height: 100%;
 			background-position: left center !important;
-
-			&:hover {
-				background: #fff;
-				color: #000;
-				height: 100%;
-			}
-			
+			padding: 0 8px;
 			&:empty {
 				padding: 0!important;
 			}
@@ -725,81 +724,18 @@ body :not( :checked)>.toctogglespan:after {
 	}
 }
 
-.mw-header-upper-mobile {
-	height: 50px;
-	background-color: @base-black;
-	display: none;
-	align-items: center;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	padding: 0 10px;
-	box-shadow: 0px 5px 10px #0000001A;
-	position: relative;
-	
-	.hamburger-menu-icon {
-		width: 34px;
-		height: 34px;
-		border: none;
-		background-image: url('/skins/Timeless/resources/images/menu.svg');
-		background-position: center;
-		background-repeat: no-repeat;
-	}
-	
-	.home {
-		width: 34px;
-		height: 34px;
-		border: none;
-		background-image: url('/skins/Timeless/resources/images/home.svg');
-		background-position: center;
-		background-repeat: no-repeat;
-	}
 
-	.hamburger-menu {
-		position: fixed;
-		top: 0;
-		right: 0;
-		height: 100vh;
-		width: 100%;
-		z-index: 1;
-		display: none;
-		justify-content: flex-end;
-		background: rgba(0, 0, 0, 0.5);
-
-		.hamburger-menu-content {
-			background: #fff;
-			width: 50%;
-			height: 100%;
-			overflow-y: auto;
-		}
-
-		a {
-			display: block;
-			padding: 5px;
-		}
-
-		.menu-block {
-			border-bottom: 1px solid #D0D0D0;
-		}
-	}
-}
 
 .mw-header-personal-tools {
 	display: flex;
 	height: 100%;
 
 	a {
-		color: #fff;
 		padding: 0 11px 0 35px;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
 		background-position: center left 10px;
 		background-repeat: no-repeat;
 
 		&:hover {
-			background-color: #fff;
-			color: #000;
-			height: 100%;
 			font-size:0.95em !important;
 		}
 
