@@ -126,7 +126,7 @@ class TimelessTemplate extends BaseTemplate {
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper'],
 			$pageTools .
-			Html::rawElement('div', ['class' => 'spacer']) .
+			$this->getSearch('Tìm tại Bách khoa Toàn thư Việt Nam ...','') .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
 		);
 	}
