@@ -485,6 +485,18 @@ class TimelessTemplate extends BaseTemplate {
 	 */
 	protected function getPageToolSidebar() {
 		$pageTools = '';
+		// - begine add more tools 
+		$pageTools .= $this->getPortlet(
+			'namespaces', // id = "p-".(this value)
+			$this->pileOfTools['namespaces'],
+			'bktt-namespaces'
+		);
+		$pageTools .= $this->getPortlet(
+			'actions', // id = "p-".(this value)
+			$this->pileOfTools['page-primary'],
+			'bktt-pageactions'
+		);
+		// - end add more tools
 		$pageTools .= $this->getPortlet(
 			'cactions',
 			$this->pileOfTools['page-secondary'],
