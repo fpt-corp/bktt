@@ -39,7 +39,8 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container mw-parser-output' ],
 			$this->getHeaderUpper() .
-			$this->getHeaderUpperMobile()
+			$this->getHeaderUpperMobile() .
+			//$this->getHeaderLower()
 		);
 
 		// For mobile
@@ -118,6 +119,11 @@ class TimelessTemplate extends BaseTemplate {
 			}
 			
 		}
+
+		// foreach ( $this->pileOfTools['more'] as $key => $item ) {
+		// 	$pageTools .= Html::rawElement('div', ['id' => $item['id'], 'class' => 'header-upper-item'], 
+		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
+		// }
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper'],
 			$pageTools .
@@ -165,6 +171,19 @@ class TimelessTemplate extends BaseTemplate {
 			foreach ( $content['content'] as $key => $item ) {
 				if (array_key_exists('text', $item)) {
 					$div .= Html::rawElement('a', ['href' => $item['href']], $item['text']);
+				}// else {
+				//	$href = $item['href'];
+				//	$ci = strpos($href, ':');
+				//	$fs = strpos($href, '/', $ci);
+				//	$itemName = '';
+				//	if ($fs === false) {
+				//		$itemName .= substr($href, $ci + 1);
+				//	} else {
+				//		$itemName .= substr($href, $ci + 1, $fs - $ci - 1);
+				//	}
+				//	$itemName = preg_replace('/([a-z])([A-Z])/s','$1 $2', $itemName);
+				//	$div .= Html::rawElement('a', ['href' => $item['href']], $itemName);
+				//}
 			}
 			$siteTools .= Html::rawElement('div', ['class' => 'menu-block'], $div);
 		};
@@ -179,6 +198,26 @@ class TimelessTemplate extends BaseTemplate {
 			$this->getSearch('Bách khoa Toàn thư Việt Nam','m') .
 			Html::rawElement('div', ['class' => 'hamburger-menu-icon', 'id' => 'hamburger-menu-icon'], '') .
 			Html::rawElement('div', ['class' => 'hamburger-menu', 'id' => 'hamburger-menu'], $menuContent)
+		);
+	}
+
+	public function getHeaderLower() {
+		$alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '#'];
+		$alphabetSearch = '';
+		foreach ( $alphabet as $key => $item ) {
+			$alphabetSearch .= Html::rawElement('div', ['class' => 'alphabet-item'], 
+				Html::rawElement('a', ['href' => 'https://bktt.vn/index.php/Special:AllPages?from='.$item.'&to=&namespace=0'], $item)
+			);
+		}
+		$notMainPage = ' not-main-page-lower';
+		if ($this->getSkin()->getTitle()->isMainPage()) {
+			$notMainPage = '';
+		}
+
+		return Html::rawElement('div', ['class' => 'mw-header-lower' .$notMainPage], 
+			Html::rawElement('a', ['href' => $this->data['nav_urls']['mainpage']['href'], 'class'=>'logo-text', 'title' => 'Đi đến Trang Chính'], 'BÁCH KHOA TOÀN THƯ VIỆT NAM') .
+			$this->getSearch('Tìm kiếm ...','') .
+			$alphabetSearch
 		);
 	}
 
