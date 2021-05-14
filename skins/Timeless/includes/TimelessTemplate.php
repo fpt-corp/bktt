@@ -456,6 +456,13 @@ class TimelessTemplate extends BaseTemplate {
 		if ( isset( $personalTools['watchlist'] ) ) {
 			unset( $personalTools['watchlist'] );
 		}
+		// Remove Contris for mobile view
+		if ( isset( $personalTools['anoncontribs'] ) ) {
+			unset( $personalTools['anoncontribs'] );
+		}
+		if ( isset( $personalTools['mycontris'] ) ) {
+			unset( $personalTools['mycontris'] );
+		}
 		
 		if ( $user->isRegistered() ) {
 			$headerMsg = [ 'timeless-loggedinas', $userName ];
