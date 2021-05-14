@@ -254,12 +254,30 @@ div.thumb {
 	display: none; /* hide toc on mobile */
 }
 
-.nomobile, .mw-header-upper, #mw-site-navigation {
+/* Misc */
+
+.nomobile {
+	display: none;
+}
+
+.mw-header-upper {
+	display: none;
+}
+
+.mw-header-lower {
+	padding: 10px;
+}
+
+#mw-site-navigation {
 	display: none;
 }
 
 .mw-header-upper-mobile {
 	display: flex;
+}
+
+.mw-header-lower.not-main-page-lower {
+	display: none;
 }
 
 @media only screen and (max-width: 400px) {
