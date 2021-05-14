@@ -40,7 +40,7 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container mw-parser-output' ],
 			$this->getHeaderUpper() .
 			$this->getHeaderUpperMobile() .
-			//$this->getHeaderLower()
+			$this->getHeaderLower()
 		);
 
 		// For mobile
@@ -127,8 +127,7 @@ class TimelessTemplate extends BaseTemplate {
 		
 		return Html::rawElement('div', ['class' => 'mw-header-upper'],
 			$pageTools .
-			$this->getSearch('Tìm kiếm ...','') .
-			//Html::rawElement('div', ['class' => 'spacer']) .
+			Html::rawElement('div', ['class' => 'spacer']) .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
 		);
 	}
