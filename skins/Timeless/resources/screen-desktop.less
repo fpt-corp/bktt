@@ -24,6 +24,14 @@ div.mw-notification-area {
 	top: @fixed-header-height + 0.25em;
 }
 
+/* hiding */
+#p-variants,
+#other-languages.variants-only,
+#mw-page-header-links #p-more,
+#p-cnamespaces, #p-actions {
+	display: none;
+}
+
 /* Header */
 
 #mw-header {
@@ -60,10 +68,6 @@ div.mw-notification-area {
 	z-index: 97;
 	top: @fixed-header-height;
 	box-shadow: 0 3px 3px 2px rgba( 0, 0, 0, 0.075 ), 0 0 2px rgba( 0, 0, 0, 0.2 );
-}
-
-#mw-header-nav-hack {
-	display: none;
 }
 
 #personal {
@@ -167,13 +171,6 @@ div.mw-notification-area {
 	&.timeless-logo {
 		background-image: none;
 	}
-}
-
-#p-variants,
-#other-languages.variants-only,
-#mw-page-header-links #p-more,
-.sidebar-chunk h2 {
-	display: none;
 }
 
 /* Content */
