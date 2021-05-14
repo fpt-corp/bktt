@@ -471,6 +471,7 @@ class TimelessTemplate extends BaseTemplate {
 			// Numeric strings gets an integer when set as key, cast back - T73639
 			$name = (string)$name;
 			$html .= $this->getPortlet( $name, $content['content'] );
+			$html .= $this->getUserLinks();
 		}
 
 		$html = $this->getSidebarChunk( 'site-navigation', 'navigation', $html );
@@ -539,9 +540,6 @@ class TimelessTemplate extends BaseTemplate {
 		// Preserve standard username label to allow customisation (T215822)
 		$userName = $personalTools['userpage']['links'][0]['text'] ?? $user->getName();
 
-		$html = '';
-		$extraTools = [];
-
 		// Remove Echo badges
 		if ( isset( $personalTools['notifications-alert'] ) ) {
 			$extraTools['notifications-alert'] = $personalTools['notifications-alert'];
@@ -551,55 +549,15 @@ class TimelessTemplate extends BaseTemplate {
 			$extraTools['notifications-notice'] = $personalTools['notifications-notice'];
 			unset( $personalTools['notifications-notice'] );
 		}
-		$class = empty( $extraTools ) ? '' : 'extension-icons';
-
-		// Re-label some messages
-		if ( isset( $personalTools['userpage'] ) ) {
-			$personalTools['userpage']['links'][0]['text'] = $this->getMsg( 'timeless-userpage' )->text();
-		}
-		if ( isset( $personalTools['mytalk'] ) ) {
-			$personalTools['mytalk']['links'][0]['text'] = $this->getMsg( 'timeless-talkpage' )->text();
-		}
-
-		// Labels
-		if ( $user->isLoggedIn() ) {
-			$dropdownHeader = $userName;
+		
+		if ( $user->isRegistered() ) {
 			$headerMsg = [ 'timeless-loggedinas', $userName ];
 		} else {
-			$dropdownHeader = $this->getMsg( 'timeless-anonymous' )->text();
 			$headerMsg = 'timeless-notloggedin';
 		}
-		$html .= Html::openElement( 'div', [ 'id' => 'user-tools' ] );
+		$html = $this->getPortlet( 'personal', $personalTools, $headerMsg );
 
-		$html .= Html::rawElement( 'div', [ 'id' => 'personal' ],
-			Html::rawElement( 'h2', [],
-				Html::element( 'span', [], $dropdownHeader )
-			) .
-			Html::rawElement( 'div', [ 'id' => 'personal-inner', 'class' => 'dropdown' ],
-				$this->getPortlet( 'personal', $personalTools, $headerMsg )
-			)
-		);
-
-		// Extra icon stuff (echo etc)
-		if ( !empty( $extraTools ) ) {
-			$iconList = '';
-			foreach ( $extraTools as $key => $item ) {
-				$iconList .= $this->makeListItem( $key, $item );
-			}
-
-			$html .= Html::rawElement(
-				'div',
-				[ 'id' => 'personal-extra', 'class' => 'p-body' ],
-				Html::rawElement( 'ul', [], $iconList )
-			);
-		}
-
-		$html .= Html::closeElement( 'div' );
-
-		return [
-			'html' => $html,
-			'class' => $class
-		];
+		return $html;
 	}
 
 	/**
