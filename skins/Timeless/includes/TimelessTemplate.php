@@ -401,6 +401,7 @@ class TimelessTemplate extends BaseTemplate {
 		// remove ca-nstab-*
 		$nstools = $this->pileOfTools['namespaces'];
 		foreach ( $this->pileOfTools['namespaces'] as $name => $content ) {
+			file_put_contents('php://stderr', print_r($name, TRUE));
 			if ( strlen($name) > 9 ) {
 				if ( substr($name, 0, 9) == 'ca-nstab-' ) {
 					unset( $nstools[$name] );
