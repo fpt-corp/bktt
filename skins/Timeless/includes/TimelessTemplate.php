@@ -398,18 +398,10 @@ class TimelessTemplate extends BaseTemplate {
 	 */
 	protected function getPageToolSidebar() {
 		$pageTools = '';
-		// remove ca-nstab-*
-		$nstools = $this->pileOfTools['namespaces'];
-		foreach ( $this->pileOfTools['namespaces'] as $name => $content )
-			if ( strlen($name) > 9 ) {
-				if ( substr($name, 0, 9) == 'ca-nstab-' ) {
-					unset( $nstools[$name] );
-				}
-			}
-		}
+		// - begine add more tools 
 		$pageTools .= $this->getPortlet(
 			'cnamespaces', // id = "p-".(this value)
-			$nstools,
+			$this->pileOfTools['namespaces'],
 			'Không gian'
 		);
 		$pageTools .= $this->getPortlet(
