@@ -1,13 +1,6 @@
 /* Popout menus (header) */
 
 $( function () {
-	
-	$('body').on('click', function () {
-		if ($('#mw-site-navigation').css('display') == 'block') {
-			$('#mw-site-navigation').css('display','none');
-			$('#sidebar-button').css('background-image','url(https://bktt.vn/skins/Timeless/resources/images/menu.svg)');
-		}
-	});
 
 	// Nút trên bên trái 
 	$( '#sidebar-button' ).on( 'click', function () {
