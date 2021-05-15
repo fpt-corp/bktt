@@ -145,7 +145,7 @@ class TimelessTemplate extends BaseTemplate {
 				)
 			)
 		);
-		return Html::rawElement( 'div', [ 'id' => 'mw-content' ], $html );
+		return $html;
 	}
 
 	/**
