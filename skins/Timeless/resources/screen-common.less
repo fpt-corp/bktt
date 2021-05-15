@@ -1,17 +1,7 @@
 @import 'variables.less';
 
-/* Page layout */
-
-html,
-body {
-	margin: 0;
-	padding: 0;
-}
-
 body {
 	font-family: @fonts;
-	color: @text;
-	background: #F8F8F8;
 	font-size: @font-size;
 	line-height: 1.5;
 }
@@ -397,9 +387,6 @@ pre,
 		margin-bottom: 0;
 	}
 
-	// overflow:hidden on the header itself breaks tall scripts, but we need to hide
-	// overflow on the border itself in output for proper thumb handling. Too weird to
-	// change this everywhere, so we'll just do it for parser output for now.
 	.mw-parser-output {
 
 		h1,
@@ -551,16 +538,14 @@ ul#filetoc {
 	float: right;
 }
 
-// Remove brackets around the show/hide button of the TOC
-// The selectors have a higher specifity than in core
 body :not( :checked)>.toctogglespan:before,
 body :not( :checked)>.toctogglespan:after {
 	content: '';
 }
 
 .toctogglelabel {
-	padding-left: 0; // Overwrite label { padding-left: 0.5em; } from forms.less
-	margin-left: 0.5em; // Create new distance to the TOC title without increasing the focus ring
+	padding-left: 0; 
+	margin-left: 0.5em;
 }
 
 .toclevel-1 {
@@ -730,7 +715,7 @@ body :not( :checked)>.toctogglespan:after {
 		padding: 0 11px 0 35px;
 		background-position: center left 10px;
 		&:hover {
-			font-size:0.95em !important;
+			font-size: @font-size !important;
 			background-repeat: no-repeat;
 		}
 
