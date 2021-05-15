@@ -37,9 +37,7 @@ class TimelessTemplate extends BaseTemplate {
 
 		$html .= Html::openElement( 'div', [ 'id' => 'mw-wrapper', 'class' => $userLinks['class'] ] );
 
-		$html .= Html::rawElement( 'div', [ 'id' => 'mw-header-container', 'class' => 'ts-container' ],
-			$this->getHeaderUpper()
-		);
+		$html .= $this->getHeaderUpper();
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
 			Html::rawElement( 'div', [ 'id' => 'mw-content-block'],
@@ -120,7 +118,7 @@ class TimelessTemplate extends BaseTemplate {
 		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
 		// }
 		
-		return Html::rawElement('div', ['class' => 'mw-header-upper'],
+		return Html::rawElement('div', ['class' => 'mw-header'],
 			$pageTools .
 			$this->getSearch('Bách khoa Toàn thư Việt Nam','') .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
