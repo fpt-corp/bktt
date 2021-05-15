@@ -26,8 +26,7 @@ class SkinTimeless extends SkinTemplate {
 		);
 
 		$out->addModuleStyles( [
-			'mediawiki.skinning.content.externallinks',
-			'skins.timeless',
+			'skins.timeless'
 		] );
 		$out->addModules( [
 			'skins.timeless.mobile'
