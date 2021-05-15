@@ -713,4 +713,9 @@ body :not( :checked)>.toctogglespan:after {
 }
 
 .usermessage { background: #fef6e7; border-style: solid; border-width: 1px; border-color: #fc3; padding: 5px;} /* like other warning box */
-.oo-ui-iconWidget { font-size:0; } /* try to fix Special:Contributions */
+.oo-ui-iconWidget { font-size:0; } /* fix Special:Contributions show/hide text */
+.mw-collapsible-toggle {  /* remove outline when click */
+	&:focus {
+		outline: none;
+	}
+}
