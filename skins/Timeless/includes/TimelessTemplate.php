@@ -126,23 +126,21 @@ class TimelessTemplate extends BaseTemplate {
 	 * @return string html
 	 */
 	protected function getContentBlock() {
-		$title = Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' ));
 		if ($this->getSkin()->getTitle()->isMainPage()) {
-			$title = Html::rawElement('div');
+			$title = '';
+		} else {
+			$title = Html::rawElement('div', ['class' => 'page-title'], $this->get( 'title' ));
 		}
 		$html = Html::rawElement(
 			'div',
 			[ 'id' => 'content', 'class' => 'mw-body',  'role' => 'main' ],
 			$this->getSiteNotices() .
 			$this->getIndicators() .
-			Html::rawElement( 'div', [ 'id' => 'bodyContentOuter' ],
-				Html::rawElement( 'div', [ 'id' => 'siteSub' ], $this->getMsg( 'tagline' )->parse() ) .
-				Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
+			Html::rawElement( 'div', [ 'class' => 'mw-body-content', 'id' => 'bodyContent' ],
 					$title .
 					$this->getContentSub() .
 					$this->get( 'bodytext' ) .
 					$this->getClear()
-				)
 			)
 		);
 		return $html;
