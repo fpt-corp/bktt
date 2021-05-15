@@ -38,7 +38,6 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= $this->getHeaderUpper();
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
-			Html::rawElement( 'div', [ 'id' => 'mw-content-block'],
 				Html::rawElement( 'div', [ 'id' => 'mw-content-wrapper' , 'class' => 'mw-parser-output' ],
 					$this->getContentBlock() .
 					$this->getAfterContent()
@@ -49,7 +48,6 @@ class TimelessTemplate extends BaseTemplate {
 					$this->getCategories()
 				) .
 				$this->getClear()
-			)
 		);
 		$validFooterLinks = $this->getFooterLinks('flat');
 		$footer = '';
