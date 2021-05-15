@@ -322,14 +322,12 @@ class TimelessTemplate extends BaseTemplate {
 		$html = Html::openElement( 'div', [  'id' => 'p-search', 'class' => 'search' ] );
 
 		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => 'searchform' ],
-			Html::rawElement( 'div', [ 'id' => 'simpleSearch',  'class' => 'simpleSearch' ],
 				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Bách khoa Toàn thư Việt Nam', 'class' => 'searchInput'] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
 				$this->makeSearchButton(
 					'go',
 					[ 'id' => 'searchButton', 'class' => 'searchButton' ]
 				)
-			)
 		);
 
 		$html .= Html::closeElement( 'div' );
