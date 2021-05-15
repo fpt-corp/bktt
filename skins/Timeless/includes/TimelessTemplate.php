@@ -35,7 +35,7 @@ class TimelessTemplate extends BaseTemplate {
 		// Open html, body elements, etc
 		$html = $this->get( 'headelement' );
 
-		$html .= $this->getHeaderUpper();
+		$html .= $this->getHeader();
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
 				Html::rawElement( 'div', [ 'id' => 'mw-content-wrapper' , 'class' => 'mw-parser-output' ],
@@ -115,7 +115,7 @@ class TimelessTemplate extends BaseTemplate {
 		return Html::rawElement('div', ['id' => 'mw-header'],
 			$pageTools .
 			$this->getSearch() .
-			Html::rawElement('div', ['id' => 'mw-header-personal-tools'], $contentText)
+			Html::rawElement('div', ['id' => 'header-personal-tools'], $contentText)
 		);
 	}
 
