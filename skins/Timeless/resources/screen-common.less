@@ -1,5 +1,7 @@
 @import 'variables.less';
 
+/* Overall body */
+
 body {
 	font-family: @fonts;
 	font-size: @font-size;
@@ -29,7 +31,102 @@ button span.oo-ui-labelElement-label {
 	background: @base100;
 	margin:14px 13px 0 13px;
 	/* word-wrap: break-word; */
+		h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	dt {
+		font-weight: normal;
+		line-height: 1.125;
+		margin: 20px 0 8px;
+	}
+
+	dt {
+		font-weight: bold;
+		line-height: 1.125;
+		margin: 1.5em 0 0.5em;
+		margin-bottom: 0.1em;
+	}
+
+	dl {
+		margin-top: 0.2em;
+		margin-bottom: 0.5em;
+	}
+
+	form dt {
+		margin: 0 0.5em 0 0;
+	}
+
+	h1.firstHeading {
+		margin: 0.25em 0 0.5em;
+		border-bottom: solid 4px @blue;
+	}
+
+	h1 {
+		font-size: 2em;
+		border-bottom: solid 3px @base70;
+	}
+
+	h2 {
+		font-size: 1.8em;
+		border-bottom: solid 1px @base70;
+	}
+
+	h3 {
+		font-size: 1.6em;
+	}
+
+	h4 {
+		font-size: 1.4em;
+	}
+
+	h5 {
+		font-size: 1.25em;
+	}
+
+	h6 {
+		font-size: 1.2em;
+	}
+
+	dt {
+		margin-top: 1em;
+	}
+
+	dd {
+		margin-bottom: 1em;
+	}
+
+	.mw-changeslist-legend dt {
+		margin: 0 0.5em 0 0;
+	}
+
+	.mw-changeslist-legend dd {
+		margin-bottom: 0;
+	}
+
+	.mw-parser-output {
+
+		h1,
+		h2 {
+			border-bottom: 0;
+
+			&:after {
+				content: '';
+				display: block;
+				border-bottom: solid 1px @base70;
+				overflow: hidden;
+			}
+		}
+
+		h1:after {
+			border-bottom-width: 2px;
+		}
+	}
 }
+
+/* Side bar */
 
 #mw-site-navigation {
         display:none;
@@ -38,6 +135,116 @@ button span.oo-ui-labelElement-label {
 	position: relative;
 	z-index: 8;
 }
+
+/* Header */
+
+.mw-header {
+	height: 50px;
+	background: #262626;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 0px;
+	
+        .sidebar-button {
+		width: 34px;
+		height: 100%;
+		border: none;
+		background-image: url('/skins/Timeless/resources/images/menu.svg');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+	.sidebar-button:hover {
+		background-color: #fff;
+	}
+	
+	a {
+		color: #767676;
+		cursor: pointer;
+		display: flex !important;
+		align-items: center;
+		background-repeat: no-repeat;
+		&:hover {
+			background: #fff;
+		}
+	
+	}	
+	
+	.header-upper-item {
+		height: 100%;
+		a {
+			height: 100%;
+			background-position: left center !important;
+			padding: 0 8px;
+			&:empty {
+				padding: 0!important;
+			}
+		}
+	}
+	
+	.mw-header-personal-tools {
+	height: 100%;
+
+	a {
+		padding: 0 11px 0 35px;
+		background-position: center left 10px;
+		&:hover {
+			font-size: @font-size !important;
+			background-repeat: no-repeat;
+		}
+
+		&#pt-anoncontribs {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/anoncontribs.svg');
+			font-size:0px;
+		}
+		
+		&#pt-anontalk {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/mytalk.svg');
+			font-size:0px;
+		}
+
+		&#pt-createaccount {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/createaccount.svg');
+		}
+
+		&#pt-login {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/login.svg');
+		}
+
+		&#pt-userpage {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/login.svg');
+			font-size:0px;
+		}
+
+		&#pt-preferences {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/preferences.svg');
+			font-size:0px;
+		}
+
+		&#pt-watchlist {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/watchlist.svg');
+			font-size:0px;
+		}
+
+		&#pt-logout {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/logout.svg');
+			font-size:0px;
+		}
+
+		&#pt-mycontris {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/anoncontribs.svg');
+			font-size:0px;
+		}
+		
+		&#pt-mytalk {
+			background-image: url('/skins/Timeless/resources/images/personal-tools/mytalk.svg');
+			font-size:0px;
+		}
+		
+	}
+   }
+}
+
 #p-search {
 	.flex(1, 1, auto, unset);
 	margin: 0 11px;
@@ -133,87 +340,45 @@ button span.oo-ui-labelElement-label {
 	#copyright {
 		display: block;
 	}
-}
 
-/* Content */
+	background: none;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 0 22px;
+	height: 50px;
+	background: #F8F8F8;
 
-.tools-inline,
-.tools-inline & {
+	div {
+		margin-right: 15px;
 
-	div,
-	ul,
-	li {
-		list-style: none;
-		display: inline-block;
-		margin: 0;
-		padding: 0;
-	}
-}
-
-.tools-inline li {
-	margin: 0.25em 0 1em;
-	border-bottom: solid 1px transparent;
-
-	&:hover {
-		border-bottom-color: @base70;
-	}
-
-	&.selected {
-		border-bottom-color: @blue;
-
-		a {
-			color: @text;
+		&:last-child {
+			margin-right: 0;
 		}
 	}
 
+	div:first-child {
+		flex: 1 1 100px;
+		margin-left: 0;
+	}
+
 	a {
-		.ca-icon('images/page-misc-grey');
+		color: #262626;
 	}
 }
 
-#p-namespaces {
-	float: left;
-
-	li {
-		margin-right: 1em;
-	}
-}
-
-#p-views,
-#p-more {
-	float: right;
-
-	li {
-		margin-left: 1em;
-	}
-}
-
-.tools-inline li[ id^='ca-nstab-'] a {
-	.ca-icon('images/page-grey');
-}
+/* Content */
 
 #siteNotice {
 	font-size: 95%;
 	margin: 0.5em auto 1.5em;
 }
 
-#localNotice {
-	.box();
-	padding: 0;
-	text-align: center;
-
-	p {
-		margin-left: 1em;
-		margin-right: 1em;
-	}
-}
-
 /* Misc */
 
 a {
 	text-decoration: none;
-	color: #ff5a28;
-
+	color: @base-red;
 	&:hover {
 		color: #FF7A48;
 	}
@@ -286,103 +451,6 @@ pre,
 	padding: 1em;
 	/* Wrap lines in overflow. T2260, T103780 */
 	white-space: pre-wrap;
-}
-
-.mw-body {
-
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6,
-	dt {
-		font-weight: normal;
-		line-height: 1.125;
-		margin: 20px 0 8px;
-	}
-
-	dt {
-		font-weight: bold;
-		line-height: 1.125;
-		margin: 1.5em 0 0.5em;
-		margin-bottom: 0.1em;
-	}
-
-	dl {
-		margin-top: 0.2em;
-		margin-bottom: 0.5em;
-	}
-
-	form dt {
-		margin: 0 0.5em 0 0;
-	}
-
-	h1.firstHeading {
-		margin: 0.25em 0 0.5em;
-		border-bottom: solid 4px @blue;
-	}
-
-	h1 {
-		font-size: 2em;
-		border-bottom: solid 3px @base70;
-	}
-
-	h2 {
-		font-size: 1.8em;
-		border-bottom: solid 1px @base70;
-	}
-
-	h3 {
-		font-size: 1.6em;
-	}
-
-	h4 {
-		font-size: 1.4em;
-	}
-
-	h5 {
-		font-size: 1.25em;
-	}
-
-	h6 {
-		font-size: 1.2em;
-	}
-
-	dt {
-		margin-top: 1em;
-	}
-
-	dd {
-		margin-bottom: 1em;
-	}
-
-	.mw-changeslist-legend dt {
-		margin: 0 0.5em 0 0;
-	}
-
-	.mw-changeslist-legend dd {
-		margin-bottom: 0;
-	}
-
-	.mw-parser-output {
-
-		h1,
-		h2 {
-			border-bottom: 0;
-
-			&:after {
-				content: '';
-				display: block;
-				border-bottom: solid 1px @base70;
-				overflow: hidden;
-			}
-		}
-
-		h1:after {
-			border-bottom-width: 2px;
-		}
-	}
 }
 
 hr {
@@ -626,143 +694,11 @@ body :not( :checked)>.toctogglespan:after {
 	flex: 1 1 1px;
 }
 
-.mw-header {
-	height: 50px;
-	background: #262626;
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	padding: 0px;
-	
-        .sidebar-button {
-		width: 34px;
-		height: 100%;
-		border: none;
-		background-image: url('/skins/Timeless/resources/images/menu.svg');
-		background-position: center;
-		background-repeat: no-repeat;
-	}
-	.sidebar-button:hover {
-		background-color: #fff;
-	}
-	
-	a {
-		color: #767676;
-		cursor: pointer;
-		display: flex !important;
-		align-items: center;
-		background-repeat: no-repeat;
-		&:hover {
-			background: #fff;
-		}
-	
-	}	
-	
-	.header-upper-item {
-		height: 100%;
-		a {
-			height: 100%;
-			background-position: left center !important;
-			padding: 0 8px;
-			&:empty {
-				padding: 0!important;
-			}
-		}
-	}
-	
-	.mw-header-personal-tools {
-	height: 100%;
 
-	a {
-		padding: 0 11px 0 35px;
-		background-position: center left 10px;
-		&:hover {
-			font-size: @font-size !important;
-			background-repeat: no-repeat;
-		}
-
-		&#pt-anoncontribs {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/anoncontribs.svg');
-			font-size:0px;
-		}
-		
-		&#pt-anontalk {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/mytalk.svg');
-			font-size:0px;
-		}
-
-		&#pt-createaccount {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/createaccount.svg');
-		}
-
-		&#pt-login {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/login.svg');
-		}
-
-		&#pt-userpage {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/login.svg');
-			font-size:0px;
-		}
-
-		&#pt-preferences {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/preferences.svg');
-			font-size:0px;
-		}
-
-		&#pt-watchlist {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/watchlist.svg');
-			font-size:0px;
-		}
-
-		&#pt-logout {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/logout.svg');
-			font-size:0px;
-		}
-
-		&#pt-mycontris {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/anoncontribs.svg');
-			font-size:0px;
-		}
-		
-		&#pt-mytalk {
-			background-image: url('/skins/Timeless/resources/images/personal-tools/mytalk.svg');
-			font-size:0px;
-		}
-		
-	}
-   }
-}
 
 #mw-content-container {
 	border-bottom: none;
 	background: #F8F8F8;
-}
-
-#mw-footer {
-	background: none;
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	padding: 0 22px;
-	height: 50px;
-	background: #F8F8F8;
-
-	div {
-		margin-right: 15px;
-
-		&:last-child {
-			margin-right: 0;
-		}
-	}
-
-	div:first-child {
-		flex: 1 1 100px;
-		margin-left: 0;
-	}
-
-	a {
-		color: #262626;
-	}
 }
 
 .page-title {
@@ -774,5 +710,5 @@ body :not( :checked)>.toctogglespan:after {
 }
 
 .text-red {
-	color: #FF5A28;
+	color: @base-red;
 }
