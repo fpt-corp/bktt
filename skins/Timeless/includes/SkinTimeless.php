@@ -25,6 +25,10 @@ class SkinTimeless extends SkinTemplate {
 			'user-scalable=yes, minimum-scale=0.25, maximum-scale=5.0'
 		);
 
+		$out->addModuleStyles( [
+			'mediawiki.skinning.content.externallinks',
+			'skins.timeless',
+		] );
 		$out->addModules( [
 			'skins.timeless.mobile'
 		] );
