@@ -35,8 +35,6 @@ class TimelessTemplate extends BaseTemplate {
 		// Open html, body elements, etc
 		$html = $this->get( 'headelement' );
 
-		$html .= Html::openElement( 'div', [ 'id' => 'mw-wrapper', 'class' => $userLinks['class'] ] );
-
 		$html .= $this->getHeaderUpper();
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
@@ -64,8 +62,6 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-footer' ], $footer);
-
-		$html .= Html::closeElement( 'div' );
 
 		// BaseTemplate::printTrail() stuff (has no get version)
 		// Required for RL to run
