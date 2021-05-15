@@ -74,7 +74,7 @@ class TimelessTemplate extends BaseTemplate {
 		echo $html;
 	}
 
-	public function getHeaderUpper() {
+	public function getHeader() {
 		$user = $this->getSkin()->getUser();
 		$personalTools = $this->getPersonalTools();
 		// Preserve standard username label to allow customisation (T215822)
@@ -98,7 +98,7 @@ class TimelessTemplate extends BaseTemplate {
 						$pageTools .= Html::rawElement('div', 
 						[
 							'id' => $item['id'], 
-							'class' => 'header-upper-item'
+							'class' => 'header-item'
 						], 
 						Html::rawElement('a', ['href' => $item['href']], $item['text']));
 					}
@@ -112,10 +112,10 @@ class TimelessTemplate extends BaseTemplate {
 		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
 		// }
 		
-		return Html::rawElement('div', ['class' => 'mw-header'],
+		return Html::rawElement('div', ['id' => 'mw-header'],
 			$pageTools .
 			$this->getSearch() .
-			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
+			Html::rawElement('div', ['id' => 'mw-header-personal-tools'], $contentText)
 		);
 	}
 
