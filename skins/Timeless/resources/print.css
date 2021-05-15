@@ -1,14 +1,7 @@
-/* Styles for print view and printing */
-
-/* Hide some extra stuff from print view */
 .mw-indicators,
 #mw-header-container,
 #mw-site-navigation,
 #mw-footer,
 #catlinks {
 	display: none;
-}
-
-#mw-content-text {
-	margin-bottom: 3em;
 }
