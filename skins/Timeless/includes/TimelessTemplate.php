@@ -114,7 +114,7 @@ class TimelessTemplate extends BaseTemplate {
 		
 		return Html::rawElement('div', ['class' => 'mw-header'],
 			$pageTools .
-			$this->getSearch('Bách khoa Toàn thư Việt Nam','') .
+			$this->getSearch() .
 			Html::rawElement('div', ['class' => 'mw-header-personal-tools'], $contentText)
 		);
 	}
@@ -317,28 +317,17 @@ class TimelessTemplate extends BaseTemplate {
 	 *
 	 * @return string html
 	 */
-	protected function getSearch($txt,$id) {
-		$html = '';
+	protected function getSearch() {
 
-		$html .= Html::openElement( 'div', [  'id' => $id.'p-search', 'class' => 'search' ] );
+		$html = Html::openElement( 'div', [  'id' => 'p-search', 'class' => 'search' ] );
 
-		$html .= Html::rawElement(
-			'h3',
-			[ 'lang' => $this->get( 'userlang' ), 'dir' => $this->get( 'dir' ) ],
-			Html::rawElement( 'label', [ 'for' => $id.'searchInput' ], $this->getMsg( 'search' )->escaped() )
-		);
-
-		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => $id.'searchform' ],
-			Html::rawElement( 'div', [ 'id' => $id.'simpleSearch',  'class' => 'simpleSearch' ],
-				$this->makeSearchInput( ['id' => $id.'searchInput', 'placeholder' => $txt, 'class' => 'searchInput'] ) .
+		$html .= Html::rawElement( 'form', [ 'action' => $this->get( 'wgScript' ), 'id' => 'searchform' ],
+			Html::rawElement( 'div', [ 'id' => 'simpleSearch',  'class' => 'simpleSearch' ],
+				$this->makeSearchInput( ['id' => 'searchInput', 'placeholder' => 'Bách khoa Toàn thư Việt Nam', 'class' => 'searchInput'] ) .
 				Html::hidden( 'title', $this->get( 'searchtitle' ) ) .
-				//$this->makeSearchButton(
-				//	'fulltext',
-				//	[ 'id' => 'mw-searchButton', 'class' => 'searchButton mw-fallbackSearchButton' ]
-				//) .
 				$this->makeSearchButton(
 					'go',
-					[ 'id' => $id.'searchButton', 'class' => 'searchButton' ]
+					[ 'id' => 'searchButton', 'class' => 'searchButton' ]
 				)
 			)
 		);
