@@ -2,9 +2,8 @@
 
 /* Hide some extra stuff from print view */
 .mw-indicators,
-#mw-header,
+#mw-header-container,
 #mw-site-navigation,
-#mw-page-header-links,
 #mw-footer,
 #catlinks {
 	display: none;
