@@ -9,7 +9,6 @@ $( function () {
 		} else {
 		        $('#mw-site-navigation').css('display','none');
 			$('#sidebar-button').css('background-image','url(https://bktt.vn/skins/Timeless/resources/images/menu.svg)');
-			$('#sidebar-button').blur();
 		}
 	} );
 	
