@@ -5,3 +5,9 @@
 #catlinks {
 	display: none;
 }
+
+body {
+	font-family: @fonts;
+	font-size: @font-size;
+	line-height: 1.5;
+}
