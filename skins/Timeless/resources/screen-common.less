@@ -265,6 +265,12 @@ button span.oo-ui-labelElement-label {
 	border-radius: 15px;
 	color: white;
 	padding-left: 11px;
+	::-webkit-input-placeholder { /* Edge */
+  		color: white;
+	}
+	::placeholder {
+  		color: white;
+	}
 }
 #searchButton {
 	position: absolute;
