@@ -252,13 +252,22 @@ class TimelessTemplate extends BaseTemplate {
 			$bodyDivOptions['id'] = $options['body-id'];
 		}
 
-		$html = Html::rawElement( 'div', $divOptions,
-			Html::rawElement( 'h3', $labelOptions, $msgString ) .
-			Html::rawElement( 'div', $bodyDivOptions,
-				$contentText .
-				$this->getAfterPortlet( $name )
-			)
-		);
+		if ( $name == 'navigation' ) {
+			$html = Html::rawElement( 'div', $divOptions,
+				Html::rawElement( 'div', $bodyDivOptions,
+					$contentText .
+					$this->getAfterPortlet( $name )
+				)
+			);
+		} else {
+			$html = Html::rawElement( 'div', $divOptions,
+				Html::rawElement( 'h3', $labelOptions, $msgString ) .
+				Html::rawElement( 'div', $bodyDivOptions,
+					$contentText .
+					$this->getAfterPortlet( $name )
+				)
+			);
+		}
 
 		return $html;
 	}
