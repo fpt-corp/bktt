@@ -44,7 +44,7 @@ class TimelessTemplate extends BaseTemplate {
 				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
 					$this->getMainNavigation() .
-					$this->getPageToolSidebar() .
+					//$this->getPageToolSidebar() .
 					$this->getCategories()
 				) .
 				$this->getClear()
@@ -356,6 +356,14 @@ class TimelessTemplate extends BaseTemplate {
 			}
 			// Numeric strings gets an integer when set as key, cast back - T73639
 			$name = (string)$name;
+			if ( $name == 'TOOLBOX' ) {
+				$name = 'tb';
+				
+				$html .= $this->getPortlet( 'actions', $this->pileOfTools['page-primary'],'Thao tác');
+				$html .= $this->getPortlet( 'cactions', $this->pileOfTools['page-secondary'], 'timeless-pageactions');
+				$html .= $this->getPortlet( 'userpagetools', $this->pileOfTools['user'], 'timeless-userpagetools' );
+				
+			}
 			$html .= $this->getPortlet( $name, $content['content'] );
 		}
 
@@ -363,49 +371,6 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= $this->getSidebarChunk( 'site-personal', 'personal', $this->getUserLinks() );
 
 		return $html;
-	}
-
-	/**
-	 * Page tools in sidebar
-	 *
-	 * @return string html
-	 */
-	protected function getPageToolSidebar() {
-		$pageTools = '';
-		$pageTools .= $this->getPortlet(
-			'actions', // id = "p-".(this value)
-			$this->pileOfTools['page-primary'],
-			'Thao tác'
-		);
-		// - end add more tools
-		$pageTools .= $this->getPortlet(
-			'cactions',
-			$this->pileOfTools['page-secondary'],
-			'timeless-pageactions'
-		);
-		//$pageTools .= $this->getPortlet(
-		//	'tb',
-		//	$this->pileOfTools['general'],
-		//	'timeless-sitetools'
-		//);
-		$pageTools .= $this->getPortlet(
-			'userpagetools',
-			$this->pileOfTools['user'],
-			'timeless-userpagetools'
-		);
-		//$pageTools .= $this->getPortlet(
-		//	'pagemisc',
-		//	$this->pileOfTools['page-tertiary'],
-		//	'timeless-pagemisc'
-		//);
-		if ( isset( $this->collectionPortlet ) ) {
-			$pageTools .= $this->getPortlet(
-				'coll-print_export',
-				$this->collectionPortlet['content']
-			);
-		}
-
-		return $this->getSidebarChunk( 'page-tools', 'timeless-pageactions', $pageTools );
 	}
 
 	/**
