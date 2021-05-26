@@ -189,25 +189,21 @@ class TimelessTemplate extends BaseTemplate {
 		], $setOptions );
 
 		// Handle the different $msg possibilities
-		if ( $name == '' ) {
-			$msgString = '';
-		else {
-			if ( $msg === null ) {
-				$msg = $name;
-				$msgParams = [];
-			} elseif ( is_array( $msg ) ) {
-				$msgString = array_shift( $msg );
-				$msgParams = $msg;
-				$msg = $msgString;
-			} else {
-				$msgParams = [];
-			}
-			$msgObj = $this->getMsg( $msg, $msgParams );
-			if ( $msgObj->exists() ) {
-				$msgString = $msgObj->parse();
-			} else {
-				$msgString = htmlspecialchars( $msg );
-			}
+		if ( $msg === null ) {
+			$msg = $name;
+			$msgParams = [];
+		} elseif ( is_array( $msg ) ) {
+			$msgString = array_shift( $msg );
+			$msgParams = $msg;
+			$msg = $msgString;
+		} else {
+			$msgParams = [];
+		}
+		$msgObj = $this->getMsg( $msg, $msgParams );
+		if ( $msgObj->exists() ) {
+			$msgString = $msgObj->parse();
+		} else {
+			$msgString = htmlspecialchars( $msg );
 		}
 
 		$labelId = Sanitizer::escapeIdForAttribute( "p-$name-label" ); 
@@ -256,22 +252,13 @@ class TimelessTemplate extends BaseTemplate {
 			$bodyDivOptions['id'] = $options['body-id'];
 		}
 
-		if ($name == '') {
-			$html = Html::rawElement( 'div', $divOptions,
-				Html::rawElement( 'div', $bodyDivOptions,
-					$contentText .
-					$this->getAfterPortlet( $name )
-				)
-			);			
-		} else {
-			$html = Html::rawElement( 'div', $divOptions,
-				Html::rawElement( 'h3', $labelOptions, $msgString ) .
-				Html::rawElement( 'div', $bodyDivOptions,
-					$contentText .
-					$this->getAfterPortlet( $name )
-				)
-			);
-		}
+		$html = Html::rawElement( 'div', $divOptions,
+			Html::rawElement( 'h3', $labelOptions, $msgString ) .
+			Html::rawElement( 'div', $bodyDivOptions,
+				$contentText .
+				$this->getAfterPortlet( $name )
+			)
+		);
 
 		return $html;
 	}
@@ -342,9 +329,6 @@ class TimelessTemplate extends BaseTemplate {
 			}
 			// Numeric strings gets an integer when set as key, cast back - T73639
 			$name = (string)$name;
-			if ( $name == 'navigation' ) {
-				$name = '';
-			}
 			if ( $name == 'TOOLBOX' ) {
 				$html .= $this->getUserLinks();
 				$html .= $this->getPortlet( 'actions', $this->pileOfTools['page-primary']);
