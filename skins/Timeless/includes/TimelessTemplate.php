@@ -378,16 +378,16 @@ class TimelessTemplate extends BaseTemplate {
 			'Thao tác'
 		);
 		// - end add more tools
-		//$pageTools .= $this->getPortlet(
-		//	'cactions',
-		//	$this->pileOfTools['page-secondary'],
-		//	'timeless-pageactions'
-		//);
 		$pageTools .= $this->getPortlet(
-			'tb',
-			$this->pileOfTools['general'],
-			'timeless-sitetools'
+			'cactions',
+			$this->pileOfTools['page-secondary'],
+			'timeless-pageactions'
 		);
+		//$pageTools .= $this->getPortlet(
+		//	'tb',
+		//	$this->pileOfTools['general'],
+		//	'timeless-sitetools'
+		//);
 		$pageTools .= $this->getPortlet(
 			'userpagetools',
 			$this->pileOfTools['user'],
