@@ -286,32 +286,6 @@ class TimelessTemplate extends BaseTemplate {
 	}
 
 	/**
-	 * Sidebar chunk containing one or more portlets
-	 *
-	 * @param string $id
-	 * @param string $headerMessage
-	 * @param string $content
-	 * @param array $classes
-	 *
-	 * @return string html
-	 */
-	protected function getSidebarChunk( $id, $headerMessage, $content, $classes = [] ) {
-		$html = '';
-
-		$html .= Html::rawElement(
-			'div',
-			[
-				'id' => Sanitizer::escapeId( $id ),
-				'class' => array_merge( [ 'sidebar-chunk' ], $classes )
-			],
-			// Html::rawElement( 'div', [ 'class' => 'sidebar-inner' ], $content )
-			$content
-		);
-
-		return $html;
-	}
-
-	/**
 	 * The search box at the top
 	 *
 	 * @return string html
@@ -365,8 +339,6 @@ class TimelessTemplate extends BaseTemplate {
 			}
 			$html .= $this->getPortlet( $name, $content['content']);
 		}
-
-		$html = $this->getSidebarChunk( 'site-navigation', 'navigation', $html );
 
 		return $html;
 	}
