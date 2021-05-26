@@ -5,7 +5,6 @@
 #p-variants-desktop,
 #mw-page-header-links #ca-view,
 #page-tools h2,
-#other-languages h2,
 .sidebar-chunk h3, #p-toolbox, #mw-site-navigation #n-portal, #mw-site-navigation #n-help-mediawiki {
 	display: none;
 }
@@ -17,57 +16,13 @@
 	padding: 0 @content-padding;
 }
 
-.color-middle {
-	margin: auto;
-	width: 34%;
-}
-
 .categories-bottom();
-
-.color-right,
-.color-middle,
-.color-left {
-	background: @red-dark;
-}
 
 /* Page header */
 
 h1.firstHeading {
 	/* Prevent indicators from interfering with title and causing overflow */
 	clear: right;
-}
-
-/* Page actions */
-
-#p-namespaces li {
-	margin-right: 1.5em;
-}
-
-.tools-inline li a {
-	.ca-icon-only();
-}
-
-#ca-more,
-#ca-languages {
-	&:after {
-		margin-left: -0.35em;
-	}
-
-	span {
-		.ca-icon-only();
-		display: inline-block;
-		overflow: visible;
-	}
-}
-
-#ca-more span {
-	.background-image-svg( 'images/gear-grey.svg', 'images/gear-grey.png' );
-	background-repeat: no-repeat;
-}
-
-#ca-languages span {
-	.background-image-svg( 'images/languages-grey.svg', 'images/languages-grey.png' );
-	background-repeat: no-repeat;
 }
 
 /* Full-width thumbnails */
