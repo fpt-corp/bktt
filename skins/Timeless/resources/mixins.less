@@ -107,62 +107,6 @@
 	}
 }
 
-// Dropdowns
-.dropdown-header() {
-	cursor: pointer;
-	margin-bottom: -1em;
-	padding-bottom: 1em;
-
-	&:after {
-		display: inline-block;
-		content: '';
-		width: 22px;
-		height: 12px;
-		.background-image-svg( 'images/arrow-down-grey.svg', 'images/arrow-down-grey.png' );
-		background-position: center center;
-		background-repeat: no-repeat;
-	}
-}
-
-.dropdown-menu( @direction: right ) {
-	.nav-block();
-	background: @background;
-	box-shadow: 0 2px 3px 1px rgba( 0, 0, 0, 0.05 );
-	position: absolute;
-	padding: 20px 2em 0;
-	margin: 0;
-	min-width: 9.153em;
-	top: 2.95em;
-	@{direction}: -1em;
-	overflow: visible;
-	z-index: 3;
-}
-
-.dropdown-pokey() {
-	&:before,
-	&:after {
-		transform: rotate( 360deg ); // to force some smoothing in annoying browsers
-		border-bottom: 10px solid @base80;
-		border-left: 10px solid transparent;
-		border-right: 10px solid transparent;
-		content: '';
-		height: 0;
-		width: 0;
-		position: absolute;
-		right: 1em;
-		z-index: 4;
-	}
-
-	&:before {
-		top: -10px;
-	}
-
-	&:after {
-		border-bottom-color: @base100;
-		top: -8px;
-	}
-}
-
 // Categories on bottom of page
 
 .categories-bottom() {
