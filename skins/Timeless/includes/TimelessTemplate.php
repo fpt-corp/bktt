@@ -357,6 +357,7 @@ class TimelessTemplate extends BaseTemplate {
 			// Numeric strings gets an integer when set as key, cast back - T73639
 			$name = (string)$name;
 			if ( $name == 'TOOLBOX' ) {
+				$html .= $this->getUserLinks();
 				$html .= $this->getPortlet( 'actions', $this->pileOfTools['page-primary'],'Thao tác');
 				$html .= $this->getPortlet( 'cactions', $this->pileOfTools['page-secondary'], 'timeless-pageactions');
 				$html .= $this->getPortlet( 'userpagetools', $this->pileOfTools['user'], 'timeless-userpagetools' );
@@ -367,7 +368,6 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		$html = $this->getSidebarChunk( 'site-navigation', 'navigation', $html );
-		$html .= $this->getSidebarChunk( 'site-personal', 'personal', $this->getUserLinks() );
 
 		return $html;
 	}
