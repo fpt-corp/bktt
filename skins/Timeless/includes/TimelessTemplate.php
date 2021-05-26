@@ -260,7 +260,7 @@ class TimelessTemplate extends BaseTemplate {
 			$html = Html::rawElement( 'div', $divOptions,
 				Html::rawElement( 'div', $bodyDivOptions,
 					$contentText .
-					$this->getAfterPortlet( 'navigation' )
+					$this->getAfterPortlet( $name )
 				)
 			);			
 		} else {
