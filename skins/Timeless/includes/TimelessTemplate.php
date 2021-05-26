@@ -378,11 +378,11 @@ class TimelessTemplate extends BaseTemplate {
 			'Thao tác'
 		);
 		// - end add more tools
-		$pageTools .= $this->getPortlet(
-			'cactions',
-			$this->pileOfTools['page-secondary'],
-			'timeless-pageactions'
-		);
+		//$pageTools .= $this->getPortlet(
+		//	'cactions',
+		//	$this->pileOfTools['page-secondary'],
+		//	'timeless-pageactions'
+		//);
 		$pageTools .= $this->getPortlet(
 			'tb',
 			$this->pileOfTools['general'],
@@ -393,11 +393,11 @@ class TimelessTemplate extends BaseTemplate {
 			$this->pileOfTools['user'],
 			'timeless-userpagetools'
 		);
-		$pageTools .= $this->getPortlet(
-			'pagemisc',
-			$this->pileOfTools['page-tertiary'],
-			'timeless-pagemisc'
-		);
+		//$pageTools .= $this->getPortlet(
+		//	'pagemisc',
+		//	$this->pileOfTools['page-tertiary'],
+		//	'timeless-pagemisc'
+		//);
 		if ( isset( $this->collectionPortlet ) ) {
 			$pageTools .= $this->getPortlet(
 				'coll-print_export',
