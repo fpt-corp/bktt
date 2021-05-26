@@ -43,9 +43,7 @@ class TimelessTemplate extends BaseTemplate {
 					$this->getAfterContent()
 				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
-					$this->getMainNavigation() .
-					//$this->getPageToolSidebar() .
-					$this->getCategories()
+					$this->getMainNavigation() 
 				) .
 				$this->getClear()
 		);
@@ -622,89 +620,6 @@ class TimelessTemplate extends BaseTemplate {
 		}
 
 		return $sortedPileOfTools;
-	}
-
-	/**
-	 * Categories for the sidebar
-	 *
-	 * Assemble an array of categories. This doesn't show any categories for the
-	 * action=history view, but that behaviour is consistent with other skins.
-	 *
-	 * @return string html
-	 */
-	protected function getCategories() {
-		$skin = $this->getSkin();
-		$catList = '';
-		$html = '';
-
-		$allCats = $skin->getOutput()->getCategoryLinks();
-		if ( !empty( $allCats ) ) {
-			if ( !empty( $allCats['normal'] ) ) {
-				$catHeader = 'categories';
-				$catList .= $this->getCatList(
-					$allCats['normal'],
-					'normal-catlinks',
-					'mw-normal-catlinks',
-					'categories'
-				);
-			} else {
-				$catHeader = 'hidden-categories';
-			}
-
-			if ( isset( $allCats['hidden'] ) ) {
-				$hiddenCatClass = [ 'mw-hidden-catlinks' ];
-				if ( $skin->getUser()->getBoolOption( 'showhiddencats' ) ) {
-					$hiddenCatClass[] = 'mw-hidden-cats-user-shown';
-				} elseif ( $skin->getTitle()->getNamespace() == NS_CATEGORY ) {
-					$hiddenCatClass[] = 'mw-hidden-cats-ns-shown';
-				} else {
-					$hiddenCatClass[] = 'mw-hidden-cats-hidden';
-				}
-				$catList .= $this->getCatList(
-					$allCats['hidden'],
-					'hidden-catlinks',
-					$hiddenCatClass,
-					[ 'hidden-categories', count( $allCats['hidden'] ) ]
-				);
-			}
-		}
-
-		if ( $catList !== '' ) {
-			$html = $this->getSidebarChunk( 'catlinks-sidebar', $catHeader, $catList );
-		}
-
-		return $html;
-	}
-
-	/**
-	 * List of categories
-	 *
-	 * @param array $list
-	 * @param string $id
-	 * @param string|array $class
-	 * @param string|array $message i18n message name or an array of [ message name, params ]
-	 *
-	 * @return string html
-	 */
-	protected function getCatList( $list, $id, $class, $message ) {
-		$html = Html::openElement( 'div', [ 'id' => "sidebar-{$id}", 'class' => $class ] );
-
-		$makeLinkItem = function ( $linkHtml ) {
-			return Html::rawElement( 'li', [], $linkHtml );
-		};
-
-		$categoryItems = array_map( $makeLinkItem, $list );
-
-		$categoriesHtml = Html::rawElement( 'ul',
-			[],
-			implode( '', $categoryItems )
-		);
-
-		$html .= $this->getPortlet( $id, $categoriesHtml, $message );
-
-		$html .= Html::closeElement( 'div' );
-
-		return $html;
 	}
 
 }
