@@ -130,10 +130,52 @@ button span.oo-ui-labelElement-label {
 
 #mw-site-navigation {
         display:none;
-	.nav-block();
+	.box;
+	line-height: 1.125;
+	word-wrap: break-word;
+	font-size: 0.95em;
+	padding: 1em 1.5em 0;
 	width: 14em;
 	position: fixed;
 	z-index: 8;
+	
+	ul, li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	h3 {
+		font-weight: bold;
+		font-size: 18px;
+		margin: 0.25em 0 0.75em 0;
+		padding-bottom: 0.5em;
+		border-bottom: solid 2px @base-red;
+	}
+
+	.mw-portlet-body {
+		margin-bottom: 1em;
+	}
+
+	li {
+		padding: 0.25em 0;
+		display: flex;
+		align-items: center;
+
+		&:before {
+			content: '';
+			width: 10px;
+			height: 10px;
+			flex: 0 0 10px;
+			border-radius: 50%;
+			background: @base-red;
+			margin-right: 6px;
+		}
+	}
+
+	a {
+		color: @base-black;
+	}
 }
 
 /* Header */
