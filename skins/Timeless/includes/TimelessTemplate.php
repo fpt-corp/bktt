@@ -208,7 +208,7 @@ class TimelessTemplate extends BaseTemplate {
 			$msgString = htmlspecialchars( $msg );
 		}
 
-		$labelId = Sanitizer::escapeIdForAttribute( "p-$name-label" );
+		$labelId = Sanitizer::escapeIdForAttribute( "p-$name-label" ); 
 
 		if ( is_array( $content ) ) {
 			$contentText = Html::openElement( 'ul',
@@ -357,14 +357,13 @@ class TimelessTemplate extends BaseTemplate {
 			// Numeric strings gets an integer when set as key, cast back - T73639
 			$name = (string)$name;
 			if ( $name == 'TOOLBOX' ) {
-				$name = 'tb';
-				
 				$html .= $this->getPortlet( 'actions', $this->pileOfTools['page-primary'],'Thao tác');
 				$html .= $this->getPortlet( 'cactions', $this->pileOfTools['page-secondary'], 'timeless-pageactions');
 				$html .= $this->getPortlet( 'userpagetools', $this->pileOfTools['user'], 'timeless-userpagetools' );
 				
+				$name = 'p-tb';
 			}
-			$html .= $this->getPortlet( $name, $content['content'] );
+			$html .= $this->getPortlet( $name, $content['content']);
 		}
 
 		$html = $this->getSidebarChunk( 'site-navigation', 'navigation', $html );
