@@ -342,7 +342,7 @@ class TimelessTemplate extends BaseTemplate {
 				$html .= $this->getUserLinks();
 				$html .= $this->getPortlet( 'actions', $this->pileOfTools['page-primary']);
 				$html .= $this->getPortlet( 'cactions', $this->pileOfTools['page-secondary'], 'timeless-pageactions');
-				$html .= $this->getPortlet( 'userpagetools', $this->pileOfTools['user'], 'timeless-userpagetools' );
+				//$html .= $this->getPortlet( 'userpagetools', $this->pileOfTools['user'], 'timeless-userpagetools' );
 				
 				$name = 'toolbox';
 			}
