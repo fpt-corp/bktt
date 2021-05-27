@@ -180,7 +180,7 @@ button span.oo-ui-labelElement-label {
 /* Header */
 
 #mw-header {
-	height: 50px;
+	height: @fixed-header-height;
 	background: #262626;
 	display: flex;
 	align-items: center;
@@ -396,7 +396,7 @@ input[id^="searchInput"]::placeholder {
 	flex-wrap: wrap;
 	align-items: center;
 	padding: 0 22px;
-	height: 50px;
+	height: @fixed-header-height;
 	background: @base90;
 
 	div {
@@ -652,7 +652,6 @@ body :not( :checked)>.toctogglespan:after {
 }
 
 .mw-body .mw-rcfilters-ui-changesListWrapperWidget .mw-changeslist-legend,
-// wat
 .mw-changeslist-legend,
 .mw-body .mw-search-profile-tabs,
 .mw-body fieldset#mw-searchoptions,
@@ -697,59 +696,20 @@ body :not( :checked)>.toctogglespan:after {
 	background: @base80;
 }
 
-/* Color bars */
-
-.color-bar {
-	width: 100%;
-}
-
-.color-left {
-	height: @color-height;
-	background: @red-dark;
-	width: 50%;
-	float: left;
-}
-
-.color-right {
-	display: inline-block;
-	height: @color-height;
-	background: @green-dark;
-	width: 50%;
-	float: right;
-}
-
-.color-middle-container {
-	max-width: @content-width;
-	margin: 0 auto -@color-height;
-	position: relative;
-}
-
-.color-middle {
-	height: @color-height;
-	background: @blue-dark;
-	margin-left: @column-left-size + 1em;
-	margin-right: @column-right-size + 1em;
-}
 
 /* Portlets */
 .emptyPortlet {
 	display: none;
 }
 
-#p-lang.emptyPortlet {
-	display: inherit;
-}
-
 .spacer {
 	flex: 1 1 1px;
 }
 
-
-
 #mw-content-container {
 	border-bottom: none;
 	background: @base90;
-	padding-top: 50px;
+	padding-top: @fixed-header-height;
 }
 
 .page-title {
