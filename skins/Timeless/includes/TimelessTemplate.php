@@ -38,12 +38,12 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= $this->getHeader();
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
+				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
+					$this->getMainNavigation() 
+				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-content-wrapper' , 'class' => 'mw-parser-output' ],
 					$this->getContentBlock() .
 					$this->getAfterContent()
-				) .
-				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
-					$this->getMainNavigation() 
 				) .
 				$this->getClear()
 		);
