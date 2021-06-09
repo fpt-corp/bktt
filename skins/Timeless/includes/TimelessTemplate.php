@@ -179,9 +179,6 @@ class TimelessTemplate extends BaseTemplate {
 			'id' => 'p-' . $name,
 			'class' => [ 'mw-portlet', 'emptyPortlet' => !$content ],
 			'extra-classes' => '',
-			'body-id' => null,
-			'body-class' => 'mw-portlet-body',
-			'body-extra-classes' => '',
 			// wrapper for individual list items
 			'text-wrapper' => [ 'tag' => 'span' ],
 			// option to stick arbitrary stuff at the beginning of the ul
@@ -245,27 +242,16 @@ class TimelessTemplate extends BaseTemplate {
 			'dir' => $this->get( 'dir' )
 		];
 
-		$bodyDivOptions = [
-			'class' => $this->mergeClasses( $options['body-class'], $options['body-extra-classes'] )
-		];
-		if ( is_string( $options['body-id'] ) ) {
-			$bodyDivOptions['id'] = $options['body-id'];
-		}
-
 		if ( $name == 'navigation' ) {
 			$html = Html::rawElement( 'div', $divOptions,
-				Html::rawElement( 'div', $bodyDivOptions,
-					$contentText .
-					$this->getAfterPortlet( $name )
-				)
+				$contentText .
+				$this->getAfterPortlet( $name )
 			);
 		} else {
 			$html = Html::rawElement( 'div', $divOptions,
 				Html::rawElement( 'h3', $labelOptions, $msgString ) .
-				Html::rawElement( 'div', $bodyDivOptions,
-					$contentText .
-					$this->getAfterPortlet( $name )
-				)
+				$contentText .
+				$this->getAfterPortlet( $name )
 			);
 		}
 
