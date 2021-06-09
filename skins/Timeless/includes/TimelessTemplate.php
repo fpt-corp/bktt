@@ -38,7 +38,7 @@ class TimelessTemplate extends BaseTemplate {
 		$html .= $this->getHeader();
 
 		$html .= Html::rawElement( 'div', [ 'id' => 'mw-content-container', 'class' => 'ts-container' ],
-				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' ],
+				Html::rawElement( 'div', [ 'id' => 'mw-site-navigation' , 'class' => 'mw-parser-output' ],
 					$this->getMainNavigation() 
 				) .
 				Html::rawElement( 'div', [ 'id' => 'mw-content-wrapper' , 'class' => 'mw-parser-output' ],
@@ -87,7 +87,7 @@ class TimelessTemplate extends BaseTemplate {
 			);
 		}
 
-		$pageTools = Html::rawElement('div',['id' => 'sidebar-button', 'class' => 'sidebar-button']);
+		$pageTools = Html::rawElement('div',['id' => 'sidebar-button', 'class' => 'sidebar-button'],"☰");
 		$list = ['namespaces', 'page-primary', 'variants'];
 		foreach ( $list as $key => $groupName ) {
 			if ($this->pileOfTools[$groupName]) {
@@ -110,7 +110,7 @@ class TimelessTemplate extends BaseTemplate {
 		// 	Html::rawElement('a', ['href' => $item['href']], $item['text']));
 		// }
 		
-		return Html::rawElement('div', ['id' => 'mw-header'],
+		return Html::rawElement('div', ['id' => 'mw-header', 'class' => 'mw-parser-output'],
 			$pageTools .
 			$this->getSearch() .
 			Html::rawElement('div', ['id' => 'header-personal-tools'], $contentText)
