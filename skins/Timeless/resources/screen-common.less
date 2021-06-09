@@ -187,9 +187,9 @@ button span.oo-ui-labelElement-label {
 		width: 34px;
 		height: 100%;
 		border: none;
-		background-image: url('/skins/Timeless/resources/images/menu.svg');
-		background-position: center;
-		background-repeat: no-repeat;
+		background-color: @base-red; 
+                mask: url(/skins/Timeless/resources/images/menu.svg) no-repeat center / contain;
+                -webkit-mask: url(/skins/Timeless/resources/images/menu.svg) no-repeat center / contain;
 	}
 	#sidebar-button:hover {
 		background-color: @base90;
