@@ -128,14 +128,7 @@ button span.oo-ui-labelElement-label {
 
 /* Side bar */
 
-#mw-site-navigation {
-        display:none;
-	.box;
-	line-height: 1.125;
-	word-wrap: break-word;
-	position: fixed;
-	z-index: 8;
-	
+.mw-portlet {
 	ul, li {
 		list-style: none;
 		margin: 0;
@@ -164,7 +157,15 @@ button span.oo-ui-labelElement-label {
 			margin-right: 6px;
 		}
 	}
+}
 
+#mw-site-navigation {
+        display:none;
+	.box;
+	line-height: 1.125;
+	word-wrap: break-word;
+	position: fixed;
+	z-index: 8;
 	a {
 		color: @base-black;
 	}
@@ -202,10 +203,6 @@ button span.oo-ui-labelElement-label {
 		display: flex !important;
 		align-items: center;
 		background-repeat: no-repeat;
-		&:hover {
-			background: @base90;
-			color: #222;
-		}
 	}	
 	
 	.header-item {
